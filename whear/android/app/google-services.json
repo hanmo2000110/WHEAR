@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "840761883109",
+    "project_id": "whear-7eb17",
+    "storage_bucket": "whear-7eb17.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:840761883109:android:105a3013cb4254d629d70c",
+        "android_client_info": {
+          "package_name": "com.moapp.whear"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "840761883109-jc5h3avem5o8uguuldvgf34qe4he83tg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.moapp.whear",
+            "certificate_hash": "9fe3cd2388b6ae490504cfb300773e7dfe4502ce"
+          }
+        },
+        {
+          "client_id": "840761883109-ldpoernajug717tn7j1e68lij2dn58r7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApl8PS4bC92Xa7ph1crJ_PClqmS9qugZQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "840761883109-ldpoernajug717tn7j1e68lij2dn58r7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "840761883109-jv4snt3kjjrhk532a90semo1hjo3v5p3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.moapp.whear"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
