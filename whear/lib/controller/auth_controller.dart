@@ -39,17 +39,17 @@ class AuthController extends GetxController {
 
   final _googleSignIn = GoogleSignIn();
 
-  Future signInAnon() async {
-    try {
-      await _auth.signInAnonymously();
-      Get.offAllNamed("/"); // Back to Home
-      print(_firebaseUser);
-    } catch (e) {
-      Get.snackbar("Error signing in anonymously", "e.message",
-          snackPosition: SnackPosition.BOTTOM);
-      return null;
-    }
-  }
+  // Future signInAnon() async {
+  //   try {
+  //     await _auth.signInAnonymously();
+  //     Get.offAllNamed("/"); // Back to Home
+  //     print(_firebaseUser);
+  //   } catch (e) {
+  //     Get.snackbar("Error signing in anonymously", "e.message",
+  //         snackPosition: SnackPosition.BOTTOM);
+  //     return null;
+  //   }
+  // }
 
   Future signInGoogle() async {
     try {
