@@ -21,7 +21,7 @@ class PostController extends GetxController {
   List<PostModel> get posts => _allPosts;
 
   Future getProductInfo() async {
-    UserController uc = Get.find();
+    UserController uc = Get.find<UserController>();
     FirebaseFirestore firestore = FirebaseFirestore.instance;
 
     final completer = Completer<bool>();
