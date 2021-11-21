@@ -6,7 +6,7 @@ import 'package:whear/binding/binding.dart';
 import 'dart:io';
 
 import 'package:whear/main.dart';
-import '/controller/bottomNavigation_controller.dart';
+import '../controller/bottom_navigation_controller.dart';
 import '/screens/add_page.dart';
 import '/screens/notice_page.dart';
 import '/screens/profile_page.dart';
@@ -19,8 +19,8 @@ class NavigationPage extends StatefulWidget {
 }
 
 class NavigationPageState extends State<NavigationPage> {
-
-  final BottomNavigationController _controller = Get.put(BottomNavigationController());
+  final BottomNavigationController _controller =
+      Get.put(BottomNavigationController());
   List _pages = [
     // Text('home'),
     // Text('search'),
@@ -41,37 +41,37 @@ class NavigationPageState extends State<NavigationPage> {
   @override
   Widget build(BuildContext context) {
     return Obx(() => Scaffold(
-      body: _pages[_controller.curPage.toInt()],
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.white,
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.grey,
-        type: BottomNavigationBarType.fixed,
-        onTap: _controller.changeTabIndex,
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+          body: _pages[_controller.curPage.toInt()],
+          bottomNavigationBar: BottomNavigationBar(
+            backgroundColor: Colors.white,
+            selectedItemColor: Colors.black,
+            unselectedItemColor: Colors.grey,
+            type: BottomNavigationBarType.fixed,
+            onTap: _controller.changeTabIndex,
+            items: <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: 'Home',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.search),
+                label: 'Search',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.add),
+                label: 'Add',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.cloud),
+                label: 'Notice',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.account_circle),
+                label: 'Profile',
+              ),
+            ],
+            currentIndex: _controller.curPage.toInt(),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add),
-            label: 'Add',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.cloud),
-            label: 'Notice',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle),
-            label: 'Profile',
-          ),
-        ],
-        currentIndex: _controller.curPage.toInt(),
-      ),
-    ));
+        ));
   }
 }
