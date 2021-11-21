@@ -1,4 +1,4 @@
-package com.example.whear
+package com.moapp.whear
 
 import io.flutter.embedding.android.FlutterActivity
 
