@@ -1,19 +1,18 @@
 import 'package:get/get.dart';
 
-class PageController extends GetxController {
-  var tabIndex = 0.obs;
+class BottomNavigationController extends GetxController {
+  static BottomNavigationController get to => Get.find();
+  RxInt _tabIndex = 0.obs;
 
   void changeTabIndex(int index) {
-    tabIndex.value = index;
+    _tabIndex(index);
+    update();
   }
 
   @override
-  void oninit() {
+  void onInit() {
     super.onInit();
   }
+  RxInt get curPage => _tabIndex;
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
 }
