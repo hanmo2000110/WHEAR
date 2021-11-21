@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:whear/auth/auth_middleware.dart';
@@ -5,7 +6,14 @@ import 'package:whear/binding/binding.dart';
 import 'package:whear/screens/home_page.dart';
 import 'package:whear/screens/signin_page.dart';
 
-void main() {
+import 'screens/add_page.dart';
+import 'screens/notice_page.dart';
+import 'screens/profile_page.dart';
+import 'screens/search_page.dart';
+import 'screens/navigation_page.dart';
+
+void main() async{
+  await Firebase.initializeApp();
   runApp(const Whear());
 }
 
@@ -14,6 +22,7 @@ class Whear extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return GetMaterialApp(
       // darkTheme: ThemeData.dark(),
       debugShowCheckedModeBanner: false,
@@ -24,12 +33,33 @@ class Whear extends StatelessWidget {
         GetPage(
             name: "/",
             middlewares: [AuthMiddleware()],
-            page: () => const HomePage(),
+            page: () => NavigationPage(),
             transition: Transition.fadeIn),
+        GetPage(
+          name: "/home",
+          page: () => HomePage(),
+          transition: Transition.noTransition
+        ),
         GetPage(
             name: "/login",
             page: () => SignInPage(),
             transition: Transition.fade),
+        GetPage(
+          name: "/add",
+          page: () => AddPage(),
+          transition: Transition.noTransition),
+        GetPage(
+            name: "/notice",
+            page: () => NoticePage(),
+            transition: Transition.noTransition),
+        GetPage(
+            name: "/profile",
+            page: () => ProfilePage(),
+            transition: Transition.noTransition),
+        GetPage(
+            name: "/search",
+            page: () => SearchPage(),
+            transition: Transition.noTransition),
       ],
     );
   }

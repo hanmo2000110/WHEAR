@@ -11,13 +11,14 @@ import '/screens/add_page.dart';
 import '/screens/notice_page.dart';
 import '/screens/profile_page.dart';
 import '/screens/search_page.dart';
+import '/screens/home_page.dart';
 
-class HomePage extends StatefulWidget {
+class NavigationPage extends StatefulWidget {
   @override
-  HomePageState createState() => HomePageState();
+  NavigationPageState createState() => NavigationPageState();
 }
 
-class HomePageState extends State<HomePage> {
+class NavigationPageState extends State<NavigationPage> {
 
   final BottomNavigationController _controller = Get.put(BottomNavigationController());
   List _pages = [
@@ -26,7 +27,7 @@ class HomePageState extends State<HomePage> {
     // Text('add'),
     // Text('notice'),
     // Text('profile'),
-    // HomePage(),
+    HomePage(),
     SearchPage(),
     AddPage(),
     NoticePage(),
@@ -48,10 +49,10 @@ class HomePageState extends State<HomePage> {
         type: BottomNavigationBarType.fixed,
         onTap: _controller.changeTabIndex,
         items: <BottomNavigationBarItem>[
-          // BottomNavigationBarItem(
-          //   icon: Icon(Icons.home),
-          //   label: 'Home',
-          // ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
           BottomNavigationBarItem(
             icon: Icon(Icons.search),
             label: 'Search',
