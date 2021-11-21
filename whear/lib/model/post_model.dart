@@ -1,4 +1,4 @@
-import 'dart:html';
+// import 'dart:html';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -52,5 +52,5 @@ class PostModel {
       };
 
   @override
-  String toString() => "${creator ?? 'Anon'} (post_id=$post_id)";
+  String toString() => "$creator (post_id=$post_id)";
 }
