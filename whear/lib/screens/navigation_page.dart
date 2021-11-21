@@ -21,7 +21,7 @@ class NavigationPage extends StatefulWidget {
 class NavigationPageState extends State<NavigationPage> {
   final BottomNavigationController _controller =
       Get.put(BottomNavigationController());
-  List _pages = [
+  final List _pages = [
     // Text('home'),
     // Text('search'),
     // Text('add'),

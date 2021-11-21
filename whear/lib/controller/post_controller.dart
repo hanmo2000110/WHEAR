@@ -9,7 +9,7 @@ import 'package:whear/model/post_model.dart';
 
 class PostController extends GetxController {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-  late Stream<QuerySnapshot<Map<String, dynamic>>> _postListener;
+  late StreamSubscription<DocumentSnapshot<Map<String, dynamic>>> _postListener;
 
   @override
   onInit() {
@@ -26,19 +26,22 @@ class PostController extends GetxController {
 
     final completer = Completer<bool>();
 
-    _postListener = firestore
-        .collection("post")
-        .where("creator", isEqualTo: uc.user.uid)
-        .snapshots();
-
-    _postListener.listen((event) {
-      final docs = event.docs;
-      _allPosts = (docs as LinkedHashMap).keys.map((post_id) {
+    _postListener =
+        firestore.collection("post").doc("posts").snapshots().listen((event) {
+      final doc = event.data();
+      _allPosts = (doc as LinkedHashMap).keys.map((post_id) {
         return PostModel(
-            post_id: post_id,
-            creator: docs[post_id]["creator"],
-            createdTime: docs[post_id]["createdTime"],
-            wheather: docs[post_id]["wheather"]);
+          post_id: int.parse(post_id),
+          creator: doc![post_id]["creator"],
+          createdTime: doc[post_id]["createdTime"] as Timestamp,
+          wheather: doc[post_id]["wheather"],
+          lookType: doc[post_id]['looktype'],
+          liker: doc[post_id]['liker'],
+          content: doc[post_id]['content'],
+          like: doc[post_id]['like'],
+          //TODO: 이거 커멘트 타입 정해야함 !!!!!!
+          comment: doc[post_id]['comment'],
+        );
       }).toList();
     });
     await completer.future;
