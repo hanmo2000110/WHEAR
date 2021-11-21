@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:whear/auth/auth_middleware.dart';
 import 'package:whear/binding/binding.dart';
 
+import 'package:whear/screens/info_page.dart';
+
 class SettingPage extends StatefulWidget {
   const SettingPage({Key? key}) : super(key: key);
 
@@ -31,7 +33,7 @@ class _SettingPageState extends State<SettingPage> {
       ),
       body: ListView(
         children: [
-          _listTile("공지사항", Icons.announcement_rounded),
+          _listTile_info("공지사항", Icons.announcement_rounded, InfoPage()),
           _listTile("알림", Icons.alarm_rounded),
           _listTile("앱 버전", Icons.announcement_outlined),
           Divider(height: 1,),
@@ -50,6 +52,18 @@ class _SettingPageState extends State<SettingPage> {
       contentPadding: EdgeInsets.only(left: 30, right: 30),
       title: Text(context, style: TextStyle(fontSize: 14),),
       leading: Icon(icon),
+    );
+  }
+
+  Widget _listTile_info(context, icon, next) {
+    return ListTile(
+      tileColor: Colors.white,
+      contentPadding: EdgeInsets.only(left: 30, right: 30),
+      title: Text(context, style: TextStyle(fontSize: 14),),
+      leading: Icon(icon),
+      onTap: () {
+        Get.to(InfoPage());
+      },
     );
   }
 }
