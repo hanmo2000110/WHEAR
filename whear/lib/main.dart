@@ -13,7 +13,6 @@ import 'screens/navigation_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   FirebaseApp app = await Firebase.initializeApp();
   runApp(const Whear());
 }
