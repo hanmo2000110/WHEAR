@@ -1,8 +1,10 @@
 import 'dart:io';
 
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -88,7 +90,7 @@ class _AddPageState extends State<AddPage> {
             ),
             onPressed: () async {
               await addPost(
-                imageXfile: imageXfile,
+                imagelist: imageList,
                 post_content: post_content,
                 post_lookType: post_lookType,
                 post_weatherType: post_weatherType,
@@ -101,134 +103,146 @@ class _AddPageState extends State<AddPage> {
           ),
         ],
       ),
-      body: Center(
-        child: Column(
-          children: [
-            InkWell(
-              child: SizedBox(
-                height: Get.height / 2.5,
-                width: Get.width,
-                child: postImage ??
-                    const Center(
-                      child: Text(
-                        "이미지를 선택해주세요",
-                        style: TextStyle(color: Colors.black, fontSize: 16),
-                      ),
-                    ),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            children: [
+              InkWell(
+                child: SizedBox(
+                  height: Get.height / 2.5,
+                  width: Get.width,
+                  child: imageList.isEmpty == false
+                      ? CarouselSlider(
+                          options: CarouselOptions(height: 400.0),
+                          items: imageList
+                              .map((e) => AssetThumb(
+                                    asset: e,
+                                    width: 200,
+                                    height: 200,
+                                  ))
+                              .toList(),
+                        )
+                      : const Center(
+                          child: Text(
+                            "이미지를 선택해주세요",
+                            style: TextStyle(color: Colors.black, fontSize: 16),
+                          ),
+                        ),
+                ),
+                onTap: () async {
+                  await getMultiImage();
+                },
+                splashColor: Colors.transparent,
               ),
-              onTap: () async {
-                await getPhoto();
-              },
-              splashColor: Colors.transparent,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(35.0),
-              child: Column(
-                children: [
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: PopupMenuButton(
-                      // initialValue: '데일리',
-                      child: Container(
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Icon(
-                              Icons.checkroom,
-                              size: 18,
+              Padding(
+                padding: const EdgeInsets.all(35.0),
+                child: Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: PopupMenuButton(
+                        // initialValue: '데일리',
+                        child: Container(
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(
+                                Icons.checkroom,
+                                size: 18,
+                                color: Colors.blue,
+                              ),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                post_lookType,
+                                style: const TextStyle(
+                                    color: Colors.black, fontSize: 16),
+                              ),
+                            ],
+                          ),
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.rectangle,
+                            border: Border.all(
                               color: Colors.blue,
                             ),
-                            const SizedBox(
-                              width: 5,
-                            ),
-                            Text(
-                              post_lookType,
-                              style: const TextStyle(
-                                  color: Colors.black, fontSize: 16),
-                            ),
-                          ],
-                        ),
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.rectangle,
-                          border: Border.all(
-                            color: Colors.blue,
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(10)),
                           ),
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(10)),
                         ),
+                        // OutlinedButton.icon(
+                        //     onPressed: () {},
+                        //     icon: const Icon(Icons.add, size: 18),
+                        //     label: const Text(
+                        //       "어떤 룩인지 선택해주세요",
+                        //       style: TextStyle(color: Colors.black, fontSize: 16),
+                        //     ),
+                        //     style: OutlinedButton.styleFrom(
+                        //       shape: const RoundedRectangleBorder(
+                        //           borderRadius:
+                        //               BorderRadius.all(Radius.circular(10))),
+                        //       side:
+                        //           const BorderSide(width: 1, color: Colors.blue),
+                        //     )),
+                        onSelected: (result) {
+                          setState(() {
+                            post_lookType = result.toString();
+                          });
+                        },
+                        itemBuilder: (BuildContext context) => lookTypes
+                            .map((value) => PopupMenuItem(
+                                  value: value,
+                                  child: Text(value),
+                                ))
+                            .toList(),
                       ),
-                      // OutlinedButton.icon(
-                      //     onPressed: () {},
-                      //     icon: const Icon(Icons.add, size: 18),
-                      //     label: const Text(
-                      //       "어떤 룩인지 선택해주세요",
-                      //       style: TextStyle(color: Colors.black, fontSize: 16),
-                      //     ),
-                      //     style: OutlinedButton.styleFrom(
-                      //       shape: const RoundedRectangleBorder(
-                      //           borderRadius:
-                      //               BorderRadius.all(Radius.circular(10))),
-                      //       side:
-                      //           const BorderSide(width: 1, color: Colors.blue),
-                      //     )),
-                      onSelected: (result) {
-                        setState(() {
-                          post_lookType = result.toString();
-                        });
+                    ),
+                    Divider(
+                      color: Colors.grey.shade800,
+                    ),
+                    Row(
+                      children: [
+                        for (int i = 0; i < wicons.length; i++)
+                          // IconButton(onPressed: () {}, icon: wi),
+                          OutlinedButton(
+                              onPressed: () {
+                                setState(() {
+                                  post_weatherType = i;
+                                });
+                              },
+                              child: wicons[i],
+                              style: OutlinedButton.styleFrom(
+                                shape: const CircleBorder(),
+                                side: BorderSide(
+                                  width: 1,
+                                  color: i != post_weatherType
+                                      ? Colors.transparent
+                                      : Colors.blue,
+                                ),
+                              )),
+                      ],
+                    ),
+                    Divider(
+                      color: Colors.grey.shade800,
+                    ),
+                    TextField(
+                      decoration: const InputDecoration(
+                        labelText: "내용을 입력해주세요",
+                      ),
+                      autocorrect: false,
+                      onChanged: (value) {
+                        post_content = value;
                       },
-                      itemBuilder: (BuildContext context) => lookTypes
-                          .map((value) => PopupMenuItem(
-                                value: value,
-                                child: Text(value),
-                              ))
-                          .toList(),
+                      onSubmitted: (value) {
+                        post_content = value;
+                      },
                     ),
-                  ),
-                  Divider(
-                    color: Colors.grey.shade800,
-                  ),
-                  Row(
-                    children: [
-                      for (int i = 0; i < wicons.length; i++)
-                        // IconButton(onPressed: () {}, icon: wi),
-                        OutlinedButton(
-                            onPressed: () {
-                              setState(() {
-                                post_weatherType = i;
-                              });
-                            },
-                            child: wicons[i],
-                            style: OutlinedButton.styleFrom(
-                              shape: const CircleBorder(),
-                              side: BorderSide(
-                                width: 1,
-                                color: i != post_weatherType
-                                    ? Colors.transparent
-                                    : Colors.blue,
-                              ),
-                            )),
-                    ],
-                  ),
-                  Divider(
-                    color: Colors.grey.shade800,
-                  ),
-                  TextField(
-                    decoration: const InputDecoration(
-                      labelText: "내용을 입력해주세요",
-                    ),
-                    autocorrect: false,
-                    onChanged: (value) {
-                      post_content = value;
-                    },
-                    onSubmitted: (value) {
-                      post_content = value;
-                    },
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
       resizeToAvoidBottomInset: false,
@@ -236,71 +250,74 @@ class _AddPageState extends State<AddPage> {
   }
 
   Future<void> addPost({
-    required XFile? imageXfile,
+    required List<Asset>? imagelist,
     required String post_content,
     required int post_weatherType,
     required String post_lookType,
   }) async {
+    CollectionReference posts = FirebaseFirestore.instance.collection("posts");
     int id = 0;
     PostController pc = Get.put(PostController());
     AuthController ac = Get.find<AuthController>();
     User? currentUser = ac.user;
+    var docid;
+    final now = FieldValue.serverTimestamp();
 
-    List<int> ids = [];
-    for (PostModel p in pc.posts) {
-      ids.add(p.post_id);
-    }
-
-    if (ids.isEmpty) {
-      id = 0;
-    } else {
-      ids.sort();
-      id = ids[ids.length - 1] + 1;
-    }
-
-    Map<String, dynamic> _postModel = {
-      '$id.post_id': id,
-      '$id.createdtime': FieldValue.serverTimestamp(),
-      '$id.creator': currentUser != null ? currentUser.uid : "NULL",
-      '$id.content': post_content,
-      '$id.wheather': post_weatherType,
-      '$id.looktype': post_lookType,
-      '$id.like': 0,
-      '$id.likeduser': [],
-    };
-
-    await uploadProductToStore(
-      newProduct: _postModel,
-    );
-
-    if (imageXfile == null) {
-      // var url = "http://handong.edu/site/handong/res/img/logo.png";
-      // var imageId = await ImageDownloader.downloadImage(url);
-      // var path = await ImageDownloader.findPath(imageId!);
-      // await uploadImageToStorage(path!, id.toString());
-    } else {
-      await uploadImageToStorage(imageXfile.path, id.toString());
-    }
+    await posts
+        .add(({
+      "content": post_content,
+      'ctime': now,
+      'creator': currentUser?.uid,
+      'look_type': post_lookType,
+      'weather': post_weatherType,
+      "image_links": []
+      // 'photoUrl': url,
+    }))
+        .then((value) async {
+      print(value.id);
+      docid = value.id;
+      var list = await uploadImageToStorage(imagelist!, docid);
+      posts.doc(docid).update({
+        "image_links": list,
+        "docid": docid,
+      });
+    });
+    // appstate.loadProducts(ddp.sortingway);
   }
 
-  Future<void> uploadImageToStorage(String filePath, String id) async {
-    File file = File(filePath);
+  Future<List<String>> uploadImageToStorage(
+      List<Asset> list, String docid) async {
+    List<String> downloadLinks = [];
+    for (var asset in list) {
+      var pi = await post_Image(asset, docid);
+      downloadLinks.add(pi);
+    }
+    print(downloadLinks.length);
+    return downloadLinks;
+  }
 
+  Future<String> post_Image(Asset imageFile, String docid) async {
+    var downloadURL;
     try {
-      await firebase_storage.FirebaseStorage.instance
-          .ref('product/$id.jpeg')
-          .putFile(file);
-    } on firebase_core.FirebaseException catch (e) {
-      e.code == 'canceled';
-    }
-  }
+      final firebaseStorageRef = FirebaseStorage.instance
+          .ref()
+          .child('product/$docid') //'post'라는 folder를 만들고
+          .child('${DateTime.now().millisecondsSinceEpoch}.png');
 
-  Future<void> uploadProductToStore({
-    required Map<String, Object?> newProduct,
-  }) async {
-    FirebaseFirestore.instance
-        .collection('post')
-        .doc('posts')
-        .update(newProduct);
+      // 파일 업로드
+      final uploadTask = firebaseStorageRef
+          .putData((await imageFile.getByteData()).buffer.asUint8List());
+
+      // 완료까지 기다림
+      await uploadTask.whenComplete(() => null);
+
+      // 업로드 완료 후 url
+      downloadURL = await (await uploadTask).ref.getDownloadURL();
+      print(downloadURL);
+      return downloadURL;
+    } on FirebaseException catch (e) {
+      // e.g, e.code == 'canceled'
+    }
+    return downloadURL;
   }
 }
