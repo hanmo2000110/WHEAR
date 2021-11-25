@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:whear/auth/auth_middleware.dart';
 import 'package:whear/binding/binding.dart';
+import 'package:whear/controller/post_controller.dart';
 import 'package:whear/model/post_model.dart';
 
 class SearchPage extends StatefulWidget {
@@ -15,35 +16,10 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   final searchText = TextEditingController();
+  PostController pc = Get.find();
 
   List<Card> _buildGridCards(BuildContext context) {
     // final firebaseauth = Provider.of<ApplicationState>(context);
-    List<PostModel> posts = [
-      PostModel(
-        post_id: "",
-        createdTime: Timestamp.now(),
-        creator: "",
-        wheather: 100,
-      ),
-      PostModel(
-        post_id: "",
-        createdTime: Timestamp.now(),
-        creator: "",
-        wheather: 100,
-      ),
-      PostModel(
-        post_id: "",
-        createdTime: Timestamp.now(),
-        creator: "",
-        wheather: 100,
-      ),
-      PostModel(
-        post_id: "",
-        createdTime: Timestamp.now(),
-        creator: "",
-        wheather: 100,
-      )
-    ];
 
     // if (products.isEmpty) {
     //   return const <Card>[];
@@ -53,7 +29,7 @@ class _SearchPageState extends State<SearchPage> {
     // final NumberFormat formatter = NumberFormat.simpleCurrency(
     //     locale: Localizations.localeOf(context).toString());
 
-    return posts.map((post) {
+    return pc.posts.map((post) {
       return Card(
         clipBehavior: Clip.antiAlias,
         // TODO: Adjust card heights (103)

@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:whear/auth/auth_middleware.dart';
 import 'package:whear/binding/binding.dart';
 import 'package:whear/controller/auth_controller.dart';
@@ -26,9 +27,10 @@ class _AddPageState extends State<AddPage> {
   BottomNavigationController bc = Get.find();
   String post_content = 'Unknown';
   int post_weatherType = -1;
-  String post_lookType = ' 룩을 선택해주세요';
+  String post_lookType = '데일리';
   XFile? imageXfile;
   Image? postImage;
+  List<Asset> imageList = [];
 
   List<Icon> wicons = [
     const Icon(Icons.wb_sunny),
@@ -52,8 +54,18 @@ class _AddPageState extends State<AddPage> {
       });
     }
 
+    getMultiImage() async {
+      List<Asset> resultList = [];
+      resultList = await MultiImagePicker.pickImages(
+          maxImages: 10, enableCamera: true, selectedAssets: imageList);
+      setState(() {
+        imageList = resultList;
+      });
+    }
+
     return Scaffold(
       appBar: AppBar(
+        shadowColor: Colors.white,
         title: const Text(
           '게시글 작성',
           style: TextStyle(color: Colors.black),
@@ -104,8 +116,8 @@ class _AddPageState extends State<AddPage> {
                       ),
                     ),
               ),
-              onTap: () {
-                getPhoto();
+              onTap: () async {
+                await getPhoto();
               },
               splashColor: Colors.transparent,
             ),
@@ -116,14 +128,18 @@ class _AddPageState extends State<AddPage> {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: PopupMenuButton(
+                      // initialValue: '데일리',
                       child: Container(
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             const Icon(
-                              Icons.add,
+                              Icons.checkroom,
                               size: 18,
                               color: Colors.blue,
+                            ),
+                            const SizedBox(
+                              width: 5,
                             ),
                             Text(
                               post_lookType,
