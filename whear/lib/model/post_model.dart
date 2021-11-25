@@ -8,14 +8,13 @@ import 'package:whear/model/comment_model.dart';
 enum weatherType { SUNNY, WINDY, RAINY, CLOUDY, SNOWY }
 
 class PostModel {
-  int post_id;
+  String post_id;
   String creator;
   Timestamp createdTime;
   int wheather;
   String lookType;
   String? content;
-  int? like;
-  List<String>? liker;
+  List<String> image_links;
   //TODO: 이거 커멘트 타입 정해야함 !!!!!!
   List<CommentModel>? comment;
 
@@ -24,9 +23,8 @@ class PostModel {
     required this.creator,
     required this.createdTime,
     required this.lookType,
-    this.liker,
+    required this.image_links,
     this.content,
-    this.like,
     required this.wheather,
     this.comment,
   });
@@ -35,10 +33,9 @@ class PostModel {
       : post_id = json['post_id'],
         creator = json['creator'],
         createdTime = json['createdtime'],
-        liker = json['liker'],
+        image_links = json['image_links'],
         content = json['content'],
         lookType = json['looktype'],
-        like = json['like'],
         wheather = json['wheather'],
         comment = (json['comment'].map((json) => CommentModel.fromJson(json)))
             .toList();
@@ -47,10 +44,9 @@ class PostModel {
         'post_id': post_id,
         'creator': creator,
         'createdtime': createdTime,
-        'liker': liker,
+        'image_links': image_links,
         'content': content,
         'looktype': lookType,
-        'like': like,
         'wheather': wheather,
         //TODO: 이거 커멘트 타입 정해야함 !!!!!!
         'comment':
