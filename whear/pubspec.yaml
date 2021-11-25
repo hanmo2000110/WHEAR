@@ -33,3 +33,11 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/icons/cloudy.jpg
+    - assets/icons/rainy.jpg
+    - assets/icons/snow.jpg
+    - assets/icons/sunny.jpg
+    - assets/icons/windy.jpg
+    - assets/icons/little_cloud.jpg
