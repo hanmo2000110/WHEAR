@@ -9,6 +9,8 @@ import 'package:whear/model/weather_model.dart';
 
 class WeatherController extends GetxController {
   RxDouble degre = 0.0.obs;
+  RxDouble max = 0.0.obs;
+  RxDouble min = 0.0.obs;
   @override
   onInit() async {
     await getWeather();
@@ -58,6 +60,9 @@ class WeatherController extends GetxController {
       print('data = $data');
       print('${dataJson['main']['temp']}');
       degre.value = await dataJson['main']['temp'];
+      max.value = await dataJson['main']['temp_max'];
+      min.value = await dataJson['main']['temp_min'];
+      print(degre.value);
     } else {
       print('response status code = ${response.statusCode}');
     }
