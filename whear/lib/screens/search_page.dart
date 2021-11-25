@@ -20,32 +20,36 @@ class _SearchPageState extends State<SearchPage> {
     // final firebaseauth = Provider.of<ApplicationState>(context);
     List<PostModel> posts = [
       PostModel(
-        post_id: 0,
+        post_id: "",
         createdTime: Timestamp.now(),
         creator: "",
         wheather: 100,
         lookType: "",
+        image_links: [],
       ),
       PostModel(
-        post_id: 0,
+        post_id: "",
         createdTime: Timestamp.now(),
         creator: "",
         wheather: 100,
         lookType: "",
+        image_links: [],
       ),
       PostModel(
-        post_id: 0,
+        post_id: "",
         createdTime: Timestamp.now(),
         creator: "",
         wheather: 100,
         lookType: "",
+        image_links: [],
       ),
       PostModel(
-        post_id: 0,
+        post_id: "",
         createdTime: Timestamp.now(),
         creator: "",
         wheather: 100,
         lookType: "",
+        image_links: [],
       )
     ];
 

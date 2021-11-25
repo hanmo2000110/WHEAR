@@ -266,9 +266,9 @@ class _AddPageState extends State<AddPage> {
     await posts
         .add(({
       "content": post_content,
-      'ctime': now,
+      'createdTime': now,
       'creator': currentUser?.uid,
-      'look_type': post_lookType,
+      'lookType': post_lookType,
       'weather': post_weatherType,
       "image_links": []
       // 'photoUrl': url,
@@ -279,8 +279,9 @@ class _AddPageState extends State<AddPage> {
       var list = await uploadImageToStorage(imagelist!, docid);
       posts.doc(docid).update({
         "image_links": list,
-        "docid": docid,
+        "post_id": docid,
       });
+      await pc.getMyPosts();
     });
     // appstate.loadProducts(ddp.sortingway);
   }
