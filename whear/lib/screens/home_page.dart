@@ -3,10 +3,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:whear/controller/user_controller.dart';
 
 import 'package:whear/controller/weather_controller.dart';
 import 'package:whear/auth/auth_middleware.dart';
 import 'package:whear/binding/binding.dart';
+import 'package:whear/model/user_model.dart';
 
 import '/model/post_model.dart';
 import '/controller/post_controller.dart';
@@ -29,8 +31,10 @@ class _HomePageState extends State<HomePage> {
 
   List<Card> _buildListViews(BuildContext context) {
     // List<PostModel> products = [];
-    List products = ['1', 'sm_jeon1', '1', '공항패션', '어쩌구 저쩌구', '23', '댓글'];
-
+    PostController pc = Get.put(PostController());
+    List<PostModel> products = pc.searchposts;
+    UserController uc = Get.put(UserController());
+    UserModel usermodel = uc.user;
     return products.map((product) {
       return Card(
         elevation: 0,
@@ -49,12 +53,13 @@ class _HomePageState extends State<HomePage> {
                         CircleAvatar(
                           radius: 20.0,
                           backgroundColor: Colors.lightBlueAccent,
-                          backgroundImage: NetworkImage(FirebaseAuth.instance.currentUser!.photoURL!),
+                          backgroundImage: NetworkImage(
+                              FirebaseAuth.instance.currentUser!.photoURL!),
                         ),
                         SizedBox(
                           width: 25,
                         ),
-                        Text('sm_jeon1'),
+                        Text('${usermodel.name}'),
                       ],
                     ),
                   ),
@@ -62,14 +67,17 @@ class _HomePageState extends State<HomePage> {
                     child: Row(
                       children: [
                         Container(
-                          padding: EdgeInsets.fromLTRB(5,3,5,3),
+                          padding: EdgeInsets.fromLTRB(5, 3, 5, 3),
                           decoration: BoxDecoration(
                             border: Border.all(
                               width: 1,
                               color: Colors.black,
                             ),
                           ),
-                          child: Text('공항패션', style: TextStyle(fontSize:12),),
+                          child: Text(
+                            '공항패션',
+                            style: TextStyle(fontSize: 12),
+                          ),
                         ),
                         SizedBox(
                           width: 7,
@@ -92,8 +100,15 @@ class _HomePageState extends State<HomePage> {
               width: Get.width,
               height: 220,
               color: Colors.black,
+              child: Image.network(
+                "${product.image_links[0]}",
+                fit: BoxFit.cover,
+                alignment: Alignment.topCenter,
+              ),
             ),
-            SizedBox(height: 5,),
+            SizedBox(
+              height: 5,
+            ),
             Container(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -124,15 +139,28 @@ class _HomePageState extends State<HomePage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
-                      child: Text('어쩌고 저쩌고', style: TextStyle(fontSize: 12),),
+                      child: Text(
+                        '${product.content}',
+                        style: TextStyle(fontSize: 12),
+                      ),
                     ),
-                    SizedBox(height: 5,),
-                    Text('좋아요 17개', style: TextStyle(fontSize: 10),),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      '좋아요 17개',
+                      style: TextStyle(fontSize: 10),
+                    ),
                     InkWell(
-                      child: Text('댓글 n개 모두보기', style: TextStyle(fontSize: 10),),
+                      child: Text(
+                        '댓글 n개 모두보기',
+                        style: TextStyle(fontSize: 10),
+                      ),
                       onTap: () {},
                     ),
-                    SizedBox(height: 5,),
+                    SizedBox(
+                      height: 5,
+                    ),
                   ],
                 ),
               ),
@@ -151,110 +179,109 @@ class _HomePageState extends State<HomePage> {
         title: Text('WHEAR'),
       ),
       body: RefreshIndicator(
-        onRefresh: _onRefresh,
-        key: refreshKey,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                height: 20,
-              ),
-              Center(
-                child: Material(
-                  elevation: 5,
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  child: Container(
-                    // padding: EdgeInsets.all(2),
-                    width: Get.width - 80,
-                    height: 160,
-                    // color: Colors.lightBlue[100],
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          padding: EdgeInsets.only(
-                            left: 20,
-                            top: 10,
-                          ),
-                          child: Text(
-                            "현재 날씨",
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                        Obx(() {
-                          return Container(
+          onRefresh: _onRefresh,
+          key: refreshKey,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 20,
+                ),
+                Center(
+                  child: Material(
+                    elevation: 5,
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    child: Container(
+                      // padding: EdgeInsets.all(2),
+                      width: Get.width - 80,
+                      height: 160,
+                      // color: Colors.lightBlue[100],
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
                             padding: EdgeInsets.only(
                               left: 20,
-                              top: 12,
+                              top: 10,
                             ),
-                            child: Row(
-                              children: [
-                                Text(
-                                  "${wc.degre.ceil()}˚",
-                                  style: TextStyle(
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: Get.width / 2 - 60,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                    top: 10,
-                                  ),
-                                  child: Text(
-                                    "최고: ${wc.max.ceil()}˚ 최저: ${wc.min.ceil()}˚",
+                            child: Text(
+                              "현재 날씨",
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          Obx(() {
+                            return Container(
+                              padding: EdgeInsets.only(
+                                left: 20,
+                                top: 12,
+                              ),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    "${wc.degre.ceil()}˚",
                                     style: TextStyle(
-                                      fontSize: 13,
-                                      // fontWeight: FontWeight.bold,
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          );
-                        }),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                          width: Get.width - 120,
-                          padding: EdgeInsets.only(
-                            left: 20,
+                                  SizedBox(
+                                    width: Get.width / 2 - 60,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                      top: 10,
+                                    ),
+                                    child: Text(
+                                      "최고: ${wc.max.ceil()}˚ 최저: ${wc.min.ceil()}˚",
+                                      style: TextStyle(
+                                        fontSize: 13,
+                                        // fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }),
+                          SizedBox(
+                            height: 20,
                           ),
-                          child: Text(
-                            "오늘은 미세먼지 농도가 나쁨인 날이에요 ! 마스크를 꼭 착용해주세요 :>",
-                            style: TextStyle(
-                              fontSize: 14,
-                              // fontWeight: FontWeight.bold,
+                          Container(
+                            width: Get.width - 120,
+                            padding: EdgeInsets.only(
+                              left: 20,
+                            ),
+                            child: Text(
+                              "오늘은 미세먼지 농도가 나쁨인 날이에요 ! 마스크를 꼭 착용해주세요 :>",
+                              style: TextStyle(
+                                fontSize: 14,
+                                // fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.lightBlue[100],
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                        ],
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.lightBlue[100],
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                      ),
                     ),
                   ),
                 ),
-              ),
-              GridView.count(
-                physics: ScrollPhysics(),
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                crossAxisCount: 1,
-                padding: const EdgeInsets.only(top: 10, bottom: 10),
-                children: _buildListViews(context),
-              )
-            ],
-          ),
-        )
-      ),
+                GridView.count(
+                  physics: ScrollPhysics(),
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  crossAxisCount: 1,
+                  padding: const EdgeInsets.only(top: 10, bottom: 10),
+                  children: _buildListViews(context),
+                )
+              ],
+            ),
+          )),
     );
   }
 }
