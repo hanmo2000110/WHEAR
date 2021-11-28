@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:whear/auth/auth_middleware.dart';
 import 'package:whear/binding/binding.dart';
+import 'package:whear/controller/post_controller.dart';
 import 'package:whear/model/post_model.dart';
 
 class SearchPage extends StatefulWidget {
@@ -15,43 +16,19 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   final searchText = TextEditingController();
+  var refreshKey = GlobalKey<RefreshIndicatorState>();
+  PostController pc = Get.put(PostController());
+
+  Future<void> _onRefresh() async {
+    await pc.getPosts();
+    setState(() {});
+  }
 
   List<Card> _buildGridCards(BuildContext context) {
     // final firebaseauth = Provider.of<ApplicationState>(context);
-    List<PostModel> posts = [
-      PostModel(
-        post_id: "",
-        createdTime: Timestamp.now(),
-        creator: "",
-        wheather: 100,
-        lookType: "",
-        image_links: [],
-      ),
-      PostModel(
-        post_id: "",
-        createdTime: Timestamp.now(),
-        creator: "",
-        wheather: 100,
-        lookType: "",
-        image_links: [],
-      ),
-      PostModel(
-        post_id: "",
-        createdTime: Timestamp.now(),
-        creator: "",
-        wheather: 100,
-        lookType: "",
-        image_links: [],
-      ),
-      PostModel(
-        post_id: "",
-        createdTime: Timestamp.now(),
-        creator: "",
-        wheather: 100,
-        lookType: "",
-        image_links: [],
-      )
-    ];
+    PostController pc = Get.put(PostController());
+    List<PostModel> products = pc.searchposts;
+    // print(products[0].image_links[0]);
 
     // if (products.isEmpty) {
     //   return const <Card>[];
@@ -61,7 +38,7 @@ class _SearchPageState extends State<SearchPage> {
     // final NumberFormat formatter = NumberFormat.simpleCurrency(
     //     locale: Localizations.localeOf(context).toString());
 
-    return posts.map((post) {
+    return products.map((post) {
       return Card(
         clipBehavior: Clip.antiAlias,
         // TODO: Adjust card heights (103)
@@ -70,7 +47,7 @@ class _SearchPageState extends State<SearchPage> {
           fit: StackFit.expand,
           children: [
             Image.network(
-              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIr7vw9HmTs3KqMz8kwUThJaRLsEtD4co30w&usqp=CAU",
+              "${post.image_links[0]}",
               fit: BoxFit.cover,
               alignment: Alignment.topCenter,
             ),
@@ -141,17 +118,21 @@ class _SearchPageState extends State<SearchPage> {
           ),
         ),
       ),
-      body: Column(
-        children: [
-          GridView.count(
-            crossAxisCount: 3,
-            padding: const EdgeInsets.all(0.0),
-            childAspectRatio: 1,
-            children: _buildGridCards(context),
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-          ),
-        ],
+      body: RefreshIndicator(
+        onRefresh: _onRefresh,
+        key: refreshKey,
+        child: ListView(
+          children: [
+            GridView.count(
+              crossAxisCount: 3,
+              padding: const EdgeInsets.all(0.0),
+              childAspectRatio: 1,
+              children: _buildGridCards(context),
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+            ),
+          ],
+        ),
       ),
     );
   }

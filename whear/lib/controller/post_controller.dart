@@ -15,26 +15,30 @@ class PostController extends GetxController {
   @override
   onInit() async {
     await getMyPosts();
+    await getPosts();
     super.onInit();
   }
 
   List<PostModel> _myPosts = [];
   List<PostModel> get myposts => _myPosts;
+  List<PostModel> _searchPosts = [];
+  List<PostModel> get searchposts => _searchPosts;
 
   Future getMyPosts() async {
     UserController uc = Get.find<UserController>();
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     _myPosts.clear();
     String uid = FirebaseAuth.instance.currentUser!.uid;
-    print(uid);
+    // print(uid);
     var result = await firestore
         .collection('posts')
         .where("creator", isEqualTo: uid)
+        .orderBy('createdTime', descending: true)
         .get();
-    print("now testing postcontroller");
+    // print("now testing postcontroller");
 
     result.docs.forEach((element) {
-      print(element.data()['creator']);
+      // print(element.data()['creator']);
       _myPosts.add(PostModel(
         createdTime: element.data()['createdTime'],
         creator: element.data()['creator'],
@@ -46,42 +50,34 @@ class PostController extends GetxController {
       ));
       // print(element.data()['image_links'].cast<String>()[0]);
     });
-    print(_myPosts.length);
+    // print(_myPosts.length);
+  }
+
+  Future getPosts() async {
+    UserController uc = Get.find<UserController>();
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    _searchPosts.clear();
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+    print(uid);
+    var result = await firestore
+        .collection('posts')
+        .orderBy('createdTime', descending: true)
+        .get();
+    print("now testing getPosts");
+
+    result.docs.forEach((element) {
+      // print(element.data()['creator']);
+      _searchPosts.add(PostModel(
+        createdTime: element.data()['createdTime'],
+        creator: element.data()['creator'],
+        post_id: element.data()['post_id'],
+        lookType: element.data()['lookType'],
+        wheather: element.data()['weather'],
+        content: element.data()['content'],
+        image_links: element.data()['image_links'].cast<String>(),
+      ));
+      // print(element.data()['image_links'].cast<String>()[0]);
+    });
+    print(_searchPosts.length);
   }
 }
-
-// PostModel(
-//             post_id: element.doc.data()['docid'],
-//             creator: element.data()["creator"],
-//             createdTime: element.data()["ctime"] as Timestamp,
-//             wheather: element.data()["wheather"],
-//             lookType: element.data()['looktype'],
-//             image_links: element.data()['image_links'],
-//             content: element.data()['content'],
-//             //TODO: 이거 커멘트 타입 정해야함 !!!!!!
-//           )
-
-// _postListener =
-//     firestore.collection("posts").snapshots().listen((change) {
-//       querySnapshot.documentChanges.forEach((change){
-
-//       }
-//     })
-//     snapshots().listen((event) {
-//   final doc = event.data();
-//   _allPosts = (doc as LinkedHashMap).keys.map((post_id) {
-//     return PostModel(
-//       post_id: post_id,
-//       creator: doc![post_id]["creator"],
-//       createdTime: doc[post_id]["createdTime"] as Timestamp,
-//       wheather: doc[post_id]["wheather"],
-//       lookType: doc[post_id]['looktype'],
-//       liker: doc[post_id]['liker'],
-//       content: doc[post_id]['content'],
-//       like: doc[post_id]['like'],
-//       //TODO: 이거 커멘트 타입 정해야함 !!!!!!
-//       comment: doc[post_id]['comment'],
-//     );
-//   }).toList();
-// });
-// await completer.future;
