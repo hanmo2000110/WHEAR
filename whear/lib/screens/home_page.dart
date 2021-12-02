@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,6 +10,7 @@ import 'package:whear/controller/weather_controller.dart';
 import 'package:whear/auth/auth_middleware.dart';
 import 'package:whear/binding/binding.dart';
 import 'package:whear/model/user_model.dart';
+import 'detail_page.dart';
 
 import '/model/post_model.dart';
 import '/controller/post_controller.dart';
@@ -29,143 +31,150 @@ class _HomePageState extends State<HomePage> {
     setState(() {});
   }
 
-  List<Card> _buildListViews(BuildContext context) {
+  List<GestureDetector> _buildListViews(BuildContext context) {
     // List<PostModel> products = [];
     PostController pc = Get.put(PostController());
     List<PostModel> products = pc.searchposts;
     UserController uc = Get.put(UserController());
     UserModel usermodel = uc.user;
     return products.map((product) {
-      return Card(
-        elevation: 0,
-        clipBehavior: Clip.antiAlias,
-        child: Column(
-          children: [
-            Container(
-              width: Get.width - 40,
-              height: 60,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    child: Row(
-                      children: [
-                        CircleAvatar(
-                          radius: 20.0,
-                          backgroundColor: Colors.lightBlueAccent,
-                          backgroundImage: NetworkImage(
-                              FirebaseAuth.instance.currentUser!.photoURL!),
-                        ),
-                        SizedBox(
-                          width: 25,
-                        ),
-                        Text('${usermodel.name}'),
-                      ],
+      String creator = product.creator;
+
+      return GestureDetector(
+        onTap: () {
+          Get.toNamed("detail", arguments: product);
+        },
+        child: Card(
+          elevation: 0,
+          clipBehavior: Clip.antiAlias,
+          child: Column(
+            children: [
+              Container(
+                width: Get.width - 40,
+                height: 60,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            radius: 20.0,
+                            backgroundColor: Colors.lightBlueAccent,
+                            backgroundImage: NetworkImage(
+                                FirebaseAuth.instance.currentUser!.photoURL!),
+                          ),
+                          SizedBox(
+                            width: 25,
+                          ),
+                          Text('${usermodel.name}'),
+                        ],
+                      ),
                     ),
-                  ),
-                  Container(
-                    child: Row(
-                      children: [
-                        Container(
-                          padding: EdgeInsets.fromLTRB(5, 3, 5, 3),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              width: 1,
-                              color: Colors.black,
+                    Container(
+                      child: Row(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.fromLTRB(5, 3, 5, 3),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                width: 1,
+                                color: Colors.black,
+                              ),
+                            ),
+                            child: Text(
+                              product.lookType,
+                              style: TextStyle(fontSize: 12),
                             ),
                           ),
-                          child: Text(
-                            '공항패션',
-                            style: TextStyle(fontSize: 12),
+                          SizedBox(
+                            width: 7,
                           ),
-                        ),
-                        SizedBox(
-                          width: 7,
-                        ),
-                        Container(
-                          color: Colors.white,
-                          child: Image.asset(
-                            'assets/icons/sunny.jpg',
-                            height: 30,
-                            width: 30,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              width: Get.width,
-              height: 220,
-              color: Colors.black,
-              child: Image.network(
-                "${product.image_links[0]}",
-                fit: BoxFit.cover,
-                alignment: Alignment.topCenter,
-              ),
-            ),
-            SizedBox(
-              height: 5,
-            ),
-            Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      IconButton(
-                        icon: Icon(Icons.wb_cloudy_outlined),
-                        onPressed: () {},
+                          Container(
+                            color: Colors.white,
+                            child: Image.asset(
+                              'assets/icons/0.jpg',
+                              height: 30,
+                              width: 30,
+                            ),
+                          )
+                        ],
                       ),
-                      IconButton(
-                        icon: Icon(Icons.weekend_outlined),
-                        onPressed: () {},
-                      )
-                    ],
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.work_outline_outlined),
-                    onPressed: () {},
-                  )
-                ],
-              ),
-            ),
-            Expanded(
-              child: Container(
-                width: Get.width - 40,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        '${product.content}',
-                        style: TextStyle(fontSize: 12),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      '좋아요 17개',
-                      style: TextStyle(fontSize: 10),
-                    ),
-                    InkWell(
-                      child: Text(
-                        '댓글 n개 모두보기',
-                        style: TextStyle(fontSize: 10),
-                      ),
-                      onTap: () {},
-                    ),
-                    SizedBox(
-                      height: 5,
                     ),
                   ],
                 ),
               ),
-            )
-          ],
+              Container(
+                width: Get.width,
+                height: 220,
+                color: Colors.black,
+                child: Image.network(
+                  "${product.image_links[0]}",
+                  fit: BoxFit.cover,
+                  alignment: Alignment.topCenter,
+                ),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.wb_cloudy_outlined),
+                          onPressed: () {},
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.weekend_outlined),
+                          onPressed: () {},
+                        )
+                      ],
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.work_outline_outlined),
+                      onPressed: () {},
+                    )
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Container(
+                  width: Get.width - 40,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          '${product.content}',
+                          style: TextStyle(fontSize: 12),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        '좋아요 17개',
+                        style: TextStyle(fontSize: 10),
+                      ),
+                      InkWell(
+                        child: Text(
+                          '댓글 n개 모두보기',
+                          style: TextStyle(fontSize: 10),
+                        ),
+                        onTap: () {},
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       );
     }).toList();
