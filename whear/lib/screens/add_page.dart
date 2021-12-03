@@ -73,6 +73,8 @@ class _AddPageState extends State<AddPage> {
           style: TextStyle(color: Colors.black),
         ),
         backgroundColor: Colors.white,
+        centerTitle: true,
+        elevation: 0,
         leading: TextButton(
           child: const Text(
             '취소',

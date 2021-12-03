@@ -34,72 +34,68 @@ class _HomePageState extends State<HomePage> {
   List<GestureDetector> _buildListViews(BuildContext context) {
     // List<PostModel> products = [];
     PostController pc = Get.put(PostController());
-    List<PostModel> products = pc.searchposts;
+    List<PostModel> posts = pc.searchposts;
     UserController uc = Get.put(UserController());
     UserModel usermodel = uc.user;
-    return products.map((product) {
-      String creator = product.creator;
+    return posts.map((post) {
+      String creator = post.creator;
 
       return GestureDetector(
         onTap: () {
-          Get.toNamed("detail", arguments: product);
+          Get.toNamed("detail", arguments: post);
         },
         child: Card(
           elevation: 0,
           clipBehavior: Clip.antiAlias,
           child: Column(
             children: [
-              Container(
+              SizedBox(
                 width: Get.width - 40,
                 height: 60,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
-                      child: Row(
-                        children: [
-                          CircleAvatar(
-                            radius: 20.0,
-                            backgroundColor: Colors.lightBlueAccent,
-                            backgroundImage: NetworkImage(
-                                FirebaseAuth.instance.currentUser!.photoURL!),
-                          ),
-                          SizedBox(
-                            width: 25,
-                          ),
-                          Text('${usermodel.name}'),
-                        ],
-                      ),
+                    Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 20.0,
+                          backgroundColor: Colors.lightBlueAccent,
+                          backgroundImage: NetworkImage(
+                              FirebaseAuth.instance.currentUser!.photoURL!),
+                        ),
+                        const SizedBox(
+                          width: 25,
+                        ),
+                        Text('${usermodel.name}'),
+                      ],
                     ),
-                    Container(
-                      child: Row(
-                        children: [
-                          Container(
-                            padding: EdgeInsets.fromLTRB(5, 3, 5, 3),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                width: 1,
-                                color: Colors.black,
-                              ),
-                            ),
-                            child: Text(
-                              product.lookType,
-                              style: TextStyle(fontSize: 12),
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.fromLTRB(5, 3, 5, 3),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              width: 1,
+                              color: Colors.black,
                             ),
                           ),
-                          SizedBox(
-                            width: 7,
+                          child: Text(
+                            post.lookType,
+                            style: const TextStyle(fontSize: 12),
                           ),
-                          Container(
-                            color: Colors.white,
-                            child: Image.asset(
-                              'assets/icons/0.jpg',
-                              height: 30,
-                              width: 30,
-                            ),
-                          )
-                        ],
-                      ),
+                        ),
+                        const SizedBox(
+                          width: 7,
+                        ),
+                        Container(
+                          color: Colors.white,
+                          child: Image.asset(
+                            'assets/icons/${post.wheather}.jpg',
+                            height: 30,
+                            width: 30,
+                          ),
+                        )
+                      ],
                     ),
                   ],
                 ),
@@ -109,7 +105,7 @@ class _HomePageState extends State<HomePage> {
                 height: 220,
                 color: Colors.black,
                 child: Image.network(
-                  "${product.image_links[0]}",
+                  post.image_links[0],
                   fit: BoxFit.cover,
                   alignment: Alignment.topCenter,
                 ),
@@ -148,7 +144,7 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       Expanded(
                         child: Text(
-                          '${product.content}',
+                          '${post.content}',
                           style: TextStyle(fontSize: 12),
                         ),
                       ),
@@ -185,7 +181,14 @@ class _HomePageState extends State<HomePage> {
     WeatherController wc = Get.put(WeatherController());
     return Scaffold(
       appBar: AppBar(
-        title: Text('WHEAR'),
+        backgroundColor: Colors.white,
+        centerTitle: true,
+        elevation: 0,
+        title: const Text(
+          'WHEAR',
+          style: TextStyle(color: Colors.black),
+        ),
+        shadowColor: Colors.white,
       ),
       body: RefreshIndicator(
           onRefresh: _onRefresh,
@@ -193,7 +196,7 @@ class _HomePageState extends State<HomePage> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Center(
