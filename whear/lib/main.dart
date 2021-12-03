@@ -25,6 +25,7 @@ class Whear extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       // darkTheme: ThemeData.dark(),
+      color: Colors.white,
       debugShowCheckedModeBanner: false,
       initialBinding: Binding(),
       title: 'MoappFinal',
