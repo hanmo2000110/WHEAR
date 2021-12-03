@@ -10,6 +10,8 @@ enum weatherType { SUNNY, WINDY, RAINY, CLOUDY, SNOWY }
 class PostModel {
   String post_id;
   String creator;
+  String? creatorName;
+  String? creatorProfilePhotoURL;
   Timestamp createdTime;
   int wheather;
   String lookType;
@@ -21,6 +23,7 @@ class PostModel {
   PostModel({
     required this.post_id,
     required this.creator,
+    this.creatorName,
     required this.createdTime,
     required this.lookType,
     required this.image_links,

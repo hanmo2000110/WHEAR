@@ -66,7 +66,7 @@ class _HomePageState extends State<HomePage> {
                         const SizedBox(
                           width: 25,
                         ),
-                        Text('${usermodel.name}'),
+                        Text('${post.creatorName}'),
                       ],
                     ),
                     Row(
