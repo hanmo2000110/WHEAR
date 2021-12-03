@@ -24,6 +24,7 @@ class PostController extends GetxController {
   List<PostModel> _searchPosts = [];
   List<PostModel> get searchposts => _searchPosts;
 
+
   Future getMyPosts() async {
     UserController uc = Get.find<UserController>();
     FirebaseFirestore firestore = FirebaseFirestore.instance;
