@@ -1,0 +1,1 @@
+SELECT CustomerName,CustomerId, OrderId, Country FROM customers where Country == "UK" OR Country == "Sweden" ORDER BY CustomerName;

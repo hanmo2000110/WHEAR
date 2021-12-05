@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:whear/auth/auth_middleware.dart';
 import 'package:whear/binding/binding.dart';
 
-
 class NoticePage extends StatefulWidget {
   const NoticePage({Key? key}) : super(key: key);
 

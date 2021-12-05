@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import 'package:whear/controller/predict_controller.dart';
 import 'package:whear/controller/user_controller.dart';
 
 import 'package:whear/controller/weather_controller.dart';
@@ -23,6 +27,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   var refreshKey = GlobalKey<RefreshIndicatorState>();
   WeatherController wc = Get.put(WeatherController());
+  PredictController predict = Get.put(PredictController());
 
   Future<void> _onRefresh() async {
     await wc.getWeather();
@@ -35,6 +40,8 @@ class _HomePageState extends State<HomePage> {
     List<PostModel> products = pc.searchposts;
     UserController uc = Get.put(UserController());
     UserModel usermodel = uc.user;
+    print("length test");
+    print(products.length);
     return products.map((product) {
       return Card(
         elevation: 0,
@@ -171,12 +178,28 @@ class _HomePageState extends State<HomePage> {
     }).toList();
   }
 
+  PredictController pre = Get.put(PredictController());
   @override
   Widget build(BuildContext context) {
     WeatherController wc = Get.put(WeatherController());
+    // PostController pc = Get.put(PostController());
+    // pc.getPosts();
+    // setState(() {});
+
     return Scaffold(
       appBar: AppBar(
         title: Text('WHEAR'),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 14.0),
+            child: InkWell(
+              child: Icon(Icons.add),
+              onTap: () async {
+                await pre.pickImage();
+              },
+            ),
+          ),
+        ],
       ),
       body: RefreshIndicator(
           onRefresh: _onRefresh,
