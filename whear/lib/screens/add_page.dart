@@ -36,10 +36,12 @@ class _AddPageState extends State<AddPage> {
   List<Asset> imageList = [];
 
   List<Image> wimages = [
-    Image.asset(
-                            'assets/icons/${post.wheather}.jpg',
-                            height: 30,
-                            width: 30,
+    for (int i = 0; i < 5; i++)
+      Image.asset(
+        'assets/icons/$i.jpg',
+        height: 30,
+        width: 30,
+      ),
   ];
 
   List<String> lookTypes = ['데일리', '아메카지', '락시크', '포멀'];
@@ -203,27 +205,33 @@ class _AddPageState extends State<AddPage> {
                     Divider(
                       color: Colors.grey.shade800,
                     ),
-                    Row(
-                      children: [
-                        for (int i = 0; i < wicons.length; i++)
-                          // IconButton(onPressed: () {}, icon: wi),
-                          OutlinedButton(
-                              onPressed: () {
-                                setState(() {
-                                  post_weatherType = i;
-                                });
-                              },
-                              child: wicons[i],
-                              style: OutlinedButton.styleFrom(
-                                shape: const CircleBorder(),
-                                side: BorderSide(
-                                  width: 1,
-                                  color: i != post_weatherType
-                                      ? Colors.transparent
-                                      : Colors.blue,
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          for (int i = 0; i < wimages.length; i++)
+                            // IconButton(onPressed: () {}, icon: wi),
+                            OutlinedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    post_weatherType = i;
+                                  });
+                                },
+                                child: CircleAvatar(
+                                  backgroundColor: Colors.white,
+                                  child: wimages[i],
                                 ),
-                              )),
-                      ],
+                                style: OutlinedButton.styleFrom(
+                                  shape: const CircleBorder(),
+                                  side: BorderSide(
+                                    width: 1,
+                                    color: i != post_weatherType
+                                        ? Colors.transparent
+                                        : Colors.blue,
+                                  ),
+                                )),
+                        ],
+                      ),
                     ),
                     Divider(
                       color: Colors.grey.shade800,
