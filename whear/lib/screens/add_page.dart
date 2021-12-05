@@ -14,6 +14,7 @@ import 'package:whear/binding/binding.dart';
 import 'package:whear/controller/auth_controller.dart';
 import 'package:whear/controller/bottom_navigation_controller.dart';
 import 'package:whear/controller/post_controller.dart';
+import 'package:whear/controller/user_controller.dart';
 import 'package:whear/model/post_model.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firebase_core/firebase_core.dart' as firebase_core;
@@ -34,12 +35,11 @@ class _AddPageState extends State<AddPage> {
   Image? postImage;
   List<Asset> imageList = [];
 
-  List<Icon> wicons = [
-    const Icon(Icons.wb_sunny),
-    const Icon(Icons.wb_twighlight),
-    const Icon(Icons.wb_cloudy_outlined),
-    const Icon(Icons.wb_cloudy),
-    const Icon(Icons.snowmobile),
+  List<Image> wimages = [
+    Image.asset(
+                            'assets/icons/${post.wheather}.jpg',
+                            height: 30,
+                            width: 30,
   ];
 
   List<String> lookTypes = ['데일리', '아메카지', '락시크', '포멀'];
@@ -261,7 +261,7 @@ class _AddPageState extends State<AddPage> {
     int id = 0;
     PostController pc = Get.put(PostController());
     AuthController ac = Get.find<AuthController>();
-    User? currentUser = ac.user;
+    UserController uc = Get.find<UserController>();
     var docid;
     final now = FieldValue.serverTimestamp();
 
@@ -269,7 +269,8 @@ class _AddPageState extends State<AddPage> {
         .add(({
       "content": post_content,
       'createdTime': now,
-      'creator': currentUser?.uid,
+      'creator': uc.user.uid,
+      // 'creatorProfilePhotoURL': uc.user.profile_image_url,
       'lookType': post_lookType,
       'weather': post_weatherType,
       "image_links": []

@@ -32,6 +32,8 @@ class PostModel {
     this.comment,
   });
 
+  set setCreatorProfilePhotoURL(String url) => creatorProfilePhotoURL = url;
+
   PostModel.fromJson(Map<String, dynamic> json)
       : post_id = json['post_id'],
         creator = json['creator'],

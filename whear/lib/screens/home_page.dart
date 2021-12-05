@@ -60,8 +60,8 @@ class _HomePageState extends State<HomePage> {
                         CircleAvatar(
                           radius: 20.0,
                           backgroundColor: Colors.lightBlueAccent,
-                          backgroundImage: NetworkImage(
-                              FirebaseAuth.instance.currentUser!.photoURL!),
+                          backgroundImage:
+                              NetworkImage(post.creatorProfilePhotoURL!),
                         ),
                         const SizedBox(
                           width: 25,
