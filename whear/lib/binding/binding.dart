@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:whear/controller/auth_controller.dart';
 import 'package:whear/controller/post_controller.dart';
+import 'package:whear/controller/predict_controller.dart';
 import 'package:whear/controller/user_controller.dart';
 import 'package:whear/controller/weather_controller.dart';
 
@@ -11,5 +12,6 @@ class Binding extends Bindings {
     Get.put<AuthController>(AuthController(), permanent: true);
     Get.put<PostController>(PostController(), permanent: true);
     Get.put<WeatherController>(WeatherController(), permanent: true);
+    Get.put<PredictController>(PredictController(), permanent: true);
   }
 }

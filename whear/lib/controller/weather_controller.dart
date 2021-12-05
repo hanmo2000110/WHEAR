@@ -59,7 +59,7 @@ class WeatherController extends GetxController {
 
       print('data = $data');
       print('${dataJson['main']['temp']}');
-      degre.value = await dataJson['main']['temp'];
+      degre.value = await dataJson['main']['temp'] * 1.0;
       max.value = await dataJson['main']['temp_max'] * 1.0;
       min.value = await dataJson['main']['temp_min'] * 1.0;
       print(degre.value);
