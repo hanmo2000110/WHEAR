@@ -11,6 +11,7 @@ import 'screens/notice_page.dart';
 import 'screens/profile_page.dart';
 import 'screens/search_page.dart';
 import 'screens/navigation_page.dart';
+import 'screens/detail_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,6 +28,7 @@ class Whear extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       // darkTheme: ThemeData.dark(),
+      color: Colors.white,
       debugShowCheckedModeBanner: false,
       initialBinding: Binding(),
       title: 'MoappFinal',
@@ -61,6 +63,11 @@ class Whear extends StatelessWidget {
             name: "/search",
             page: () => SearchPage(),
             transition: Transition.noTransition),
+        GetPage(
+          name: "/detail",
+          page: () => DetailPage(),
+          transition: Transition.noTransition,
+        )
       ],
     );
   }

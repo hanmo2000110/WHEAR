@@ -1,5 +1,6 @@
-import 'dart:convert';
 
+import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,6 +14,7 @@ import 'package:whear/controller/weather_controller.dart';
 import 'package:whear/auth/auth_middleware.dart';
 import 'package:whear/binding/binding.dart';
 import 'package:whear/model/user_model.dart';
+import 'detail_page.dart';
 
 import '/model/post_model.dart';
 import '/controller/post_controller.dart';
@@ -34,28 +36,33 @@ class _HomePageState extends State<HomePage> {
     setState(() {});
   }
 
-  List<Card> _buildListViews(BuildContext context) {
+  List<GestureDetector> _buildListViews(BuildContext context) {
     // List<PostModel> products = [];
     PostController pc = Get.put(PostController());
-    List<PostModel> products = pc.searchposts;
+    List<PostModel> posts = pc.searchposts;
     UserController uc = Get.put(UserController());
     UserModel usermodel = uc.user;
-    print("length test");
-    print(products.length);
-    return products.map((product) {
-      return Card(
-        elevation: 0,
-        clipBehavior: Clip.antiAlias,
-        child: Column(
-          children: [
-            Container(
-              width: Get.width - 40,
-              height: 60,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    child: Row(
+
+    return posts.map((post) {
+      String creator = post.creator;
+
+      return GestureDetector(
+        onTap: () {
+          Get.toNamed("detail", arguments: post);
+        },
+        child: Card(
+          elevation: 0,
+          clipBehavior: Clip.antiAlias,
+          child: Column(
+            children: [
+              SizedBox(
+                width: Get.width - 40,
+                height: 60,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+
                       children: [
                         CircleAvatar(
                           radius: 20.0,
@@ -63,18 +70,16 @@ class _HomePageState extends State<HomePage> {
                           backgroundImage: NetworkImage(
                               FirebaseAuth.instance.currentUser!.photoURL!),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 25,
                         ),
                         Text('${usermodel.name}'),
                       ],
                     ),
-                  ),
-                  Container(
-                    child: Row(
+                    Row(
                       children: [
                         Container(
-                          padding: EdgeInsets.fromLTRB(5, 3, 5, 3),
+                          padding: const EdgeInsets.fromLTRB(5, 3, 5, 3),
                           decoration: BoxDecoration(
                             border: Border.all(
                               width: 1,
@@ -82,97 +87,97 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                           child: Text(
-                            '공항패션',
-                            style: TextStyle(fontSize: 12),
+                            post.lookType,
+                            style: const TextStyle(fontSize: 12),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 7,
                         ),
                         Container(
                           color: Colors.white,
                           child: Image.asset(
-                            'assets/icons/sunny.jpg',
+                            'assets/icons/${post.wheather}.jpg',
                             height: 30,
                             width: 30,
                           ),
                         )
                       ],
                     ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              width: Get.width,
-              height: 220,
-              color: Colors.black,
-              child: Image.network(
-                "${product.image_links[0]}",
-                fit: BoxFit.cover,
-                alignment: Alignment.topCenter,
-              ),
-            ),
-            SizedBox(
-              height: 5,
-            ),
-            Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      IconButton(
-                        icon: Icon(Icons.wb_cloudy_outlined),
-                        onPressed: () {},
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.weekend_outlined),
-                        onPressed: () {},
-                      )
-                    ],
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.work_outline_outlined),
-                    onPressed: () {},
-                  )
-                ],
-              ),
-            ),
-            Expanded(
-              child: Container(
-                width: Get.width - 40,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        '${product.content}',
-                        style: TextStyle(fontSize: 12),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      '좋아요 17개',
-                      style: TextStyle(fontSize: 10),
-                    ),
-                    InkWell(
-                      child: Text(
-                        '댓글 n개 모두보기',
-                        style: TextStyle(fontSize: 10),
-                      ),
-                      onTap: () {},
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
                   ],
                 ),
               ),
-            )
-          ],
+              Container(
+                width: Get.width,
+                height: 220,
+                color: Colors.black,
+                child: Image.network(
+                  post.image_links[0],
+                  fit: BoxFit.cover,
+                  alignment: Alignment.topCenter,
+                ),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.wb_cloudy_outlined),
+                          onPressed: () {},
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.weekend_outlined),
+                          onPressed: () {},
+                        )
+                      ],
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.work_outline_outlined),
+                      onPressed: () {},
+                    )
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Container(
+                  width: Get.width - 40,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          '${post.content}',
+                          style: TextStyle(fontSize: 12),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        '좋아요 17개',
+                        style: TextStyle(fontSize: 10),
+                      ),
+                      InkWell(
+                        child: Text(
+                          '댓글 n개 모두보기',
+                          style: TextStyle(fontSize: 10),
+                        ),
+                        onTap: () {},
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       );
     }).toList();
@@ -188,7 +193,15 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('WHEAR'),
+
+        backgroundColor: Colors.white,
+        centerTitle: true,
+        elevation: 0,
+        title: const Text(
+          'WHEAR',
+          style: TextStyle(color: Colors.black),
+        ),
+        shadowColor: Colors.white,
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 14.0),
@@ -200,6 +213,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ],
+
       ),
       body: RefreshIndicator(
           onRefresh: _onRefresh,
@@ -207,7 +221,7 @@ class _HomePageState extends State<HomePage> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Center(
