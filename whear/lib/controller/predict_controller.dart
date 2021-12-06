@@ -6,7 +6,7 @@ import 'package:tflite/tflite.dart';
 
 class PredictController extends GetxController {
   late List _outputs;
-  late File _image;
+  File? imagePicked;
   bool _loading = false;
 
   loadModel() async {
@@ -27,21 +27,23 @@ class PredictController extends GetxController {
     if (image == null) return null;
 
     _loading = true;
-    _image = File(image.path);
-
-    classifyImage(_image);
+    imagePicked = File(image.path);
+    print(imagePicked!);
+    return classifyImage(imagePicked!);
   }
 
   classifyImage(File image) async {
+    var result;
     print(image.path);
     var output = await Tflite.runModelOnImage(
       path: image.path,
       imageMean: 127.5,
       imageStd: 127.5,
     ).then((value) {
-      print(value![0]["label"]);
+      result = value![0]["label"];
     });
-
+    print(result);
+    return result;
     // _loading = false;
     // _outputs = output!;
     // print(_outputs);

@@ -38,11 +38,11 @@ flutter:
 
   assets:
 
-    - assets/icons/cloudy.jpg
-    - assets/icons/rainy.jpg
-    - assets/icons/snow.jpg
-    - assets/icons/sunny.jpg
-    - assets/icons/windy.jpg
+    - assets/icons/0.jpg
+    - assets/icons/1.jpg
+    - assets/icons/2.jpg
+    - assets/icons/3.jpg
+    - assets/icons/4.jpg
     - assets/icons/little_cloud.jpg
     - assets/
 
