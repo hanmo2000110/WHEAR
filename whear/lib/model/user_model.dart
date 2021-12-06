@@ -8,6 +8,7 @@ class UserModel {
   String? name;
   String? email;
   String? status_message;
+  String? profile_image_url;
   int? follower;
   int? following;
 
@@ -15,16 +16,18 @@ class UserModel {
     this.uid,
     this.name,
     this.email,
+    this.profile_image_url,
     this.status_message,
     this.follower,
     this.following,
   });
 
-  UserModel.fromJsonGoo(Map<String, dynamic> json, String uid)
+  UserModel.fromJson(Map<String, dynamic> json, String uid)
       : uid = json['uid'],
         name = json['name'],
         email = json['email'],
         status_message = json['status_message'],
+        profile_image_url = json['profile_image_url'],
         follower = json['follower'],
         following = json['following'];
 
@@ -32,11 +35,12 @@ class UserModel {
   //     : status_message = json['status_message'],
   //       uid = json['uid'];
 
-  Map<String, dynamic> toJsonGoo() => {
+  Map<String, dynamic> toJson() => {
         'uid': uid,
         'name': name,
         'email': email,
         'status_message': status_message,
+        'profile_image_url': profile_image_url,
         'follower': follower,
         'following': following
       };
@@ -72,11 +76,13 @@ class UserModel {
           "I promise to take the test honestly before GOD.";
       newUser.name = firebaseUser.displayName;
       newUser.email = firebaseUser.email;
+      newUser.profile_image_url = firebaseUser.photoURL;
       FirebaseFirestore.instance
           .collection('user')
           .doc(newUser.uid)
-          .set(newUser.toJsonGoo());
+          .set(newUser.toJson());
       // }
+
       Get.offNamed("/");
       return;
     }
@@ -84,6 +90,7 @@ class UserModel {
     uid = doc['uid'];
     name = doc['name'];
     email = doc['email'];
+    profile_image_url = doc['profile_image_url'];
     status_message = doc['status_message'];
   }
 
