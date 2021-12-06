@@ -24,7 +24,6 @@ class PostController extends GetxController {
   List<PostModel> _searchPosts = [];
   List<PostModel> get searchposts => _searchPosts;
 
-
   Future getMyPosts() async {
     UserController uc = Get.find<UserController>();
     FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -66,19 +65,30 @@ class PostController extends GetxController {
         .get();
     print("now testing getPosts");
 
-    result.docs.forEach((element) {
+    result.docs.forEach((element) async {
       // print(element.data()['creator']);
-      _searchPosts.add(PostModel(
+      String creatorName = await getCreatorInfo(element.data()['creator']);
+      PostModel post = PostModel(
         createdTime: element.data()['createdTime'],
         creator: element.data()['creator'],
+        creatorName: creatorName,
         post_id: element.data()['post_id'],
         lookType: element.data()['lookType'],
         wheather: element.data()['weather'],
         content: element.data()['content'],
         image_links: element.data()['image_links'].cast<String>(),
-      ));
+      );
+      var creator = await firestore.collection('user').doc(post.creator).get();
+      post.setCreatorProfilePhotoURL = creator['profile_image_url'];
+      _searchPosts.add(post);
       // print(element.data()['image_links'].cast<String>()[0]);
     });
+
     print(_searchPosts.length);
+  }
+
+  Future<String> getCreatorInfo(String creator) async {
+    var creatorInfo = await firestore.collection('user').doc(creator).get();
+    return creatorInfo['name'];
   }
 }
