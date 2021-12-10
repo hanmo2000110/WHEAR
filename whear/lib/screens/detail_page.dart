@@ -102,7 +102,11 @@ class _DetailPageState extends State<DetailPage> {
                   width: Get.width,
                   child: imgList.length != 1
                       ? CarouselSlider(
-                          options: CarouselOptions(height: 400.0),
+                          options: CarouselOptions(
+                            height: 400.0,
+                            aspectRatio: 10 / 10,
+                            viewportFraction: 1.0,
+                          ),
                           items: imgList.map((img) {
                             return Container(
                               width: MediaQuery.of(context).size.width,
