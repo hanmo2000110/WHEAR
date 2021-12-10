@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -111,15 +112,42 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
-              Container(
+              SizedBox(
+                height: Get.height / 2.5,
                 width: Get.width,
-                height: Get.width,
-                color: Colors.black,
-                child: Image.network(
-                  post.image_links[0],
-                  fit: BoxFit.cover,
-                  alignment: Alignment.topCenter,
-                ),
+                child: post.image_links.length != 1
+                    ? CarouselSlider(
+                        options: CarouselOptions(
+                          height: 400.0,
+                          aspectRatio: 10 / 10,
+                          viewportFraction: 1.0,
+                        ),
+                        items: post.image_links.map((img) {
+                          return Container(
+                            width: MediaQuery.of(context).size.width,
+                            margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10.0),
+                              child: Image.network(
+                                img,
+                                fit: BoxFit.cover,
+                                alignment: Alignment.topCenter,
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                      )
+                    : Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10.0),
+                          child: Image.network(
+                            post.image_links[0],
+                            fit: BoxFit.cover,
+                            alignment: Alignment.topCenter,
+                          ),
+                        ),
+                      ),
               ),
               const SizedBox(
                 height: 5,

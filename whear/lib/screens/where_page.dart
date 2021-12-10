@@ -43,7 +43,7 @@ class _WherePageState extends State<WherePage> {
                 width: Get.width,
                 height: Get.width,
                 child: pre.imagePicked == null
-                    ? Center(
+                    ? const Center(
                         child: Text("사진을 선택하려면 터치하세요!"),
                       )
                     : Image.file(

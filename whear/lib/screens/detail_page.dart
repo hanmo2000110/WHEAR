@@ -115,15 +115,25 @@ class _DetailPageState extends State<DetailPage> {
                                   const EdgeInsets.symmetric(horizontal: 5.0),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(10.0),
-                                child: Image.network(img),
+                                child: Image.network(
+                                  img,
+                                  fit: BoxFit.cover,
+                                  alignment: Alignment.topCenter,
+                                ),
                               ),
                             );
                           }).toList(),
                         )
-                      : SizedBox(
-                          width: Get.width,
-                          height: Get.height / 2.5,
-                          child: Image.network(imgList[0]),
+                      : Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10.0),
+                            child: Image.network(
+                              imgList[0],
+                              fit: BoxFit.cover,
+                              alignment: Alignment.topCenter,
+                            ),
+                          ),
                         ),
                 ),
                 const SizedBox(
