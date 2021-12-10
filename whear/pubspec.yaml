@@ -25,6 +25,8 @@ dependencies:
   http: ^0.13.4
   multi_image_picker: ^4.8.01
   carousel_slider: ^4.0.0
+  permission_handler: ^8.3.0
+  tflite: ^1.0.2
 
 dev_dependencies:
   flutter_test:
@@ -35,4 +37,15 @@ flutter:
   uses-material-design: true
 
   assets:
+
+    - assets/icons/0.jpg
+    - assets/icons/1.jpg
+    - assets/icons/2.jpg
+    - assets/icons/3.jpg
+    - assets/icons/4.jpg
+    - assets/icons/5.jpg
+
+    - assets/
+
     - assets/icons/
+

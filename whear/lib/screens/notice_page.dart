@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:whear/auth/auth_middleware.dart';
 import 'package:whear/binding/binding.dart';
+import 'package:whear/controller/predict_controller.dart';
 
 class NoticePage extends StatefulWidget {
   const NoticePage({Key? key}) : super(key: key);
@@ -12,90 +13,66 @@ class NoticePage extends StatefulWidget {
 }
 
 class _NoticePageState extends State<NoticePage> {
+  PredictController pre = Get.put(PredictController());
   bool isTodayEx = true;
   bool isThisWeekEx = false;
   bool isEtcEx = false;
+  var result;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         shadowColor: Colors.white,
         title: const Text(
-          '알림',
+          'WHEAR',
           style: TextStyle(color: Colors.black),
         ),
         backgroundColor: Colors.white,
         centerTitle: true,
         elevation: 0,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(0.0),
+      body: Center(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            if (isTodayEx)
-              Column(
-                // ignore: prefer_const_literals_to_create_immutables
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.all(20.0),
-                    child: Text(
-                      "오늘",
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
-                          fontWeight: FontWeight.normal),
+            SizedBox(
+              height: 50,
+            ),
+            Container(
+              width: Get.width,
+              height: 220,
+              color: Colors.black,
+              child: pre.imagePicked == null
+                  ? Image.asset(
+                      "assets/icons/5.jpg",
+
+                      fit: BoxFit.contain,
+                      alignment: Alignment.topCenter,
+                    )
+                  : Image.file(
+                      pre.imagePicked!,
+                      fit: BoxFit.cover,
+                      alignment: Alignment.topCenter,
                     ),
-                  ),
-                  // Container(
-                  //   child: ,
-                  // )
-                ],
-              )
-            else
-              const SizedBox(
-                height: 0,
-              ),
-            if (isThisWeekEx)
-              Column(
-                // ignore: prefer_const_literals_to_create_immutables
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.all(20.0),
-                    child: Text(
-                      "이번주",
-                      // ignore: unnecessary_const
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
-                          fontWeight: FontWeight.normal),
-                    ),
-                  ),
-                ],
-              )
-            else
-              const SizedBox(
-                height: 0,
-              ),
-            if (isEtcEx)
-              Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: const Text(
-                      "이전",
-                      // ignore: unnecessary_const
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
-                          fontWeight: FontWeight.normal),
-                    ),
-                  ),
-                ],
-              )
-            else
-              const SizedBox(
-                height: 0,
-              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            TextButton(
+              onPressed: () async {
+                result = await pre.pickImage();
+                print(result);
+                setState(() {});
+              },
+              child: Text("WHEAR"),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            pre.imagePicked != null
+                ? Text("이 옷은 ${result}(이)며 현재 날씨와 어울립니다.")
+                : Container(),
+
           ],
         ),
       ),

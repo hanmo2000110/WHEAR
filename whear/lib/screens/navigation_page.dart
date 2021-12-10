@@ -29,8 +29,8 @@ class NavigationPageState extends State<NavigationPage> {
     // Text('profile'),
     HomePage(),
     SearchPage(),
-    AddPage(),
     NoticePage(),
+    AddPage(),
     ProfilePage(),
   ];
   @override
@@ -58,12 +58,12 @@ class NavigationPageState extends State<NavigationPage> {
                 label: 'Search',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.add),
-                label: 'Add',
-              ),
-              BottomNavigationBarItem(
                 icon: Icon(Icons.cloud),
                 label: 'Notice',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.add),
+                label: 'Add',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.account_circle),

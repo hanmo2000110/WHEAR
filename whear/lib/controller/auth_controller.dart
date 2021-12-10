@@ -69,7 +69,8 @@ class AuthController extends GetxController {
       assert(!user!.isAnonymous);
       assert(await user!.getIdToken() != null);
       final User? currentUser = _auth.currentUser;
-      assert(user!.uid == currentUser!.uid);
+      print(currentUser!.photoURL);
+      assert(user!.uid == currentUser.uid);
       print(_firebaseUser);
       Get.offAllNamed("/"); // Back to Home
       return;

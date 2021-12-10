@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:whear/auth/auth_middleware.dart';
 import 'package:whear/binding/binding.dart';
 import 'package:whear/screens/home_page.dart';
@@ -15,6 +16,8 @@ import 'screens/detail_page.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   FirebaseApp app = await Firebase.initializeApp();
+  await Permission.camera.request();
+  await Permission.microphone.request();
   runApp(const Whear());
 }
 
