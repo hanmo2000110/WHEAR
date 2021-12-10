@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -62,7 +61,6 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Row(
-
                       children: [
                         CircleAvatar(
                           radius: 20.0,
@@ -117,7 +115,7 @@ class _HomePageState extends State<HomePage> {
                   alignment: Alignment.topCenter,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 5,
               ),
               Container(
@@ -155,7 +153,7 @@ class _HomePageState extends State<HomePage> {
                           style: TextStyle(fontSize: 12),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 5,
                       ),
                       Text(
@@ -169,7 +167,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                         onTap: () {},
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 5,
                       ),
                     ],
@@ -192,8 +190,8 @@ class _HomePageState extends State<HomePage> {
     // setState(() {});
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-
         backgroundColor: Colors.white,
         centerTitle: true,
         elevation: 0,
@@ -206,14 +204,13 @@ class _HomePageState extends State<HomePage> {
           Padding(
             padding: const EdgeInsets.only(right: 14.0),
             child: InkWell(
-              child: Icon(Icons.add),
+              child: const Icon(Icons.add),
               onTap: () async {
                 await pre.pickImage();
               },
             ),
           ),
         ],
-
       ),
       body: RefreshIndicator(
           onRefresh: _onRefresh,
@@ -227,7 +224,7 @@ class _HomePageState extends State<HomePage> {
                 Center(
                   child: Material(
                     elevation: 5,
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
                     child: Container(
                       // padding: EdgeInsets.all(2),
                       width: Get.width - 80,
@@ -237,11 +234,11 @@ class _HomePageState extends State<HomePage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                            padding: EdgeInsets.only(
+                            padding: const EdgeInsets.only(
                               left: 20,
                               top: 10,
                             ),
-                            child: Text(
+                            child: const Text(
                               "현재 날씨",
                               style: TextStyle(
                                 fontSize: 14,
@@ -251,7 +248,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                           Obx(() {
                             return Container(
-                              padding: EdgeInsets.only(
+                              padding: const EdgeInsets.only(
                                 left: 20,
                                 top: 12,
                               ),
@@ -259,7 +256,7 @@ class _HomePageState extends State<HomePage> {
                                 children: [
                                   Text(
                                     "${wc.degre.ceil()}˚",
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 30,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -273,7 +270,7 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                     child: Text(
                                       "최고: ${wc.max.ceil()}˚ 최저: ${wc.min.ceil()}˚",
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontSize: 13,
                                         // fontWeight: FontWeight.bold,
                                       ),
@@ -283,12 +280,12 @@ class _HomePageState extends State<HomePage> {
                               ),
                             );
                           }),
-                          SizedBox(
+                          const SizedBox(
                             height: 20,
                           ),
                           Container(
                             width: Get.width - 120,
-                            padding: EdgeInsets.only(
+                            padding: const EdgeInsets.only(
                               left: 20,
                             ),
                             child: Text(
@@ -303,13 +300,14 @@ class _HomePageState extends State<HomePage> {
                       ),
                       decoration: BoxDecoration(
                         color: Colors.lightBlue[100],
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(10)),
                       ),
                     ),
                   ),
                 ),
                 GridView.count(
-                  physics: ScrollPhysics(),
+                  physics: const ScrollPhysics(),
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
                   crossAxisCount: 1,
