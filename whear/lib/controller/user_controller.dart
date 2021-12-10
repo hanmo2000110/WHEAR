@@ -21,4 +21,5 @@ class UserController extends GetxController {
     _userModel.value = UserModel();
     _userModel.value.initalized = false;
   }
+
 }
