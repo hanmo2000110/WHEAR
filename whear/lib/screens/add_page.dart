@@ -68,6 +68,7 @@ class _AddPageState extends State<AddPage> {
     }
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         shadowColor: Colors.white,
         title: const Text(
