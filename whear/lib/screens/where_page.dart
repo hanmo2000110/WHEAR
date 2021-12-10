@@ -5,14 +5,14 @@ import 'package:whear/auth/auth_middleware.dart';
 import 'package:whear/binding/binding.dart';
 import 'package:whear/controller/predict_controller.dart';
 
-class NoticePage extends StatefulWidget {
-  const NoticePage({Key? key}) : super(key: key);
+class WherePage extends StatefulWidget {
+  const WherePage({Key? key}) : super(key: key);
 
   @override
-  _NoticePageState createState() => _NoticePageState();
+  _WherePageState createState() => _WherePageState();
 }
 
-class _NoticePageState extends State<NoticePage> {
+class _WherePageState extends State<WherePage> {
   PredictController pre = Get.put(PredictController());
   bool isTodayEx = true;
   bool isThisWeekEx = false;
@@ -45,7 +45,6 @@ class _NoticePageState extends State<NoticePage> {
               child: pre.imagePicked == null
                   ? Image.asset(
                       "assets/icons/5.jpg",
-
                       fit: BoxFit.contain,
                       alignment: Alignment.topCenter,
                     )
@@ -72,7 +71,6 @@ class _NoticePageState extends State<NoticePage> {
             pre.imagePicked != null
                 ? Text("이 옷은 ${result}(이)며 현재 날씨와 어울립니다.")
                 : Container(),
-
           ],
         ),
       ),

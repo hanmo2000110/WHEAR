@@ -7,10 +7,10 @@ import 'package:whear/binding/binding.dart';
 import 'package:whear/screens/home_page.dart';
 import 'package:whear/screens/signin_page.dart';
 import 'screens/add_page.dart';
-import 'screens/notice_page.dart';
+import 'screens/where_page.dart';
 import 'screens/profile_page.dart';
 import 'screens/search_page.dart';
-import 'screens/navigation_page.dart';
+import 'screens/navigation_bar.dart';
 import 'screens/detail_page.dart';
 
 Future<void> main() async {
@@ -37,7 +37,7 @@ class Whear extends StatelessWidget {
         GetPage(
             name: "/",
             middlewares: [AuthMiddleware()],
-            page: () => NavigationPage(),
+            page: () => NavigationBar(),
             transition: Transition.fadeIn),
         GetPage(
             name: "/home",
@@ -53,7 +53,7 @@ class Whear extends StatelessWidget {
             transition: Transition.noTransition),
         GetPage(
             name: "/notice",
-            page: () => NoticePage(),
+            page: () => WherePage(),
             transition: Transition.noTransition),
         GetPage(
             name: "/profile",
