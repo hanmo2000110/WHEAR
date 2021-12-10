@@ -21,6 +21,7 @@ class _DetailPageState extends State<DetailPage> {
     PostModel detailpost = Get.arguments;
     List<dynamic> imgList = detailpost.image_links;
     return Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
           backgroundColor: Colors.white,
           centerTitle: true,
