@@ -59,7 +59,7 @@ class NavigationPageState extends State<NavigationPage> {
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.cloud),
-                label: 'Notice',
+                label: 'WHEAR',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.add),
