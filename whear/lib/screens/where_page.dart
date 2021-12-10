@@ -5,14 +5,14 @@ import 'package:whear/auth/auth_middleware.dart';
 import 'package:whear/binding/binding.dart';
 import 'package:whear/controller/predict_controller.dart';
 
-class NoticePage extends StatefulWidget {
-  const NoticePage({Key? key}) : super(key: key);
+class WherePage extends StatefulWidget {
+  const WherePage({Key? key}) : super(key: key);
 
   @override
-  _NoticePageState createState() => _NoticePageState();
+  _WherePageState createState() => _WherePageState();
 }
 
-class _NoticePageState extends State<NoticePage> {
+class _WherePageState extends State<WherePage> {
   PredictController pre = Get.put(PredictController());
   bool isTodayEx = true;
   bool isThisWeekEx = false;
