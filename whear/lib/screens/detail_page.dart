@@ -66,15 +66,15 @@ class _DetailPageState extends State<DetailPage> {
                         child: Row(
                           children: [
                             CircleAvatar(
-                              radius: 20.0,
-                              backgroundColor: Colors.lightBlueAccent,
-                              backgroundImage: NetworkImage(
-                                  FirebaseAuth.instance.currentUser!.photoURL!),
-                            ),
+                                radius: 20.0,
+                                backgroundColor: Colors.lightBlueAccent,
+                                backgroundImage: NetworkImage(
+                                  detailpost.creatorProfilePhotoURL!,
+                                )),
                             SizedBox(
                               width: 25,
                             ),
-                            Text('${detailpost.creator}'),
+                            Text('${detailpost.creatorName}'),
                           ],
                         ),
                       ),

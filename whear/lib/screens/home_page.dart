@@ -29,21 +29,26 @@ class _HomePageState extends State<HomePage> {
   var refreshKey = GlobalKey<RefreshIndicatorState>();
   WeatherController wc = Get.put(WeatherController());
   PredictController predict = Get.put(PredictController());
-
+  PostController pc = Get.put(PostController());
   Future<void> _onRefresh() async {
     await wc.getWeather();
-    setState(() {});
+    await pc.getPosts();
+    await Future.delayed(const Duration(milliseconds: 1000), () {
+      setState(() {});
+      print("reloading is finished");
+    });
   }
 
   List<GestureDetector> _buildListViews(BuildContext context) {
     // List<PostModel> products = [];
-    PostController pc = Get.put(PostController());
+
     List<PostModel> posts = pc.searchposts;
     // UserController uc = Get.put(UserController());
     // UserModel usermodel = uc.user;
-
+    print("building grid test");
+    print(posts.length);
     return posts.map((post) {
-      // String creator = post.creator;
+      // String creator = post.creatorName!;
 
       return GestureDetector(
         onTap: () {
@@ -184,7 +189,6 @@ class _HomePageState extends State<HomePage> {
     WeatherController wc = Get.put(WeatherController());
     // PostController pc = Get.put(PostController());
     // pc.getPosts();
-    // setState(() {});
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -203,7 +207,8 @@ class _HomePageState extends State<HomePage> {
             child: InkWell(
               child: const Icon(Icons.add),
               onTap: () async {
-                await pre.pickImage();
+                print("testing homepage");
+                print(pc.searchposts.length);
               },
             ),
           ),
@@ -286,7 +291,7 @@ class _HomePageState extends State<HomePage> {
                               left: 20,
                             ),
                             child: Text(
-                              "오늘은 미세먼지 농도가 나쁨인 날이에요 ! 마스크를 꼭 착용해주세요 :>",
+                              "${wc.text}",
                               style: TextStyle(
                                 fontSize: 14,
                                 // fontWeight: FontWeight.bold,

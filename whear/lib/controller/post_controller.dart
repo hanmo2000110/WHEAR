@@ -14,8 +14,9 @@ class PostController extends GetxController {
 
   @override
   onInit() async {
-    await getMyPosts();
     await getPosts();
+    await getMyPosts();
+    print("getposts finished");
     super.onInit();
   }
 
