@@ -36,11 +36,11 @@ class PostController extends GetxController {
         .where("creator", isEqualTo: uid)
         .orderBy('createdTime', descending: true)
         .get();
-    // print("now testing postcontroller");
+    // print("now testing my postcontroller");
 
     result.docs.forEach((element) async {
       // print(element.data()['creator']);
-      String creatorName = await getCreatorInfo(element.data()['creator']);
+      String creatorName = await getCreatorInfo(uid);
       PostModel post = PostModel(
         createdTime: element.data()['createdTime'],
         creator: element.data()['creator'],
@@ -53,7 +53,7 @@ class PostController extends GetxController {
       );
       var creator = await firestore.collection('user').doc(post.creator).get();
       post.setCreatorProfilePhotoURL = creator['profile_image_url'];
-      _searchPosts.add(post);
+      _myPosts.add(post);
       // print(element.data()['image_links'].cast<String>()[0]);
     });
     // print(_myPosts.length);
