@@ -77,6 +77,8 @@ class UserModel {
       newUser.name = firebaseUser.displayName;
       newUser.email = firebaseUser.email;
       newUser.profile_image_url = firebaseUser.photoURL;
+      newUser.follower = 0;
+      newUser.following = 0;
       FirebaseFirestore.instance
           .collection('user')
           .doc(newUser.uid)
@@ -92,6 +94,8 @@ class UserModel {
     email = doc['email'];
     profile_image_url = doc['profile_image_url'];
     status_message = doc['status_message'];
+    follower = doc['follower'];
+    following = doc['following'];
   }
 
   @override

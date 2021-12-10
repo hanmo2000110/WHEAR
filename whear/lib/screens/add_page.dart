@@ -262,7 +262,7 @@ class _AddPageState extends State<AddPage> {
                     //     post_content = value;
                     //   },
                     // ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     TextFormField(
