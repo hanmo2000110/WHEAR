@@ -45,6 +45,7 @@ class _NoticePageState extends State<NoticePage> {
               child: pre.imagePicked == null
                   ? Image.asset(
                       "assets/icons/5.jpg",
+
                       fit: BoxFit.contain,
                       alignment: Alignment.topCenter,
                     )
@@ -71,6 +72,7 @@ class _NoticePageState extends State<NoticePage> {
             pre.imagePicked != null
                 ? Text("이 옷은 ${result}(이)며 현재 날씨와 어울립니다.")
                 : Container(),
+
           ],
         ),
       ),
