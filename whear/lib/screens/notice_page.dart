@@ -44,7 +44,7 @@ class _NoticePageState extends State<NoticePage> {
               color: Colors.black,
               child: pre.imagePicked == null
                   ? Image.asset(
-                      "assets/icons/little_cloud.jpg",
+                      "assets/icons/5.jpg",
                       fit: BoxFit.contain,
                       alignment: Alignment.topCenter,
                     )
@@ -68,7 +68,9 @@ class _NoticePageState extends State<NoticePage> {
             SizedBox(
               height: 20,
             ),
-            Text("이 옷은 ${result}(이)며 현재 날씨와 어울립니다."),
+            pre.imagePicked != null
+                ? Text("이 옷은 ${result}(이)며 현재 날씨와 어울립니다.")
+                : Container(),
           ],
         ),
       ),
