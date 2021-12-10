@@ -1,11 +1,5 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:whear/auth/auth_middleware.dart';
-import 'package:whear/binding/binding.dart';
-import 'dart:io';
-
-import 'package:whear/main.dart';
 import '../controller/bottom_navigation_controller.dart';
 import '/screens/add_page.dart';
 import 'where_page.dart';
