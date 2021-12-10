@@ -21,57 +21,57 @@ class _SearchPageState extends State<SearchPage> {
 
   Future<void> _onRefresh() async {
     await pc.getPosts();
-    setState(() {});
+    await Future.delayed(const Duration(milliseconds: 1000), () {
+      setState(() {});
+      print("search page reloading is finished");
+    });
   }
 
-  List<Card> _buildGridCards(BuildContext context) {
+  List<GestureDetector> _buildGridCards(BuildContext context) {
     // final firebaseauth = Provider.of<ApplicationState>(context);
     PostController pc = Get.put(PostController());
     List<PostModel> products = pc.searchposts;
-    // print(products[0].image_links[0]);
-
-    // if (products.isEmpty) {
-    //   return const <Card>[];
-    // }
-
     final ThemeData theme = Theme.of(context);
-    // final NumberFormat formatter = NumberFormat.simpleCurrency(
-    //     locale: Localizations.localeOf(context).toString());
 
     return products.map((post) {
-      return Card(
-        clipBehavior: Clip.antiAlias,
-        // TODO: Adjust card heights (103)
-        child: Stack(
-          alignment: Alignment.center,
-          fit: StackFit.expand,
-          children: [
-            Image.network(
-              "${post.image_links[0]}",
-              fit: BoxFit.cover,
-              alignment: Alignment.topCenter,
-            ),
-            Positioned(
-                right: 0,
-                bottom: 0,
-                child: Container(
-                  width: 30,
-                  height: 30,
-                  child: Icon(
-                    Icons.cloud,
-                    color: Colors.blue,
+      return GestureDetector(
+        onTap: () {
+          Get.toNamed("detail", arguments: post);
+        },
+        child: Card(
+          clipBehavior: Clip.antiAlias,
+          // TODO: Adjust card heights (103)
+          child: Stack(
+            alignment: Alignment.center,
+            fit: StackFit.expand,
+            children: [
+              Image.network(
+                "${post.image_links[0]}",
+                fit: BoxFit.cover,
+                alignment: Alignment.topCenter,
+              ),
+              Positioned(
+                  right: 0,
+                  bottom: 0,
+                  child: Container(
+                    width: 30,
+                    height: 30,
+                    child: Icon(
+                      Icons.cloud,
+                      color: Colors.blue,
+                    ),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Color(0xFFe0f2f1),
+                    ),
+                  )
+                  // Icon(
+                  //   Icons.cloud,
+                  //   color: Colors.blue,
+                  // ),
                   ),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Color(0xFFe0f2f1),
-                  ),
-                )
-                // Icon(
-                //   Icons.cloud,
-                //   color: Colors.blue,
-                // ),
-                ),
-          ],
+            ],
+          ),
         ),
       );
     }).toList();

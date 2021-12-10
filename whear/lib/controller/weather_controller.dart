@@ -11,6 +11,7 @@ class WeatherController extends GetxController {
   RxDouble degre = 0.0.obs;
   RxDouble max = 0.0.obs;
   RxDouble min = 0.0.obs;
+  RxString text = "".obs;
   @override
   onInit() async {
     await getWeather();
@@ -62,6 +63,15 @@ class WeatherController extends GetxController {
       degre.value = await dataJson['main']['temp'] * 1.0;
       max.value = await dataJson['main']['temp_max'] * 1.0;
       min.value = await dataJson['main']['temp_min'] * 1.0;
+      if (max.value - min.value > 15) {
+        text.value = "오늘은 일교차가 크니 조심해서 외출하세요! 마스크도 잊지 말아주세요!";
+      } else if (min.value < 10) {
+        text.value = "오늘은 날씨가 추우니 옷을 따듯하게 입고 외출하세요! 마스크도 잊지 말아주세요!";
+      } else if (max.value > 30) {
+        text.value = "오늘은 날씨가 더우니 옷을 따듯하게 입고 외출하세요! 마스크도 잊지 말아주세요!";
+      } else {
+        text.value = "오늘은 날씨가 좋습니다! 소풍을 가보는건 어떨까요? 마스크도 잊지 말아주세요!";
+      }
       print(degre.value);
     } else {
       print('response status code = ${response.statusCode}');
