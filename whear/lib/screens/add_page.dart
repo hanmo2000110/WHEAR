@@ -28,7 +28,7 @@ class AddPage extends StatefulWidget {
 
 class _AddPageState extends State<AddPage> {
   BottomNavigationController bc = Get.find();
-  String post_content = 'Unknown';
+  String post_content = '';
   int post_weatherType = -1;
   String post_lookType = '데일리';
   XFile? imageXfile;
@@ -72,7 +72,7 @@ class _AddPageState extends State<AddPage> {
       appBar: AppBar(
         shadowColor: Colors.white,
         title: const Text(
-          '게시글 작성',
+          'WHERE',
           style: TextStyle(color: Colors.black),
         ),
         backgroundColor: Colors.white,
@@ -94,6 +94,11 @@ class _AddPageState extends State<AddPage> {
               style: TextStyle(color: Colors.black, fontSize: 16),
             ),
             onPressed: () async {
+              if (post_weatherType == -1) {
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                    content: Text('오늘의 날씨를 선택해주세요.',
+                        style: TextStyle(fontSize: 17))));
+              }
               await addPost(
                 imagelist: imageList,
                 post_content: post_content,
@@ -114,14 +119,21 @@ class _AddPageState extends State<AddPage> {
             children: [
               InkWell(
                 child: SizedBox(
-                  height: Get.height / 2.5,
+                  height: Get.width,
                   width: Get.width,
                   child: imageList.isEmpty == false
                       ? CarouselSlider(
-                          options: CarouselOptions(height: 400.0),
+                          options: CarouselOptions(
+                            aspectRatio: 10 / 10,
+                            viewportFraction: 1.0,
+                            height: 400.0,
+                            enableInfiniteScroll: false,
+                          ),
                           items: imageList
                               .map((e) => AssetThumb(
                                     asset: e,
+                                    // width: Get.width.truncate(),
+                                    // height: Get.width.truncate(),
                                     width: 200,
                                     height: 200,
                                   ))
@@ -154,7 +166,7 @@ class _AddPageState extends State<AddPage> {
                               const Icon(
                                 Icons.checkroom,
                                 size: 18,
-                                color: Colors.blue,
+                                color: Colors.grey,
                               ),
                               const SizedBox(
                                 width: 5,
@@ -170,7 +182,7 @@ class _AddPageState extends State<AddPage> {
                           decoration: BoxDecoration(
                             shape: BoxShape.rectangle,
                             border: Border.all(
-                              color: Colors.blue,
+                              color: Colors.grey,
                             ),
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(10)),
@@ -223,13 +235,12 @@ class _AddPageState extends State<AddPage> {
                                   child: wimages[i],
                                 ),
                                 style: OutlinedButton.styleFrom(
+                                  elevation: i != post_weatherType ? 0 : 3,
                                   shape: const CircleBorder(),
                                   side: BorderSide(
-                                    width: 1,
-                                    color: i != post_weatherType
-                                        ? Colors.transparent
-                                        : Colors.blue,
-                                  ),
+                                      width: 1, color: Colors.transparent
+                                      //     : Colors.blue,
+                                      ),
                                 )),
                         ],
                       ),
