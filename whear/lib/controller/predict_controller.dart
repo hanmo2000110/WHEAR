@@ -39,8 +39,12 @@ class PredictController extends GetxController {
       path: image.path,
       imageMean: 127.5,
       imageStd: 127.5,
+      threshold: 0,
     ).then((value) {
-      result = value![0]["label"];
+      print(value);
+      result = (value![0]["label"]).replaceAll(new RegExp("\\d"), "") +
+          " 또는" +
+          (value[1]["label"]).replaceAll(new RegExp("\\d"), "");
     });
     print(result);
     return result;
