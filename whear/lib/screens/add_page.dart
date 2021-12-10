@@ -72,17 +72,21 @@ class _AddPageState extends State<AddPage> {
       appBar: AppBar(
         shadowColor: Colors.white,
         title: const Text(
-          'WHERE',
+          'WHEAR',
           style: TextStyle(color: Colors.black),
         ),
         backgroundColor: Colors.white,
         centerTitle: true,
         elevation: 0,
-        leading: TextButton(
-          child: const Text(
-            '취소',
-            style: TextStyle(color: Colors.black, fontSize: 16),
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            color: Colors.grey,
           ),
+          // const Text(
+          //   '취소',
+          //   style: TextStyle(color: Colors.black, fontSize: 16),
+          // ),
           onPressed: () {
             bc.changeTabIndex(0);
           },
@@ -90,14 +94,18 @@ class _AddPageState extends State<AddPage> {
         actions: <Widget>[
           TextButton(
             child: const Text(
-              '저장',
-              style: TextStyle(color: Colors.black, fontSize: 16),
+              '공유',
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500),
             ),
             onPressed: () async {
               if (post_weatherType == -1) {
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                     content: Text('오늘의 날씨를 선택해주세요.',
                         style: TextStyle(fontSize: 17))));
+                return;
               }
               await addPost(
                 imagelist: imageList,
