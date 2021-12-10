@@ -38,33 +38,28 @@ class _NoticePageState extends State<NoticePage> {
             SizedBox(
               height: 50,
             ),
-            Container(
-              width: Get.width,
-              height: 220,
-              color: Colors.black,
-              child: pre.imagePicked == null
-                  ? Image.asset(
-                      "assets/icons/5.jpg",
-
-                      fit: BoxFit.contain,
-                      alignment: Alignment.topCenter,
-                    )
-                  : Image.file(
-                      pre.imagePicked!,
-                      fit: BoxFit.cover,
-                      alignment: Alignment.topCenter,
-                    ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            TextButton(
-              onPressed: () async {
+            InkWell(
+              onTap: () async {
                 result = await pre.pickImage();
                 print(result);
                 setState(() {});
               },
-              child: Text("WHEAR"),
+              child: Container(
+                width: Get.width,
+                height: 220,
+                child: pre.imagePicked == null
+                    ? Center(
+                        child: Text("사진을 선택하려면 터치하세요!"),
+                      )
+                    : Image.file(
+                        pre.imagePicked!,
+                        fit: BoxFit.cover,
+                        alignment: Alignment.topCenter,
+                      ),
+              ),
+            ),
+            SizedBox(
+              height: 20,
             ),
             SizedBox(
               height: 20,
@@ -72,7 +67,6 @@ class _NoticePageState extends State<NoticePage> {
             pre.imagePicked != null
                 ? Text("이 옷은 ${result}(이)며 현재 날씨와 어울립니다.")
                 : Container(),
-
           ],
         ),
       ),
