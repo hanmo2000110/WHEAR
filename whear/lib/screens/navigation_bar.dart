@@ -56,7 +56,7 @@ class NavigationBarState extends State<NavigationBar> {
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.cloud),
-                label: 'Where',
+                label: 'WHEAR',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.add),

@@ -198,7 +198,7 @@ class _HomePageState extends State<HomePage> {
         elevation: 0,
         title: const Text(
           'WHEAR',
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.black, fontSize: 16),
         ),
         shadowColor: Colors.white,
         actions: [

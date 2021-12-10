@@ -73,20 +73,17 @@ class _AddPageState extends State<AddPage> {
         shadowColor: Colors.white,
         title: const Text(
           'WHEAR',
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.black, fontSize: 16),
         ),
         backgroundColor: Colors.white,
         centerTitle: true,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(
-            Icons.arrow_back_ios,
-            color: Colors.grey,
+            Icons.arrow_back_ios_rounded,
+            color: Colors.black,
+            size: 16,
           ),
-          // const Text(
-          //   '취소',
-          //   style: TextStyle(color: Colors.black, fontSize: 16),
-          // ),
           onPressed: () {
             bc.changeTabIndex(0);
           },
@@ -127,33 +124,30 @@ class _AddPageState extends State<AddPage> {
             children: [
               InkWell(
                 child: SizedBox(
-                  height: Get.width,
-                  width: Get.width,
-                  child: imageList.isEmpty == false
-                      ? CarouselSlider(
-                          options: CarouselOptions(
-                            aspectRatio: 10 / 10,
-                            viewportFraction: 1.0,
-                            height: 400.0,
-                            enableInfiniteScroll: false,
-                          ),
-                          items: imageList
-                              .map((e) => AssetThumb(
-                                    asset: e,
-                                    // width: Get.width.truncate(),
-                                    // height: Get.width.truncate(),
-                                    width: 200,
-                                    height: 200,
-                                  ))
-                              .toList(),
-                        )
-                      : const Center(
-                          child: Text(
-                            "이미지를 선택해주세요",
-                            style: TextStyle(color: Colors.black, fontSize: 16),
-                          ),
-                        ),
-                ),
+                    height: Get.width,
+                    width: Get.width,
+                    child: imageList.isEmpty == false
+                        ? CarouselSlider(
+                            options: CarouselOptions(
+                              aspectRatio: 10 / 10,
+                              viewportFraction: 1.0,
+                              height: 400.0,
+                              enableInfiniteScroll: false,
+                            ),
+                            items: imageList
+                                .map((e) => AssetThumb(
+                                      asset: e,
+                                      width: 200,
+                                      height: 200,
+                                    ))
+                                .toList(),
+                          )
+                        : const Center(
+                            child: Icon(
+                              Icons.add_a_photo_outlined,
+                              size: 30,
+                            ),
+                          )),
                 onTap: () async {
                   await getMultiImage();
                 },
@@ -166,7 +160,6 @@ class _AddPageState extends State<AddPage> {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: PopupMenuButton(
-                        // initialValue: '데일리',
                         child: Container(
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
@@ -174,7 +167,7 @@ class _AddPageState extends State<AddPage> {
                               const Icon(
                                 Icons.checkroom,
                                 size: 18,
-                                color: Colors.grey,
+                                color: Colors.indigoAccent,
                               ),
                               const SizedBox(
                                 width: 5,
@@ -182,7 +175,9 @@ class _AddPageState extends State<AddPage> {
                               Text(
                                 post_lookType,
                                 style: const TextStyle(
-                                    color: Colors.black, fontSize: 16),
+                                    color: Colors.black,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500),
                               ),
                             ],
                           ),
@@ -190,26 +185,12 @@ class _AddPageState extends State<AddPage> {
                           decoration: BoxDecoration(
                             shape: BoxShape.rectangle,
                             border: Border.all(
-                              color: Colors.grey,
+                              color: Colors.indigoAccent,
                             ),
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(10)),
                           ),
                         ),
-                        // OutlinedButton.icon(
-                        //     onPressed: () {},
-                        //     icon: const Icon(Icons.add, size: 18),
-                        //     label: const Text(
-                        //       "어떤 룩인지 선택해주세요",
-                        //       style: TextStyle(color: Colors.black, fontSize: 16),
-                        //     ),
-                        //     style: OutlinedButton.styleFrom(
-                        //       shape: const RoundedRectangleBorder(
-                        //           borderRadius:
-                        //               BorderRadius.all(Radius.circular(10))),
-                        //       side:
-                        //           const BorderSide(width: 1, color: Colors.blue),
-                        //     )),
                         onSelected: (result) {
                           setState(() {
                             post_lookType = result.toString();
@@ -218,13 +199,20 @@ class _AddPageState extends State<AddPage> {
                         itemBuilder: (BuildContext context) => lookTypes
                             .map((value) => PopupMenuItem(
                                   value: value,
-                                  child: Text(value),
+                                  child: Text(
+                                    value,
+                                    style: const TextStyle(
+                                        color: Colors.black, fontSize: 14),
+                                  ),
                                 ))
                             .toList(),
                       ),
                     ),
-                    Divider(
-                      color: Colors.grey.shade800,
+                    // Divider(
+                    //   color: Colors.grey.shade800,
+                    // ),
+                    const SizedBox(
+                      height: 10,
                     ),
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
@@ -245,7 +233,7 @@ class _AddPageState extends State<AddPage> {
                                 style: OutlinedButton.styleFrom(
                                   elevation: i != post_weatherType ? 0 : 3,
                                   shape: const CircleBorder(),
-                                  side: BorderSide(
+                                  side: const BorderSide(
                                       width: 1, color: Colors.transparent
                                       //     : Colors.blue,
                                       ),
@@ -253,18 +241,53 @@ class _AddPageState extends State<AddPage> {
                         ],
                       ),
                     ),
-                    Divider(
-                      color: Colors.grey.shade800,
+                    // Divider(
+                    //   color: Colors.grey.shade800,
+                    // ),
+                    // TextField(
+                    //   // keyboardType: TextInputType.multiline,
+                    //   maxLines: null,
+                    //   decoration: const InputDecoration(
+                    //     labelText: "내용 입력...",
+                    //     labelStyle: TextStyle(fontSize: 14),
+                    //     fillColor: Colors.black,
+                    //     focusColor: Colors.black,
+                    //     hoverColor: Colors.black,
+                    //   ),
+                    //   autocorrect: false,
+                    //   onChanged: (value) {
+                    //     post_content = value;
+                    //   },
+                    //   onSubmitted: (value) {
+                    //     post_content = value;
+                    //   },
+                    // ),
+                    SizedBox(
+                      height: 10,
                     ),
-                    TextField(
-                      decoration: const InputDecoration(
-                        labelText: "내용을 입력해주세요",
-                      ),
+                    TextFormField(
+                      minLines: 1,
+                      maxLines: 5,
+                      cursorColor: Colors.grey,
+                      keyboardType: TextInputType
+                          .multiline, // user keyboard will have a button to move cursor to next line
                       autocorrect: false,
+                      decoration: const InputDecoration(
+                          hintText: '내용 입력...',
+                          hintStyle: TextStyle(color: Colors.grey),
+                          fillColor: Colors.grey,
+                          focusColor: Colors.grey,
+                          hoverColor: Colors.grey,
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(7)),
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(7)),
+                          )),
                       onChanged: (value) {
                         post_content = value;
                       },
-                      onSubmitted: (value) {
+                      onFieldSubmitted: (value) {
                         post_content = value;
                       },
                     ),

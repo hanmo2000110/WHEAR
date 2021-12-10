@@ -38,7 +38,7 @@ class _DetailPageState extends State<DetailPage> {
           ),
           title: const Text(
             "Detail",
-            style: TextStyle(color: Colors.black, fontSize: 15),
+            style: TextStyle(color: Colors.black, fontSize: 16),
           ),
         ),
         body: SingleChildScrollView(
