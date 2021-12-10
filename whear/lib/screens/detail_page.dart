@@ -37,7 +37,7 @@ class _DetailPageState extends State<DetailPage> {
             },
           ),
           title: const Text(
-            "Detail",
+            "WHEAR",
             style: TextStyle(color: Colors.black, fontSize: 16),
           ),
         ),
