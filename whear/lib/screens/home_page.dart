@@ -39,11 +39,11 @@ class _HomePageState extends State<HomePage> {
     // List<PostModel> products = [];
     PostController pc = Get.put(PostController());
     List<PostModel> posts = pc.searchposts;
-    UserController uc = Get.put(UserController());
-    UserModel usermodel = uc.user;
+    // UserController uc = Get.put(UserController());
+    // UserModel usermodel = uc.user;
 
     return posts.map((post) {
-      String creator = post.creator;
+      // String creator = post.creator;
 
       return GestureDetector(
         onTap: () {
@@ -51,6 +51,7 @@ class _HomePageState extends State<HomePage> {
         },
         child: Card(
           elevation: 0,
+          borderOnForeground: false,
           clipBehavior: Clip.antiAlias,
           child: Column(
             children: [
@@ -107,7 +108,7 @@ class _HomePageState extends State<HomePage> {
               ),
               Container(
                 width: Get.width,
-                height: 220,
+                height: Get.width,
                 color: Colors.black,
                 child: Image.network(
                   post.image_links[0],
@@ -118,60 +119,56 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(
                 height: 5,
               ),
-              Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        IconButton(
-                          icon: Icon(Icons.wb_cloudy_outlined),
-                          onPressed: () {},
-                        ),
-                        IconButton(
-                          icon: Icon(Icons.weekend_outlined),
-                          onPressed: () {},
-                        )
-                      ],
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.work_outline_outlined),
-                      onPressed: () {},
-                    )
-                  ],
-                ),
-              ),
-              Expanded(
-                child: Container(
-                  width: Get.width - 40,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
                     children: [
-                      Expanded(
-                        child: Text(
-                          '${post.content}',
-                          style: TextStyle(fontSize: 12),
-                        ),
+                      IconButton(
+                        icon: const Icon(Icons.wb_cloudy_outlined),
+                        onPressed: () {},
                       ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        '좋아요 17개',
-                        style: TextStyle(fontSize: 10),
-                      ),
-                      InkWell(
-                        child: Text(
-                          '댓글 n개 모두보기',
-                          style: TextStyle(fontSize: 10),
-                        ),
-                        onTap: () {},
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
+                      IconButton(
+                        icon: const Icon(Icons.weekend_outlined),
+                        onPressed: () {},
+                      )
                     ],
                   ),
+                  IconButton(
+                    icon: const Icon(Icons.work_outline_outlined),
+                    onPressed: () {},
+                  )
+                ],
+              ),
+              SizedBox(
+                width: Get.width - 40,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      child: Text(
+                        '${post.content}',
+                        style: TextStyle(fontSize: 12),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      '좋아요 17개',
+                      style: TextStyle(fontSize: 10),
+                    ),
+                    InkWell(
+                      child: Text(
+                        '댓글 n개 모두보기',
+                        style: TextStyle(fontSize: 10),
+                      ),
+                      onTap: () {},
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                  ],
                 ),
               )
             ],
@@ -306,14 +303,12 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
-                GridView.count(
-                  physics: const ScrollPhysics(),
+                SingleChildScrollView(
                   scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  crossAxisCount: 1,
-                  padding: const EdgeInsets.only(top: 10, bottom: 10),
-                  children: _buildListViews(context),
-                )
+                  child: Column(
+                    children: [..._buildListViews(context)],
+                  ),
+                ),
               ],
             ),
           )),
