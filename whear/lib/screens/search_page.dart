@@ -15,17 +15,16 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  final searchText = TextEditingController();
   var refreshKey = GlobalKey<RefreshIndicatorState>();
   PostController pc = Get.put(PostController());
 
   // 상단 dropdown 변수
-  final List<int> _dropdownList = [0,1,2,3,4,5];
+  final List<int> _dropdownList = [0, 1, 2, 3, 4, 5];
   int? _selectedValue = 0;
 
   Future<void> _onRefresh() async {
     await pc.getWheatherPosts(_selectedValue!);
-    await Future.delayed(const Duration(milliseconds: 1000), () {
+    await Future.delayed(const Duration(milliseconds: 100), () {
       setState(() {});
       print("search page reloading is finished");
     });
@@ -35,7 +34,7 @@ class _SearchPageState extends State<SearchPage> {
     // final firebaseauth = Provider.of<ApplicationState>(context);
     PostController pc = Get.put(PostController());
     List<PostModel> products = pc.wheatherposts;
-    final ThemeData theme = Theme.of(context);
+    // final ThemeData theme = Theme.of(context);
 
     return products.map((post) {
       return GestureDetector(
@@ -50,7 +49,7 @@ class _SearchPageState extends State<SearchPage> {
             fit: StackFit.expand,
             children: [
               Image.network(
-                "${post.image_links[0]}",
+                post.image_links[0],
                 fit: BoxFit.cover,
                 alignment: Alignment.topCenter,
               ),
@@ -61,15 +60,18 @@ class _SearchPageState extends State<SearchPage> {
                     width: 30,
                     height: 30,
                     child: ClipOval(
-                      child: Image.asset(
-                        'assets/icons/${post.wheather}.jpg',
-                        height: 30,
-                        width: 30,
+                      child: Container(
+                        padding: const EdgeInsets.all(3),
+                        child: Image.asset(
+                          'assets/icons/${post.wheather}.jpg',
+                          // height: 30,
+                          // width: 30,
+                        ),
                       ),
                     ),
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       shape: BoxShape.circle,
-                      color: Color(0xFFe0f2f1),
+                      color: Colors.white,
                     ),
                   )
                   // Icon(
@@ -91,33 +93,35 @@ class _SearchPageState extends State<SearchPage> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        title: Text('게시글 검색', style: TextStyle(color: Colors.black),),
+        title: const Text(
+          '게시글 검색',
+          style: TextStyle(color: Colors.black),
+        ),
         actions: [
           DropdownButton(
-            value: _selectedValue,
+              value: _selectedValue,
               items: _dropdownList.map((value) {
                 return DropdownMenuItem(
                   value: value,
                   child: Container(
                     child: Image.asset(
-                      'assets/icons/${value}.jpg',
+                      'assets/icons/$value.jpg',
                       height: 30,
                       width: 30,
                     ),
-                    decoration:  BoxDecoration(
+                    decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
                 );
               }).toList(),
               onChanged: (value) {
-              setState(() {
-                _selectedValue = value as int;
-                pc.getWheatherPosts(_selectedValue!);
-                _onRefresh();
-              });
-              }
-          )
+                setState(() {
+                  _selectedValue = value as int;
+                  // pc.getWheatherPosts(_selectedValue!);
+                  _onRefresh();
+                });
+              })
         ],
       ),
       body: RefreshIndicator(
