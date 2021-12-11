@@ -44,11 +44,11 @@ class _HomePageState extends State<HomePage> {
     // List<PostModel> products = [];
 
     List<PostModel> posts = pc.searchposts;
-    // UserController uc = Get.put(UserController());
-    // UserModel usermodel = uc.user;
 
-    // print("building grid test");
-    // print(posts.length);
+    UserController uc = Get.put(UserController());
+    UserModel usermodel = uc.user;
+    print("building grid test");
+    print(posts.length);
     return posts.map((post) {
       // String creator = post.creatorName!;
       int likes;
@@ -91,27 +91,28 @@ class _HomePageState extends State<HomePage> {
                           border: Border.all(
                             width: 1,
                             color: Colors.black,
+
                           ),
                         ),
                         child: Text(
                           post.lookType,
                           style: const TextStyle(fontSize: 12),
                         ),
-                      ),
-                      const SizedBox(
-                        width: 7,
-                      ),
-                      Container(
-                        color: Colors.white,
-                        child: Image.asset(
-                          'assets/icons/${post.wheather}.jpg',
-                          height: 30,
-                          width: 30,
-                        ),
-                      )
-                    ],
-                  ),
-                ],
+                        Container(
+                          child: Image.asset(
+                            'assets/icons/${post.wheather}.jpg',
+                            height: 30,
+                            width: 30,
+                          ),
+                          decoration:  BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+
               ),
             ),
             GestureDetector(

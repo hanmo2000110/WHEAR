@@ -16,14 +16,21 @@ class PostController extends GetxController {
   onInit() async {
     await getPosts();
     await getMyPosts();
-    print("get posts finished");
+
+    await getWheatherPosts(0);
+    print("getposts finished");
+
     super.onInit();
   }
 
   List<PostModel> _myPosts = [];
   List<PostModel> get myposts => _myPosts;
+
   List<PostModel> _searchPosts = [];
   List<PostModel> get searchposts => _searchPosts;
+
+  List<PostModel> _wheatherPosts = [];
+  List<PostModel> get wheatherposts => _wheatherPosts;
 
   Future getMyPosts() async {
     UserController uc = Get.find<UserController>();
@@ -93,6 +100,30 @@ class PostController extends GetxController {
     });
 
     print(_searchPosts.length);
+  }
+
+  Future getWheatherPosts(int search_wheather) async {
+    UserController uc = Get.find<UserController>();
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    _wheatherPosts.clear();
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+    var result = await firestore
+        .collection('posts')
+        .where("weather", isEqualTo: search_wheather)
+        .orderBy('createdTime', descending: true)
+        .get();
+
+    result.docs.forEach((element) {
+      _wheatherPosts.add(PostModel(
+        createdTime: element.data()['createdTime'],
+        creator: element.data()['creator'],
+        post_id: element.data()['post_id'],
+        lookType: element.data()['lookType'],
+        wheather: element.data()['weather'],
+        content: element.data()['content'],
+        image_links: element.data()['image_links'].cast<String>(),
+      ));
+    });
   }
 
   Future<String> getCreatorInfo(String creator) async {
