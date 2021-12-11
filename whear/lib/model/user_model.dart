@@ -11,6 +11,7 @@ class UserModel {
   String? profile_image_url;
   int? follower;
   int? following;
+  bool? isFollowed;
 
   UserModel({
     this.uid,

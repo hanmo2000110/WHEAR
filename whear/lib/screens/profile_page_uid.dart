@@ -22,7 +22,8 @@ class _ProfilePageUidState extends State<ProfilePageUid> {
 
   UserController uc = Get.find<UserController>();
   bool tab = true;
-  bool isFollowed = true;
+  bool? isFollowed;
+
   //TODO 이거 uc.user.followList 에서 curuid 있으면 true로 하도록 코딩해줘야함
   List<GestureDetector> _buildGridCards(BuildContext context) {
     // if (products.isEmpty) {
@@ -76,9 +77,11 @@ class _ProfilePageUidState extends State<ProfilePageUid> {
 
   @override
   Widget build(BuildContext context) {
+
     Future.delayed(const Duration(milliseconds: 100), () {
       setState(() {});
     });
+
     final pc = Get.find<PostController>();
     // AuthController ac = Get.find();
     return DefaultTabController(
@@ -180,11 +183,14 @@ class _ProfilePageUidState extends State<ProfilePageUid> {
             Align(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 0),
-                child: (isFollowed == true)
+                child: (curuser.isFollowed! == true)
                     ? OutlinedButton(
                         onPressed: () {
                           setState(() {
-                            isFollowed = false;
+                            curuser.isFollowed = false;
+                            int n = curuser.follower!;
+                            curuser.follower = n - 1;
+                            uc.follow(curuser.uid!);
                           });
                         },
                         style: OutlinedButton.styleFrom(
@@ -201,7 +207,10 @@ class _ProfilePageUidState extends State<ProfilePageUid> {
                     : ElevatedButton(
                         onPressed: () {
                           setState(() {
-                            isFollowed = true;
+                            curuser.isFollowed = true;
+                            int n = curuser.follower!;
+                            curuser.follower = n + 1;
+                            uc.follow(curuser.uid!);
                           });
                         },
                         style: ElevatedButton.styleFrom(

@@ -96,4 +96,19 @@ class UserController extends GetxController {
 
     return usersRef.docs.length;
   }
+
+  Future<bool> iFollowed(String uid) async {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    String myuid = FirebaseAuth.instance.currentUser!.uid;
+    // print(docid);
+    final usersRef = await firestore
+        .collection('user')
+        .doc(uid)
+        .collection("follower")
+        .doc(myuid)
+        .get();
+    // print("ck");
+
+    return usersRef.exists;
+  }
 }

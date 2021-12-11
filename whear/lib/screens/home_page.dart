@@ -78,17 +78,21 @@ class _HomePageState extends State<HomePage> {
                     .collection('user')
                     .doc(post.creator)
                     .get();
+
                 UserModel curuser = UserModel(
                   email: result.data()!['email'],
                   uid: post.creator,
                   name: result.data()!['name'],
                   profile_image_url: result.data()!['profile_image_url'],
                   status_message: result.data()!['status_message'],
-                  follower: result.data()!['follower'],
-                  following: result.data()!['following'],
                 );
 
-                await Get.toNamed("profileuid", arguments: curuser);
+                curuser.follower = await uc.countFollowers(curuser.uid!);
+                curuser.following = await uc.countFollowings(curuser.uid!);
+                curuser.isFollowed = await uc.iFollowed(curuser.uid!);
+                await Get.toNamed("profileuid", arguments: curuser)!
+                    .then((value) => setState(() {}));
+
               },
               child: Container(
                 margin: const EdgeInsets.symmetric(horizontal: 5),
