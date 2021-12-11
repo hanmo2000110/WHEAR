@@ -168,135 +168,149 @@ class _ProfilePageState extends State<ProfilePage> {
           physics: const BouncingScrollPhysics(),
           slivers: <Widget>[
             SliverToBoxAdapter(
-                child: Column(
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.fromLTRB(50.0, 15.0, 50.0, 20.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      CircleAvatar(
-                        radius: 35.0,
-                        backgroundColor: Colors.lightBlueAccent,
-                        backgroundImage: NetworkImage(
-                            FirebaseAuth.instance.currentUser!.photoURL!),
-                      ),
-                      // Container(
-                      //     width: Get.width / 2 - 30,
-                      //     child: Row(
-                      //       children: [
-                      //         isEdit
-                      //             ? Row(
-                      //                 children: [
-                      //                   SizedBox(
-                      //                     width: 100,
-                      //                     height: 60,
-                      //                     child: TextField(
-                      //                       // decoration: InputDecoration(
-                      //                       //   labelText: '${user.name}',
-                      //                       //   labelStyle: TextStyle(
-                      //                       //     fontSize: 12,
-                      //                       //   )
-                      //                       // ),
-                      //                       onChanged: (text) {
-                      //                         setState(() {
-                      //                           inputText = text;
-                      //                         });
-                      //                       },
-                      //                     ),
-                      //                   ),
-                      //                   TextButton(
-                      //                     child: Text('완료'),
-                      //                     onPressed: () {
-                      //                       setState(() {
-                      //                         updateUserName(user.uid);
-                      //                         print(inputText);
-                      //                         ac.userInit
-                      //                             .getUser(ac.user!, false);
-                      //                         isEdit = !isEdit;
-                      //                       });
-                      //                     },
-                      //                   )
-                      //                 ],
-                      //               )
-                      //             : Row(
-                      //                 children: [
-                      //                   Obx(() {
-                      //                     return Text('${uc.user.name}');
-                      //                   }),
-                      //                   TextButton(
-                      //                     child: Text('수정'),
-                      //                     onPressed: () {
-                      //                       setState(() {
-                      //                         isEdit = !isEdit;
-                      //                       });
-                      //                     },
-                      //                   )
-                      //                 ],
-                      //               )
-                      //       ],
-                      //     )),
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      //   children: [
-                      Column(
-                        children: [
-                          Text(
-                            '${Get.find<PostController>().myposts.length}',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          const Text(
-                            '게시물',
-                            style: TextStyle(letterSpacing: 1.0),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          Text(
-                            '${uc.user.follower}',
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          const Text(
-                            '팔로워',
-                            style: TextStyle(letterSpacing: 1.0),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          Text(
-                            '${uc.user.following}',
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          const Text(
-                            '팔로잉',
-                            style: TextStyle(letterSpacing: 1.0),
-                          ),
-                        ],
-                      ),
-                      //   ],
-                      // ),
-                    ],
+              child: Column(
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(50.0, 15.0, 50.0, 0.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CircleAvatar(
+                          radius: 35.0,
+                          backgroundColor: Colors.lightBlueAccent,
+                          backgroundImage: NetworkImage(
+                              FirebaseAuth.instance.currentUser!.photoURL!),
+                        ),
+                        // Container(
+                        //     width: Get.width / 2 - 30,
+                        //     child: Row(
+                        //       children: [
+                        //         isEdit
+                        //             ? Row(
+                        //                 children: [
+                        //                   SizedBox(
+                        //                     width: 100,
+                        //                     height: 60,
+                        //                     child: TextField(
+                        //                       // decoration: InputDecoration(
+                        //                       //   labelText: '${user.name}',
+                        //                       //   labelStyle: TextStyle(
+                        //                       //     fontSize: 12,
+                        //                       //   )
+                        //                       // ),
+                        //                       onChanged: (text) {
+                        //                         setState(() {
+                        //                           inputText = text;
+                        //                         });
+                        //                       },
+                        //                     ),
+                        //                   ),
+                        //                   TextButton(
+                        //                     child: Text('완료'),
+                        //                     onPressed: () {
+                        //                       setState(() {
+                        //                         updateUserName(user.uid);
+                        //                         print(inputText);
+                        //                         ac.userInit
+                        //                             .getUser(ac.user!, false);
+                        //                         isEdit = !isEdit;
+                        //                       });
+                        //                     },
+                        //                   )
+                        //                 ],
+                        //               )
+                        //             : Row(
+                        //                 children: [
+                        //                   Obx(() {
+                        //                     return Text('${uc.user.name}');
+                        //                   }),
+                        //                   TextButton(
+                        //                     child: Text('수정'),
+                        //                     onPressed: () {
+                        //                       setState(() {
+                        //                         isEdit = !isEdit;
+                        //                       });
+                        //                     },
+                        //                   )
+                        //                 ],
+                        //               )
+                        //       ],
+                        //     )),
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        //   children: [
+                        Column(
+                          children: [
+                            Text(
+                              '${Get.find<PostController>().myposts.length}',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            const Text(
+                              '게시물',
+                              style: TextStyle(letterSpacing: 1.0),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Text(
+                              '${uc.user.follower}',
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            const Text(
+                              '팔로워',
+                              style: TextStyle(letterSpacing: 1.0),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Text(
+                              '${uc.user.following}',
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            const Text(
+                              '팔로잉',
+                              style: TextStyle(letterSpacing: 1.0),
+                            ),
+                          ],
+                        ),
+                        //   ],
+                        // ),
+                      ],
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                const Divider(
-                  height: 1,
-                ),
-              ],
-            )),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 110.0),
+                    child: TextButton(
+                      onPressed: () async {
+                        await uc.follow(uc.user.uid!);
+                      },
+                      child: Text(
+                        "FOLLOW",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const Divider(
+                    height: 1,
+                  ),
+                ],
+              ),
+            ),
             const SliverToBoxAdapter(
               child: TabBar(tabs: [
                 Tab(
