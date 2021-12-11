@@ -26,6 +26,10 @@ class PostController extends GetxController {
   List<PostModel> _myPosts = [];
   List<PostModel> get myposts => _myPosts;
 
+  List<PostModel> _uidPosts = [];
+  List<PostModel> get uidposts => _uidPosts;
+  void cleanUidPost() => _uidPosts = [];
+
   List<PostModel> _searchPosts = [];
   List<PostModel> get searchposts => _searchPosts;
 
@@ -67,6 +71,42 @@ class PostController extends GetxController {
       post.iLiked = await iLiked(post.post_id);
       post.iSaved = await iSaved(post.post_id);
       _myPosts.add(post);
+      // print(element.data()['image_links'].cast<String>()[0]);
+    });
+    // print(_myPosts.length);
+  }
+
+  Future getPostsUid(String uid) async {
+    UserController uc = Get.find<UserController>();
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    _myPosts.clear();
+    // print(uid);
+    var result = await firestore
+        .collection('posts')
+        .where("creator", isEqualTo: uid)
+        .orderBy('createdTime', descending: true)
+        .get();
+    // print("now testing my postcontroller");
+
+    result.docs.forEach((element) async {
+      // print(element.data()['creator']);
+      String creatorName = await getCreatorInfo(uid);
+      PostModel post = PostModel(
+        createdTime: element.data()['createdTime'],
+        creator: element.data()['creator'],
+        creatorName: creatorName,
+        post_id: element.data()['post_id'],
+        lookType: element.data()['lookType'],
+        wheather: element.data()['weather'],
+        content: element.data()['content'],
+        image_links: element.data()['image_links'].cast<String>(),
+      );
+      var creator = await firestore.collection('user').doc(post.creator).get();
+      post.setCreatorProfilePhotoURL = creator['profile_image_url'];
+      post.likes!.value = await countLike(post.post_id);
+      post.iLiked = await iLiked(post.post_id);
+      post.iSaved = await iSaved(post.post_id);
+      _uidPosts.add(post);
       // print(element.data()['image_links'].cast<String>()[0]);
     });
     // print(_myPosts.length);

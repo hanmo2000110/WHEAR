@@ -5,6 +5,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:whear/auth/auth_middleware.dart';
 import 'package:whear/binding/binding.dart';
 import 'package:whear/screens/home_page.dart';
+import 'package:whear/screens/profile_page_uid.dart';
 import 'package:whear/screens/signin_page.dart';
 import 'screens/add_page.dart';
 import 'screens/where_page.dart';
@@ -58,6 +59,10 @@ class Whear extends StatelessWidget {
         GetPage(
             name: "/profile",
             page: () => ProfilePage(),
+            transition: Transition.noTransition),
+        GetPage(
+            name: "/profileuid",
+            page: () => ProfilePageUid(),
             transition: Transition.noTransition),
         GetPage(
             name: "/search",

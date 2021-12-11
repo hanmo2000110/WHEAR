@@ -141,205 +141,205 @@ class _ProfilePageState extends State<ProfilePage> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-          appBar: AppBar(
-            title: Obx(() {
-              return Text(
-                '${uc.user.name}',
-                style: const TextStyle(color: Colors.black, fontSize: 16),
-              );
-            }),
-            centerTitle: true,
-            elevation: 0,
-            backgroundColor: Colors.white,
-            actions: [
-              IconButton(
-                icon: const Icon(
-                  Icons.settings,
-                  color: Colors.black,
-                  size: 16,
-                ),
-                onPressed: () {
-                  Get.to(const SettingPage());
-                },
+        appBar: AppBar(
+          title: Obx(() {
+            return Text(
+              '${uc.user.name}',
+              style: const TextStyle(color: Colors.black, fontSize: 16),
+            );
+          }),
+          centerTitle: true,
+          elevation: 0,
+          backgroundColor: Colors.white,
+          actions: [
+            IconButton(
+              icon: const Icon(
+                Icons.settings,
+                color: Colors.black,
+                size: 16,
               ),
-            ],
-          ),
-          body: CustomScrollView(
-              physics: const BouncingScrollPhysics(),
-              slivers: <Widget>[
-                SliverToBoxAdapter(
-                    child: Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(50.0, 15.0, 50.0, 20.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              onPressed: () {
+                Get.to(const SettingPage());
+              },
+            ),
+          ],
+        ),
+        body: CustomScrollView(
+          physics: const BouncingScrollPhysics(),
+          slivers: <Widget>[
+            SliverToBoxAdapter(
+                child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.fromLTRB(50.0, 15.0, 50.0, 20.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CircleAvatar(
+                        radius: 35.0,
+                        backgroundColor: Colors.lightBlueAccent,
+                        backgroundImage: NetworkImage(
+                            FirebaseAuth.instance.currentUser!.photoURL!),
+                      ),
+                      // Container(
+                      //     width: Get.width / 2 - 30,
+                      //     child: Row(
+                      //       children: [
+                      //         isEdit
+                      //             ? Row(
+                      //                 children: [
+                      //                   SizedBox(
+                      //                     width: 100,
+                      //                     height: 60,
+                      //                     child: TextField(
+                      //                       // decoration: InputDecoration(
+                      //                       //   labelText: '${user.name}',
+                      //                       //   labelStyle: TextStyle(
+                      //                       //     fontSize: 12,
+                      //                       //   )
+                      //                       // ),
+                      //                       onChanged: (text) {
+                      //                         setState(() {
+                      //                           inputText = text;
+                      //                         });
+                      //                       },
+                      //                     ),
+                      //                   ),
+                      //                   TextButton(
+                      //                     child: Text('완료'),
+                      //                     onPressed: () {
+                      //                       setState(() {
+                      //                         updateUserName(user.uid);
+                      //                         print(inputText);
+                      //                         ac.userInit
+                      //                             .getUser(ac.user!, false);
+                      //                         isEdit = !isEdit;
+                      //                       });
+                      //                     },
+                      //                   )
+                      //                 ],
+                      //               )
+                      //             : Row(
+                      //                 children: [
+                      //                   Obx(() {
+                      //                     return Text('${uc.user.name}');
+                      //                   }),
+                      //                   TextButton(
+                      //                     child: Text('수정'),
+                      //                     onPressed: () {
+                      //                       setState(() {
+                      //                         isEdit = !isEdit;
+                      //                       });
+                      //                     },
+                      //                   )
+                      //                 ],
+                      //               )
+                      //       ],
+                      //     )),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      //   children: [
+                      Column(
                         children: [
-                          CircleAvatar(
-                            radius: 35.0,
-                            backgroundColor: Colors.lightBlueAccent,
-                            backgroundImage: NetworkImage(
-                                FirebaseAuth.instance.currentUser!.photoURL!),
+                          Text(
+                            '${Get.find<PostController>().myposts.length}',
+                            style: TextStyle(fontWeight: FontWeight.bold),
                           ),
-                          // Container(
-                          //     width: Get.width / 2 - 30,
-                          //     child: Row(
-                          //       children: [
-                          //         isEdit
-                          //             ? Row(
-                          //                 children: [
-                          //                   SizedBox(
-                          //                     width: 100,
-                          //                     height: 60,
-                          //                     child: TextField(
-                          //                       // decoration: InputDecoration(
-                          //                       //   labelText: '${user.name}',
-                          //                       //   labelStyle: TextStyle(
-                          //                       //     fontSize: 12,
-                          //                       //   )
-                          //                       // ),
-                          //                       onChanged: (text) {
-                          //                         setState(() {
-                          //                           inputText = text;
-                          //                         });
-                          //                       },
-                          //                     ),
-                          //                   ),
-                          //                   TextButton(
-                          //                     child: Text('완료'),
-                          //                     onPressed: () {
-                          //                       setState(() {
-                          //                         updateUserName(user.uid);
-                          //                         print(inputText);
-                          //                         ac.userInit
-                          //                             .getUser(ac.user!, false);
-                          //                         isEdit = !isEdit;
-                          //                       });
-                          //                     },
-                          //                   )
-                          //                 ],
-                          //               )
-                          //             : Row(
-                          //                 children: [
-                          //                   Obx(() {
-                          //                     return Text('${uc.user.name}');
-                          //                   }),
-                          //                   TextButton(
-                          //                     child: Text('수정'),
-                          //                     onPressed: () {
-                          //                       setState(() {
-                          //                         isEdit = !isEdit;
-                          //                       });
-                          //                     },
-                          //                   )
-                          //                 ],
-                          //               )
-                          //       ],
-                          //     )),
-                          // Row(
-                          //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          //   children: [
-                          Column(
-                            children: [
-                              Text(
-                                '${Get.find<PostController>().myposts.length}',
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              const Text(
-                                '게시물',
-                                style: TextStyle(letterSpacing: 1.0),
-                              ),
-                            ],
+                          const SizedBox(
+                            height: 5,
                           ),
-                          Column(
-                            children: [
-                              Text(
-                                '${uc.user.follower}',
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              const Text(
-                                '팔로워',
-                                style: TextStyle(letterSpacing: 1.0),
-                              ),
-                            ],
+                          const Text(
+                            '게시물',
+                            style: TextStyle(letterSpacing: 1.0),
                           ),
-                          Column(
-                            children: [
-                              Text(
-                                '${uc.user.following}',
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              const Text(
-                                '팔로잉',
-                                style: TextStyle(letterSpacing: 1.0),
-                              ),
-                            ],
-                          ),
-                          //   ],
-                          // ),
                         ],
                       ),
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    const Divider(
-                      height: 1,
-                    ),
-                  ],
-                )),
-                const SliverToBoxAdapter(
-                  child: TabBar(tabs: [
-                    Tab(
-                      child: Icon(
-                        Icons.grid_view,
-                        color: Colors.black,
+                      Column(
+                        children: [
+                          Text(
+                            '${uc.user.follower}',
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          const Text(
+                            '팔로워',
+                            style: TextStyle(letterSpacing: 1.0),
+                          ),
+                        ],
                       ),
-                    ),
-                    Tab(
-                      child: Icon(
-                        Icons.work_outline_outlined,
-                        color: Colors.black,
+                      Column(
+                        children: [
+                          Text(
+                            '${uc.user.following}',
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          const Text(
+                            '팔로잉',
+                            style: TextStyle(letterSpacing: 1.0),
+                          ),
+                        ],
                       ),
-                    )
-                  ]),
-                ),
-                SliverFillRemaining(
-                  child: TabBarView(
-                    children: [
-                      GridView.count(
-                        physics: ScrollPhysics(),
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        crossAxisCount: 3,
-                        padding: const EdgeInsets.all(16.0),
-                        childAspectRatio: 9.0 / 9.0,
-                        children: _buildGridCards(context),
-                      ),
-                      GridView.count(
-                        physics: ScrollPhysics(),
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        crossAxisCount: 3,
-                        padding: const EdgeInsets.all(16.0),
-                        childAspectRatio: 1.0 / 1.0,
-                        children: _buildSavedCards(context),
-                      )
+                      //   ],
+                      // ),
                     ],
                   ),
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                const Divider(
+                  height: 1,
+                ),
+              ],
+            )),
+            const SliverToBoxAdapter(
+              child: TabBar(tabs: [
+                Tab(
+                  child: Icon(
+                    Icons.grid_view,
+                    color: Colors.black,
+                  ),
+                ),
+                Tab(
+                  child: Icon(
+                    Icons.work_outline_outlined,
+                    color: Colors.black,
+                  ),
                 )
-              ])),
+              ]),
+            ),
+            SliverFillRemaining(
+              child: TabBarView(
+                children: [
+                  GridView.count(
+                    physics: ScrollPhysics(),
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    crossAxisCount: 3,
+                    padding: const EdgeInsets.all(16.0),
+                    childAspectRatio: 9.0 / 9.0,
+                    children: _buildGridCards(context),
+                  ),
+                  GridView.count(
+                    physics: ScrollPhysics(),
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    crossAxisCount: 3,
+                    padding: const EdgeInsets.all(16.0),
+                    childAspectRatio: 1.0 / 1.0,
+                    children: _buildSavedCards(context),
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }

@@ -63,52 +63,77 @@ class _HomePageState extends State<HomePage> {
         clipBehavior: Clip.antiAlias,
         child: Column(
           children: [
-            SizedBox(
-              width: Get.width - 40,
-              height: 60,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 20.0,
-                        backgroundColor: Colors.lightBlueAccent,
-                        backgroundImage:
-                            NetworkImage(post.creatorProfilePhotoURL!),
-                      ),
-                      const SizedBox(
-                        width: 25,
-                      ),
-                      Text('${post.creatorName}'),
-                    ],
-                  ),
-                  Row(children: [
-                    Container(
-                      padding: const EdgeInsets.fromLTRB(5, 3, 5, 3),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          width: 1,
-                          color: Colors.black,
+            GestureDetector(
+              onTap: () async {
+                pc.cleanUidPost();
+                await pc.getPostsUid(post.creator);
+                var result = await FirebaseFirestore.instance
+                    .collection('user')
+                    .doc(post.creator)
+                    .get();
+                UserModel curuser = UserModel(
+                  email: result.data()!['email'],
+                  uid: post.creator,
+                  name: result.data()!['name'],
+                  profile_image_url: result.data()!['profile_image_url'],
+                  status_message: result.data()!['status_message'],
+                  follower: result.data()!['follower'],
+                  following: result.data()!['following'],
+                );
+
+                await Get.toNamed("profileuid", arguments: curuser)!
+                    .then((value) => setState(() {}));
+              },
+              child: Container(
+                margin: const EdgeInsets.symmetric(horizontal: 5),
+                height: 60,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 20.0,
+                          backgroundColor: Colors.lightBlueAccent,
+                          backgroundImage:
+                              NetworkImage(post.creatorProfilePhotoURL!),
+                        ),
+                        const SizedBox(
+                          width: 16,
+                        ),
+                        Text('${post.creatorName}'),
+                      ],
+                    ),
+                    Row(children: [
+                      Container(
+                        child: Image.asset(
+                          'assets/icons/${post.wheather}.jpg',
+                          height: 30,
+                          width: 30,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
                         ),
                       ),
-                      child: Text(
-                        post.lookType,
-                        style: const TextStyle(fontSize: 12),
+                      const SizedBox(
+                        width: 15,
                       ),
-                    ),
-                    Container(
-                      child: Image.asset(
-                        'assets/icons/${post.wheather}.jpg',
-                        height: 30,
-                        width: 30,
+                      Container(
+                        padding: const EdgeInsets.fromLTRB(5, 3, 5, 3),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            width: 1,
+                            color: Colors.black,
+                          ),
+                        ),
+                        child: Text(
+                          post.lookType,
+                          style: const TextStyle(fontSize: 12),
+                        ),
                       ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    )
-                  ]),
-                ],
+                    ]),
+                  ],
+                ),
               ),
             ),
             GestureDetector(
@@ -122,6 +147,7 @@ class _HomePageState extends State<HomePage> {
                 child: post.image_links.length != 1
                     ? CarouselSlider(
                         options: CarouselOptions(
+                          enableInfiniteScroll: false,
                           height: 400.0,
                           aspectRatio: 10 / 10,
                           viewportFraction: 1.0,
@@ -160,40 +186,36 @@ class _HomePageState extends State<HomePage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  children: [
-                    IconButton(
-                      icon: iLiked
-                          ? Icon(Icons.wb_cloudy_outlined)
-                          : Icon(
-                              Icons.wb_cloudy,
-                              color: Colors.blue,
-                            ),
-                      onPressed: () async {
-                        await pc.like(post.post_id);
-                        iLiked = await pc.iLiked(post.post_id);
-                        likes = await pc.countLike(post.post_id);
-                        post.iLiked = !iLiked;
-                        post.likes!.value = likes;
+                IconButton(
+                  splashColor: Colors.transparent,
+                  icon: iLiked
+                      ? Icon(Icons.wb_cloudy_outlined,
+                          color: Colors.grey.shade600)
+                      : Icon(
+                          Icons.wb_cloudy,
+                          color: Colors.lightBlueAccent.shade100,
+                        ),
+                  onPressed: () async {
+                    await pc.like(post.post_id);
+                    iLiked = await pc.iLiked(post.post_id);
+                    likes = await pc.countLike(post.post_id);
+                    post.iLiked = !iLiked;
+                    post.likes!.value = likes;
 
-                        print(iLiked);
-                        print(likes);
+                    // print(iLiked);
+                    // print(likes);
 
-                        setState(() {});
-                      },
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.weekend_outlined),
-                      onPressed: () {},
-                    )
-                  ],
+                    setState(() {});
+                  },
                 ),
                 IconButton(
+                  splashColor: Colors.transparent,
                   icon: iSaved
-                      ? Icon(Icons.work_outline_outlined)
+                      ? Icon(Icons.work_outline_outlined,
+                          color: Colors.grey.shade600)
                       : Icon(
                           Icons.work,
-                          color: Colors.blue,
+                          color: Colors.brown.shade400,
                         ),
                   onPressed: () async {
                     await pc.savePost(post.post_id);
@@ -205,35 +227,29 @@ class _HomePageState extends State<HomePage> {
                 )
               ],
             ),
-            SizedBox(
-              width: Get.width - 40,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    child: Text(
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
                       '${post.content}',
-                      style: TextStyle(fontSize: 12),
+                      style: const TextStyle(fontSize: 12),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  Text(
-                    '좋아요 ${likes}개',
-                    style: TextStyle(fontSize: 10),
-                  ),
-                  InkWell(
-                    child: Text(
-                      '댓글 n개 모두보기',
-                      style: TextStyle(fontSize: 10),
+                    const SizedBox(
+                      height: 5,
                     ),
-                    onTap: () {},
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                ],
+                    Text(
+                      '좋아요 $likes개',
+                      style: const TextStyle(fontSize: 10),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                  ],
+                ),
               ),
             )
           ],
@@ -351,7 +367,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                             child: Text(
                               "${wc.text}",
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 14,
                                 // fontWeight: FontWeight.bold,
                               ),
@@ -366,6 +382,9 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
+                ),
+                const SizedBox(
+                  height: 20,
                 ),
                 SingleChildScrollView(
                   scrollDirection: Axis.vertical,
