@@ -360,6 +360,9 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
+                const SizedBox(
+                  height: 20,
+                ),
                 SingleChildScrollView(
                   scrollDirection: Axis.vertical,
                   child: Column(
