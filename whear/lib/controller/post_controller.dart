@@ -16,7 +16,7 @@ class PostController extends GetxController {
   onInit() async {
     await getPosts();
     await getMyPosts();
-
+    await getSavedPosts();
     await getWheatherPosts(0);
     print("getposts finished");
 
@@ -31,6 +31,9 @@ class PostController extends GetxController {
 
   List<PostModel> _wheatherPosts = [];
   List<PostModel> get wheatherposts => _wheatherPosts;
+
+  List<PostModel> _savedPosts = [];
+  List<PostModel> get savedposts => _savedPosts;
 
   Future getMyPosts() async {
     UserController uc = Get.find<UserController>();
@@ -60,10 +63,55 @@ class PostController extends GetxController {
       );
       var creator = await firestore.collection('user').doc(post.creator).get();
       post.setCreatorProfilePhotoURL = creator['profile_image_url'];
+      post.likes!.value = await countLike(post.post_id);
+      post.iLiked = await iLiked(post.post_id);
+      post.iSaved = await iSaved(post.post_id);
       _myPosts.add(post);
       // print(element.data()['image_links'].cast<String>()[0]);
     });
     // print(_myPosts.length);
+  }
+
+  Future getSavedPosts() async {
+    UserController uc = Get.find<UserController>();
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    _savedPosts.clear();
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+    // print(uid);
+    var result = await firestore
+        .collection('user')
+        .doc(uid)
+        .collection("savedPost")
+        .get();
+
+    // print("now testing my postcontroller");
+
+    result.docs.forEach((element) async {
+      // print(element.data()['creator']);
+      String creatorName = await getCreatorInfo(uid);
+      String docid = element.data()['docid'];
+      var res = await firestore.collection("posts").doc(docid).get();
+
+      PostModel post = PostModel(
+        createdTime: res.data()!['createdTime'],
+        creator: res.data()!['creator'],
+        creatorName: creatorName,
+        post_id: res.data()!['post_id'],
+        lookType: res.data()!['lookType'],
+        wheather: res.data()!['weather'],
+        content: res.data()!['content'],
+        image_links: res.data()!['image_links'].cast<String>(),
+      );
+      var creator = await firestore.collection('user').doc(post.creator).get();
+      post.setCreatorProfilePhotoURL = creator['profile_image_url'];
+      post.likes!.value = await countLike(post.post_id);
+      post.iLiked = await iLiked(post.post_id);
+      post.iSaved = await iSaved(post.post_id);
+      print(post.image_links[0]);
+      _savedPosts.add(post);
+      // print(element.data()['image_links'].cast<String>()[0]);
+    });
+    print(_savedPosts.length);
   }
 
   Future getPosts() async {
@@ -92,7 +140,7 @@ class PostController extends GetxController {
       );
       var creator = await firestore.collection('user').doc(post.creator).get();
       post.setCreatorProfilePhotoURL = creator['profile_image_url'];
-      post.likes = await countLike(post.post_id);
+      post.likes!.value = await countLike(post.post_id);
       post.iLiked = await iLiked(post.post_id);
       post.iSaved = await iSaved(post.post_id);
       _searchPosts.add(post);
@@ -198,7 +246,10 @@ class PostController extends GetxController {
         print("save deleted");
         return false;
       } else {
-        usersRef.set({"savedTime": Timestamp.now()});
+        usersRef.set({
+          "savedTime": Timestamp.now(),
+          "docid": docid,
+        });
         print("save added");
         return true;
       }

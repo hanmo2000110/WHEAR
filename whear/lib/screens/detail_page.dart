@@ -23,7 +23,7 @@ class _DetailPageState extends State<DetailPage> {
     List<dynamic> imgList = detailpost.image_links;
     int likes;
     bool iLiked, iSaved;
-    likes = detailpost.likes!;
+    likes = detailpost.likes!.value;
     iLiked = !detailpost.iLiked!;
     iSaved = !detailpost.iSaved!;
     print(iLiked);
@@ -164,7 +164,7 @@ class _DetailPageState extends State<DetailPage> {
                             iLiked = await pc.iLiked(detailpost.post_id);
                             likes = await pc.countLike(detailpost.post_id);
                             detailpost.iLiked = !iLiked;
-                            detailpost.likes = likes;
+                            detailpost.likes!.value = likes;
 
                             print(iLiked);
                             print(likes);
