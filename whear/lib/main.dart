@@ -66,7 +66,7 @@ class Whear extends StatelessWidget {
         GetPage(
           name: "/detail",
           page: () => DetailPage(),
-          transition: Transition.noTransition,
+          transition: Transition.fade,
         )
       ],
     );

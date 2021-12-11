@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -39,7 +40,7 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  List<GestureDetector> _buildListViews(BuildContext context) {
+  List<Card> _buildListViews(BuildContext context) {
     // List<PostModel> products = [];
 
     List<PostModel> posts = pc.searchposts;
@@ -55,88 +56,116 @@ class _HomePageState extends State<HomePage> {
       likes = post.likes!;
       iLiked = !post.iLiked!;
       print(iLiked);
+      return Card(
+        elevation: 0,
+        borderOnForeground: false,
+        clipBehavior: Clip.antiAlias,
+        child: Column(
+          children: [
+            SizedBox(
+              width: Get.width - 40,
+              height: 60,
+              child: Row(
 
-      return GestureDetector(
-        onTap: () async {
-          await Get.toNamed("detail", arguments: post)!
-              .then((value) => setState(() {}));
-        },
-        child: Card(
-          elevation: 0,
-          borderOnForeground: false,
-          clipBehavior: Clip.antiAlias,
-          child: Column(
-            children: [
-              SizedBox(
-                width: Get.width - 40,
-                height: 60,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        CircleAvatar(
-                          radius: 20.0,
-                          backgroundColor: Colors.lightBlueAccent,
-                          backgroundImage:
-                              NetworkImage(post.creatorProfilePhotoURL!),
-                        ),
-                        const SizedBox(
-                          width: 25,
-                        ),
-                        Text('${post.creatorName}'),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.fromLTRB(5, 3, 5, 3),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              width: 1,
-                              color: Colors.black,
-                            ),
-                          ),
-                          child: Text(
-                            post.lookType,
-                            style: const TextStyle(fontSize: 12),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 7,
-                        ),
-                        Container(
-                          color: Colors.white,
-                          child: Image.asset(
-                            'assets/icons/${post.wheather}.jpg',
-                            height: 30,
-                            width: 30,
-                          ),
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                width: Get.width,
-                height: Get.width,
-                color: Colors.black,
-                child: Image.network(
-                  post.image_links[0],
-                  fit: BoxFit.cover,
-                  alignment: Alignment.topCenter,
-                ),
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Row(
                     children: [
-                      IconButton(
+                      CircleAvatar(
+                        radius: 20.0,
+                        backgroundColor: Colors.lightBlueAccent,
+                        backgroundImage:
+                            NetworkImage(post.creatorProfilePhotoURL!),
+                      ),
+                      const SizedBox(
+                        width: 25,
+                      ),
+                      Text('${post.creatorName}'),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.fromLTRB(5, 3, 5, 3),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            width: 1,
+                            color: Colors.black,
+                          ),
+                        ),
+                        child: Text(
+                          post.lookType,
+                          style: const TextStyle(fontSize: 12),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 7,
+                      ),
+                      Container(
+                        color: Colors.white,
+                        child: Image.asset(
+                          'assets/icons/${post.wheather}.jpg',
+                          height: 30,
+                          width: 30,
+                        ),
+                      )
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                await Get.toNamed("detail", arguments: post)!
+              .then((value) => setState(() {}));
+              },
+              child: SizedBox(
+                height: Get.height / 2.5,
+                width: Get.width,
+                child: post.image_links.length != 1
+                    ? CarouselSlider(
+                        options: CarouselOptions(
+                          height: 400.0,
+                          aspectRatio: 10 / 10,
+                          viewportFraction: 1.0,
+                        ),
+                        items: post.image_links.map((img) {
+                          return Container(
+                            width: MediaQuery.of(context).size.width,
+                            margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10.0),
+                              child: Image.network(
+                                img,
+                                fit: BoxFit.cover,
+                                alignment: Alignment.topCenter,
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                      )
+                    : Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10.0),
+                          child: Image.network(
+                            post.image_links[0],
+                            fit: BoxFit.cover,
+                            alignment: Alignment.topCenter,
+                          ),
+                        ),
+                      ),
+              ),
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                     IconButton(
                         icon: iLiked
                             ? Icon(Icons.wb_cloudy_outlined)
                             : Icon(
@@ -157,51 +186,52 @@ class _HomePageState extends State<HomePage> {
                           setState(() {});
                         },
                       ),
-                      IconButton(
-                        icon: const Icon(Icons.weekend_outlined),
-                        onPressed: () async {},
-                      )
-                    ],
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.work_outline_outlined),
-                    onPressed: () {},
-                  )
-                ],
-              ),
-              SizedBox(
-                width: Get.width - 40,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      child: Text(
-                        '${post.content}',
-                        style: TextStyle(fontSize: 12),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      '좋아요 ${likes}개',
-                      style: TextStyle(fontSize: 10),
-                    ),
-                    InkWell(
-                      child: Text(
-                        '댓글 n개 모두보기',
-                        style: TextStyle(fontSize: 10),
-                      ),
-                      onTap: () {},
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
+                    IconButton(
+                      icon: const Icon(Icons.weekend_outlined),
+                      onPressed: () {},
+                    )
                   ],
                 ),
-              )
-            ],
-          ),
+                IconButton(
+                  icon: const Icon(Icons.work_outline_outlined),
+                  onPressed: () {},
+                )
+              ],
+            ),
+            SizedBox(
+              width: Get.width - 40,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    child: Text(
+                      '${post.content}',
+                      style: TextStyle(fontSize: 12),
+                    ),
+
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                 Text(
+                      '좋아요 ${likes}개',
+                    style: TextStyle(fontSize: 10),
+                  ),
+                  InkWell(
+                    child: Text(
+                      '댓글 n개 모두보기',
+
+                      style: TextStyle(fontSize: 10),
+                    ),
+                    onTap: () {},
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                ],
+              ),
+            )
+          ],
         ),
       );
     }).toList();

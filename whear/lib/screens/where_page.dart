@@ -1,8 +1,5 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:whear/auth/auth_middleware.dart';
-import 'package:whear/binding/binding.dart';
 import 'package:whear/controller/predict_controller.dart';
 
 class WherePage extends StatefulWidget {
@@ -21,11 +18,12 @@ class _WherePageState extends State<WherePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         shadowColor: Colors.white,
         title: const Text(
           'WHEAR',
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.black, fontSize: 16),
         ),
         backgroundColor: Colors.white,
         centerTitle: true,
@@ -35,20 +33,17 @@ class _WherePageState extends State<WherePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(
-              height: 50,
-            ),
             InkWell(
               onTap: () async {
                 result = await pre.pickImage();
                 print(result);
                 setState(() {});
               },
-              child: Container(
+              child: SizedBox(
                 width: Get.width,
-                height: 220,
+                height: Get.width,
                 child: pre.imagePicked == null
-                    ? Center(
+                    ? const Center(
                         child: Text("사진을 선택하려면 터치하세요!"),
                       )
                     : Image.file(
@@ -58,11 +53,8 @@ class _WherePageState extends State<WherePage> {
                       ),
               ),
             ),
-            SizedBox(
-              height: 20,
-            ),
-            SizedBox(
-              height: 20,
+            const SizedBox(
+              height: 40,
             ),
             pre.imagePicked != null
                 ? Text("이 옷은 ${result}(이)며 현재 날씨와 어울립니다.")
