@@ -44,73 +44,77 @@ class _HomePageState extends State<HomePage> {
     // List<PostModel> products = [];
 
     List<PostModel> posts = pc.searchposts;
-    // UserController uc = Get.put(UserController());
-    // UserModel usermodel = uc.user;
 
-    // print("building grid test");
-    // print(posts.length);
+    UserController uc = Get.put(UserController());
+    UserModel usermodel = uc.user;
+    print("building grid test");
+    print(posts.length);
     return posts.map((post) {
-      // String creator = post.creatorName!;
-      int likes;
-      bool iLiked;
-      likes = post.likes!;
-      iLiked = !post.iLiked!;
-      print(iLiked);
-      return Card(
-        elevation: 0,
-        borderOnForeground: false,
-        clipBehavior: Clip.antiAlias,
-        child: Column(
-          children: [
-            SizedBox(
-              width: Get.width - 40,
-              height: 60,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 20.0,
-                        backgroundColor: Colors.lightBlueAccent,
-                        backgroundImage:
-                            NetworkImage(post.creatorProfilePhotoURL!),
-                      ),
-                      const SizedBox(
-                        width: 25,
-                      ),
-                      Text('${post.creatorName}'),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.fromLTRB(5, 3, 5, 3),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            width: 1,
-                            color: Colors.black,
+      String creator = post.creatorName!;
+      return GestureDetector(
+        onTap: () {
+          Get.toNamed("detail", arguments: post);
+        },
+        child: Card(
+          elevation: 0,
+          clipBehavior: Clip.antiAlias,
+          child: Column(
+            children: [
+              SizedBox(
+                width: Get.width - 40,
+                height: 60,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 20.0,
+                          backgroundColor: Colors.lightBlueAccent,
+                          backgroundImage:
+                              NetworkImage(post.creatorProfilePhotoURL!),
+                        ),
+                        const SizedBox(
+                          width: 25,
+                        ),
+                        Text('${post.creatorName}'),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.fromLTRB(5, 3, 5, 3),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              width: 1,
+                              color: Colors.black,
+                            ),
+                          ),
+                          child: Text(
+                            post.lookType,
+                            style: const TextStyle(fontSize: 12),
+
                           ),
                         ),
                         child: Text(
                           post.lookType,
                           style: const TextStyle(fontSize: 12),
                         ),
-                      ),
-                      const SizedBox(
-                        width: 7,
-                      ),
-                      Container(
-                        color: Colors.white,
-                        child: Image.asset(
-                          'assets/icons/${post.wheather}.jpg',
-                          height: 30,
-                          width: 30,
-                        ),
-                      )
-                    ],
-                  ),
-                ],
+                        Container(
+                          child: Image.asset(
+                            'assets/icons/${post.wheather}.jpg',
+                            height: 30,
+                            width: 30,
+                          ),
+                          decoration:  BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+
               ),
             ),
             GestureDetector(
