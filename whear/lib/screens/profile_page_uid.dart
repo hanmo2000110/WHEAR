@@ -20,9 +20,10 @@ class _ProfilePageUidState extends State<ProfilePageUid> {
   TextEditingController inputController = TextEditingController();
   String inputText = '';
 
+  UserController uc = Get.find<UserController>();
   bool tab = true;
-  bool isEdit = false;
-
+  bool isFollowed = true;
+  //TODO 이거 uc.user.followList 에서 curuid 있으면 true로 하도록 코딩해줘야함
   List<GestureDetector> _buildGridCards(BuildContext context) {
     // if (products.isEmpty) {
     //   return const <Card>[];
@@ -75,7 +76,8 @@ class _ProfilePageUidState extends State<ProfilePageUid> {
 
   @override
   Widget build(BuildContext context) {
-    // final uc = Get.find<UserController>();
+    // bool isFollowed = false;
+
     final pc = Get.find<PostController>();
     // AuthController ac = Get.find();
     return DefaultTabController(
@@ -115,7 +117,7 @@ class _ProfilePageUidState extends State<ProfilePageUid> {
         body: Column(
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.fromLTRB(50.0, 15.0, 50.0, 20.0),
+              padding: const EdgeInsets.fromLTRB(50.0, 15.0, 50.0, 0.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -174,8 +176,46 @@ class _ProfilePageUidState extends State<ProfilePageUid> {
                 ],
               ),
             ),
+            Align(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 0),
+                child: (isFollowed == true)
+                    ? OutlinedButton(
+                        onPressed: () {
+                          setState(() {
+                            isFollowed = false;
+                          });
+                        },
+                        style: OutlinedButton.styleFrom(
+                          fixedSize: const Size(200, 30),
+                        ),
+                        child: const Text(
+                          "팔로잉",
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.grey,
+                          ),
+                        ))
+                    : ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            isFollowed = true;
+                          });
+                        },
+                        style: ElevatedButton.styleFrom(
+                          fixedSize: const Size(200, 30),
+                        ),
+                        child: const Text(
+                          "팔로우",
+                          style: TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.w500),
+                        )),
+              ),
+              alignment: Alignment.center,
+            ),
             const SizedBox(
-              height: 15,
+              height: 5,
             ),
             const Divider(
               height: 1,

@@ -36,7 +36,7 @@ class _WherePageState extends State<WherePage> {
             InkWell(
               onTap: () async {
                 result = await pre.pickImage();
-                print(result);
+                // print(result);
                 setState(() {});
               },
               child: SizedBox(

@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:whear/controller/bottom_navigation_controller.dart';
 
 import 'package:whear/controller/predict_controller.dart';
 import 'package:whear/controller/user_controller.dart';
@@ -47,8 +48,8 @@ class _HomePageState extends State<HomePage> {
 
     UserController uc = Get.put(UserController());
     UserModel usermodel = uc.user;
-    print("building grid test");
-    print(posts.length);
+    // print("building grid test");
+    // print(posts.length);
     return posts.map((post) {
       // String creator = post.creatorName!;
       int likes;
@@ -56,7 +57,7 @@ class _HomePageState extends State<HomePage> {
       likes = post.likes!.value;
       iLiked = !post.iLiked!;
       iSaved = !post.iSaved!;
-      print(iLiked);
+      // print(iLiked);
       return Card(
         elevation: 0,
         borderOnForeground: false,
@@ -65,6 +66,12 @@ class _HomePageState extends State<HomePage> {
           children: [
             GestureDetector(
               onTap: () async {
+                if (post.creator == uc.user.uid) {
+                  BottomNavigationController bnc = Get.find();
+                  bnc.changeTabIndex(4);
+                  setState(() {});
+                  return;
+                }
                 pc.cleanUidPost();
                 await pc.getPostsUid(post.creator);
                 var result = await FirebaseFirestore.instance
@@ -282,8 +289,8 @@ class _HomePageState extends State<HomePage> {
             child: InkWell(
               child: const Icon(Icons.add),
               onTap: () async {
-                print("testing homepage");
-                print(pc.searchposts.length);
+                // print("testing homepage");
+                // print(pc.searchposts.length);
               },
             ),
           ),

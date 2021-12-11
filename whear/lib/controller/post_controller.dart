@@ -147,23 +147,23 @@ class PostController extends GetxController {
       post.likes!.value = await countLike(post.post_id);
       post.iLiked = await iLiked(post.post_id);
       post.iSaved = await iSaved(post.post_id);
-      print(post.image_links[0]);
+      // print(post.image_links[0]);
       _savedPosts.add(post);
       // print(element.data()['image_links'].cast<String>()[0]);
     });
-    print(_savedPosts.length);
+    // print(_savedPosts.length);
   }
 
   Future getPosts() async {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     _searchPosts.clear();
     String uid = FirebaseAuth.instance.currentUser!.uid;
-    print(uid);
+    // print(uid);
     var result = await firestore
         .collection('posts')
         .orderBy('createdTime', descending: true)
         .get();
-    print("now testing getPosts");
+    // print("now testing getPosts");
 
     result.docs.forEach((element) async {
       // print(element.data()['creator']);
@@ -187,7 +187,7 @@ class PostController extends GetxController {
       // print(element.data()['image_links'].cast<String>()[0]);
     });
 
-    print(_searchPosts.length);
+    // print(_searchPosts.length);
   }
 
   Future getWheatherPosts(int search_wheather) async {
@@ -224,7 +224,7 @@ class PostController extends GetxController {
     String uid = FirebaseAuth.instance.currentUser!.uid;
     final usersRef =
         firestore.collection('posts').doc(docid).collection("like").doc(uid);
-    print(docid);
+    // print(docid);
     usersRef.get().then((docSnapshot) async {
       if (docSnapshot.exists) {
         usersRef.delete();
@@ -278,7 +278,7 @@ class PostController extends GetxController {
         .collection("savedPost")
         .doc(docid);
 
-    print(docid);
+    // print(docid);
 
     usersRef.get().then((docSnapshot) async {
       if (docSnapshot.exists) {
