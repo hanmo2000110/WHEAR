@@ -46,11 +46,16 @@ class _HomePageState extends State<HomePage> {
     List<PostModel> posts = pc.searchposts;
     // UserController uc = Get.put(UserController());
     // UserModel usermodel = uc.user;
-    print("building grid test");
-    print(posts.length);
+
+    // print("building grid test");
+    // print(posts.length);
     return posts.map((post) {
       // String creator = post.creatorName!;
-
+      int likes;
+      bool iLiked;
+      likes = post.likes!;
+      iLiked = !post.iLiked!;
+      print(iLiked);
       return Card(
         elevation: 0,
         borderOnForeground: false,
@@ -61,6 +66,7 @@ class _HomePageState extends State<HomePage> {
               width: Get.width - 40,
               height: 60,
               child: Row(
+
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Row(
@@ -110,7 +116,8 @@ class _HomePageState extends State<HomePage> {
             ),
             GestureDetector(
               onTap: () {
-                Get.toNamed("detail", arguments: post);
+                await Get.toNamed("detail", arguments: post)!
+              .then((value) => setState(() {}));
               },
               child: SizedBox(
                 height: Get.height / 2.5,
@@ -158,10 +165,27 @@ class _HomePageState extends State<HomePage> {
               children: [
                 Row(
                   children: [
-                    IconButton(
-                      icon: const Icon(Icons.wb_cloudy_outlined),
-                      onPressed: () {},
-                    ),
+                     IconButton(
+                        icon: iLiked
+                            ? Icon(Icons.wb_cloudy_outlined)
+                            : Icon(
+                                Icons.wb_cloudy,
+                                color: Colors.blue,
+                              ),
+                        onPressed: () async {
+                          await pc.like(post.post_id);
+
+                          iLiked = await pc.iLiked(post.post_id);
+                          likes = await pc.countLike(post.post_id);
+                          post.iLiked = !iLiked;
+                          post.likes = likes;
+
+                          print(iLiked);
+                          print(likes);
+
+                          setState(() {});
+                        },
+                      ),
                     IconButton(
                       icon: const Icon(Icons.weekend_outlined),
                       onPressed: () {},
@@ -184,17 +208,19 @@ class _HomePageState extends State<HomePage> {
                       '${post.content}',
                       style: TextStyle(fontSize: 12),
                     ),
+
                   ),
                   const SizedBox(
                     height: 5,
                   ),
-                  Text(
-                    '좋아요 17개',
+                 Text(
+                      '좋아요 ${likes}개',
                     style: TextStyle(fontSize: 10),
                   ),
                   InkWell(
                     child: Text(
                       '댓글 n개 모두보기',
+
                       style: TextStyle(fontSize: 10),
                     ),
                     onTap: () {},

@@ -60,7 +60,6 @@ class PostController extends GetxController {
   }
 
   Future getPosts() async {
-    UserController uc = Get.find<UserController>();
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     _searchPosts.clear();
     String uid = FirebaseAuth.instance.currentUser!.uid;
@@ -86,6 +85,8 @@ class PostController extends GetxController {
       );
       var creator = await firestore.collection('user').doc(post.creator).get();
       post.setCreatorProfilePhotoURL = creator['profile_image_url'];
+      post.likes = await countLike(post.post_id);
+      post.iLiked = await iLiked(post.post_id);
       _searchPosts.add(post);
       // print(element.data()['image_links'].cast<String>()[0]);
     });
@@ -96,5 +97,55 @@ class PostController extends GetxController {
   Future<String> getCreatorInfo(String creator) async {
     var creatorInfo = await firestore.collection('user').doc(creator).get();
     return creatorInfo['name'];
+  }
+
+  Future<bool> like(String docid) async {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+    final usersRef =
+        firestore.collection('posts').doc(docid).collection("like").doc(uid);
+    print(docid);
+    usersRef.get().then((docSnapshot) async {
+      if (docSnapshot.exists) {
+        usersRef.delete();
+        print("like deleted");
+        return false;
+      } else {
+        usersRef.set({"likedTime": Timestamp.now()});
+        print("like added");
+        return true;
+      }
+    });
+    return false;
+  }
+
+  Future<int> countLike(String docid) async {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+    // print("fu");
+    final usersRef = await firestore
+        .collection('posts')
+        .doc(docid)
+        .collection("like")
+        .snapshots()
+        .first;
+    // print("ck");
+
+    return usersRef.docs.length;
+  }
+
+  Future<bool> iLiked(String docid) async {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+    // print(docid);
+    final usersRef = await firestore
+        .collection('posts')
+        .doc(docid)
+        .collection("like")
+        .doc(uid)
+        .get();
+    // print("ck");
+
+    return usersRef.exists;
   }
 }
