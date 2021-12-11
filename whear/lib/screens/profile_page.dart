@@ -171,7 +171,7 @@ class _ProfilePageState extends State<ProfilePage> {
               child: Column(
                 children: <Widget>[
                   Padding(
-                    padding: EdgeInsets.fromLTRB(50.0, 15.0, 50.0, 0.0),
+                    padding: EdgeInsets.fromLTRB(50.0, 35.0, 50.0, 0.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -291,19 +291,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       ],
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 110.0),
-                    child: TextButton(
-                      onPressed: () async {
-                        await uc.follow(uc.user.uid!);
-                      },
-                      child: Text(
-                        "FOLLOW",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
+                  SizedBox(
+                    height: 35,
                   ),
                   const Divider(
                     height: 1,
