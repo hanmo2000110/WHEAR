@@ -92,7 +92,6 @@ class _HomePageState extends State<HomePage> {
                 curuser.isFollowed = await uc.iFollowed(curuser.uid!);
                 await Get.toNamed("profileuid", arguments: curuser)!
                     .then((value) => setState(() {}));
-
               },
               child: Container(
                 margin: const EdgeInsets.symmetric(horizontal: 5),

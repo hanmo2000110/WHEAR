@@ -113,6 +113,7 @@ class _AddPageState extends State<AddPage> {
               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                   content:
                       Text('게시글이 업로드 되었습니다!', style: TextStyle(fontSize: 17))));
+              Get.put(PostController()).getPosts();
               bc.changeTabIndex(0);
             },
           ),
