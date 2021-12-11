@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:whear/controller/post_controller.dart';
 
 import '/model/post_model.dart';
 
@@ -15,11 +16,16 @@ class DetailPage extends StatefulWidget {
 class _DetailPageState extends State<DetailPage> {
   // static PostModel detailpost = Get.arguments;
   // List<dynamic> imgList = detailpost.image_links;
-
+  PostController pc = Get.put(PostController());
   @override
   Widget build(BuildContext context) {
     PostModel detailpost = Get.arguments;
     List<dynamic> imgList = detailpost.image_links;
+    int likes;
+    bool iLiked;
+    likes = detailpost.likes!;
+    iLiked = !detailpost.iLiked!;
+    print(iLiked);
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -33,7 +39,7 @@ class _DetailPageState extends State<DetailPage> {
               size: 16,
             ),
             onPressed: () {
-              Get.back();
+              Navigator.pop(context);
             },
           ),
           title: const Text(
@@ -135,8 +141,25 @@ class _DetailPageState extends State<DetailPage> {
                     Row(
                       children: [
                         IconButton(
-                          icon: const Icon(Icons.wb_cloudy_outlined),
-                          onPressed: () {},
+                          icon: iLiked
+                              ? Icon(Icons.wb_cloudy_outlined)
+                              : Icon(
+                                  Icons.wb_cloudy,
+                                  color: Colors.blue,
+                                ),
+                          onPressed: () async {
+                            await pc.like(detailpost.post_id);
+
+                            iLiked = await pc.iLiked(detailpost.post_id);
+                            likes = await pc.countLike(detailpost.post_id);
+                            detailpost.iLiked = !iLiked;
+                            detailpost.likes = likes;
+
+                            print(iLiked);
+                            print(likes);
+
+                            setState(() {});
+                          },
                         ),
                         IconButton(
                           icon: const Icon(Icons.weekend_outlined),
@@ -163,7 +186,7 @@ class _DetailPageState extends State<DetailPage> {
                         height: 5,
                       ),
                       Text(
-                        '좋아요 17개',
+                        '좋아요 ${likes}개',
                         style: TextStyle(fontSize: 10),
                       ),
                       InkWell(

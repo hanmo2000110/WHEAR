@@ -45,14 +45,21 @@ class _HomePageState extends State<HomePage> {
     List<PostModel> posts = pc.searchposts;
     // UserController uc = Get.put(UserController());
     // UserModel usermodel = uc.user;
-    print("building grid test");
-    print(posts.length);
+
+    // print("building grid test");
+    // print(posts.length);
     return posts.map((post) {
       // String creator = post.creatorName!;
+      int likes;
+      bool iLiked;
+      likes = post.likes!;
+      iLiked = !post.iLiked!;
+      print(iLiked);
 
       return GestureDetector(
-        onTap: () {
-          Get.toNamed("detail", arguments: post);
+        onTap: () async {
+          await Get.toNamed("detail", arguments: post)!
+              .then((value) => setState(() {}));
         },
         child: Card(
           elevation: 0,
@@ -130,12 +137,29 @@ class _HomePageState extends State<HomePage> {
                   Row(
                     children: [
                       IconButton(
-                        icon: const Icon(Icons.wb_cloudy_outlined),
-                        onPressed: () {},
+                        icon: iLiked
+                            ? Icon(Icons.wb_cloudy_outlined)
+                            : Icon(
+                                Icons.wb_cloudy,
+                                color: Colors.blue,
+                              ),
+                        onPressed: () async {
+                          await pc.like(post.post_id);
+
+                          iLiked = await pc.iLiked(post.post_id);
+                          likes = await pc.countLike(post.post_id);
+                          post.iLiked = !iLiked;
+                          post.likes = likes;
+
+                          print(iLiked);
+                          print(likes);
+
+                          setState(() {});
+                        },
                       ),
                       IconButton(
                         icon: const Icon(Icons.weekend_outlined),
-                        onPressed: () {},
+                        onPressed: () async {},
                       )
                     ],
                   ),
@@ -160,7 +184,7 @@ class _HomePageState extends State<HomePage> {
                       height: 5,
                     ),
                     Text(
-                      '좋아요 17개',
+                      '좋아요 ${likes}개',
                       style: TextStyle(fontSize: 10),
                     ),
                     InkWell(

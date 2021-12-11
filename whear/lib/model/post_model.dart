@@ -17,6 +17,8 @@ class PostModel {
   String lookType;
   String? content;
   List<String> image_links;
+  int? likes;
+  bool? iLiked;
   //TODO: 이거 커멘트 타입 정해야함 !!!!!!
   List<CommentModel>? comment;
 
