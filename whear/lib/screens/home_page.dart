@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -39,10 +40,11 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  List<GestureDetector> _buildListViews(BuildContext context) {
+  List<Card> _buildListViews(BuildContext context) {
     // List<PostModel> products = [];
 
     List<PostModel> posts = pc.searchposts;
+
     UserController uc = Get.put(UserController());
     UserModel usermodel = uc.user;
     print("building grid test");
@@ -91,10 +93,12 @@ class _HomePageState extends State<HomePage> {
                           child: Text(
                             post.lookType,
                             style: const TextStyle(fontSize: 12),
+
                           ),
                         ),
-                        const SizedBox(
-                          width: 7,
+                        child: Text(
+                          post.lookType,
+                          style: const TextStyle(fontSize: 12),
                         ),
                         Container(
                           child: Image.asset(
@@ -110,78 +114,125 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ],
                 ),
+
               ),
-              Container(
+            ),
+            GestureDetector(
+              onTap: () async {
+                await Get.toNamed("detail", arguments: post)!
+                    .then((value) => setState(() {}));
+              },
+              child: SizedBox(
+                height: Get.height / 2.5,
                 width: Get.width,
-                height: 220,
-                color: Colors.black,
-                child: Image.network(
-                  post.image_links[0],
-                  fit: BoxFit.cover,
-                  alignment: Alignment.topCenter,
-                ),
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        IconButton(
-                          icon: Icon(Icons.wb_cloudy_outlined),
-                          onPressed: () {},
+                child: post.image_links.length != 1
+                    ? CarouselSlider(
+                        options: CarouselOptions(
+                          height: 400.0,
+                          aspectRatio: 10 / 10,
+                          viewportFraction: 1.0,
                         ),
-                        IconButton(
-                          icon: Icon(Icons.weekend_outlined),
-                          onPressed: () {},
-                        )
-                      ],
+                        items: post.image_links.map((img) {
+                          return Container(
+                            width: MediaQuery.of(context).size.width,
+                            margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10.0),
+                              child: Image.network(
+                                img,
+                                fit: BoxFit.cover,
+                                alignment: Alignment.topCenter,
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                      )
+                    : Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10.0),
+                          child: Image.network(
+                            post.image_links[0],
+                            fit: BoxFit.cover,
+                            alignment: Alignment.topCenter,
+                          ),
+                        ),
+                      ),
+              ),
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    IconButton(
+                      icon: iLiked
+                          ? Icon(Icons.wb_cloudy_outlined)
+                          : Icon(
+                              Icons.wb_cloudy,
+                              color: Colors.blue,
+                            ),
+                      onPressed: () async {
+                        await pc.like(post.post_id);
+
+                        iLiked = await pc.iLiked(post.post_id);
+                        likes = await pc.countLike(post.post_id);
+                        post.iLiked = !iLiked;
+                        post.likes = likes;
+
+                        print(iLiked);
+                        print(likes);
+
+                        setState(() {});
+                      },
                     ),
                     IconButton(
-                      icon: Icon(Icons.work_outline_outlined),
+                      icon: const Icon(Icons.weekend_outlined),
                       onPressed: () {},
                     )
                   ],
                 ),
-              ),
-              Expanded(
-                child: Container(
-                  width: Get.width - 40,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          '${post.content}',
-                          style: TextStyle(fontSize: 12),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        '좋아요 17개',
-                        style: TextStyle(fontSize: 10),
-                      ),
-                      InkWell(
-                        child: Text(
-                          '댓글 n개 모두보기',
-                          style: TextStyle(fontSize: 10),
-                        ),
-                        onTap: () {},
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                    ],
+                IconButton(
+                  icon: const Icon(Icons.work_outline_outlined),
+                  onPressed: () {},
+                )
+              ],
+            ),
+            SizedBox(
+              width: Get.width - 40,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    child: Text(
+                      '${post.content}',
+                      style: TextStyle(fontSize: 12),
+                    ),
                   ),
-                ),
-              )
-            ],
-          ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  Text(
+                    '좋아요 ${likes}개',
+                    style: TextStyle(fontSize: 10),
+                  ),
+                  InkWell(
+                    child: Text(
+                      '댓글 n개 모두보기',
+                      style: TextStyle(fontSize: 10),
+                    ),
+                    onTap: () {},
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                ],
+              ),
+            )
+          ],
         ),
       );
     }).toList();
@@ -195,20 +246,21 @@ class _HomePageState extends State<HomePage> {
     // pc.getPosts();
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         centerTitle: true,
         elevation: 0,
         title: const Text(
           'WHEAR',
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.black, fontSize: 16),
         ),
         shadowColor: Colors.white,
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 14.0),
             child: InkWell(
-              child: Icon(Icons.add),
+              child: const Icon(Icons.add),
               onTap: () async {
                 print("testing homepage");
                 print(pc.searchposts.length);
@@ -229,7 +281,7 @@ class _HomePageState extends State<HomePage> {
                 Center(
                   child: Material(
                     elevation: 5,
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
                     child: Container(
                       // padding: EdgeInsets.all(2),
                       width: Get.width - 80,
@@ -239,11 +291,11 @@ class _HomePageState extends State<HomePage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                            padding: EdgeInsets.only(
+                            padding: const EdgeInsets.only(
                               left: 20,
                               top: 10,
                             ),
-                            child: Text(
+                            child: const Text(
                               "현재 날씨",
                               style: TextStyle(
                                 fontSize: 14,
@@ -253,7 +305,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                           Obx(() {
                             return Container(
-                              padding: EdgeInsets.only(
+                              padding: const EdgeInsets.only(
                                 left: 20,
                                 top: 12,
                               ),
@@ -261,7 +313,7 @@ class _HomePageState extends State<HomePage> {
                                 children: [
                                   Text(
                                     "${wc.degre.ceil()}˚",
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 30,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -275,7 +327,7 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                     child: Text(
                                       "최고: ${wc.max.ceil()}˚ 최저: ${wc.min.ceil()}˚",
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontSize: 13,
                                         // fontWeight: FontWeight.bold,
                                       ),
@@ -285,12 +337,12 @@ class _HomePageState extends State<HomePage> {
                               ),
                             );
                           }),
-                          SizedBox(
+                          const SizedBox(
                             height: 20,
                           ),
                           Container(
                             width: Get.width - 120,
-                            padding: EdgeInsets.only(
+                            padding: const EdgeInsets.only(
                               left: 20,
                             ),
                             child: Text(
@@ -305,18 +357,17 @@ class _HomePageState extends State<HomePage> {
                       ),
                       decoration: BoxDecoration(
                         color: Colors.lightBlue[100],
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(10)),
                       ),
                     ),
                   ),
                 ),
-                GridView.count(
-                  physics: ScrollPhysics(),
+                SingleChildScrollView(
                   scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  crossAxisCount: 1,
-                  padding: const EdgeInsets.only(top: 10, bottom: 10),
-                  children: _buildListViews(context),
+                  child: Column(
+                    children: [..._buildListViews(context)],
+                  ),
                 ),
               ],
             ),

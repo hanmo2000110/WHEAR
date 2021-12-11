@@ -1,35 +1,26 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:whear/auth/auth_middleware.dart';
-import 'package:whear/binding/binding.dart';
-import 'dart:io';
-
-import 'package:whear/main.dart';
 import '../controller/bottom_navigation_controller.dart';
 import '/screens/add_page.dart';
-import '/screens/notice_page.dart';
+import 'where_page.dart';
 import '/screens/profile_page.dart';
 import '/screens/search_page.dart';
 import '/screens/home_page.dart';
 
-class NavigationPage extends StatefulWidget {
+class NavigationBar extends StatefulWidget {
+  const NavigationBar({Key? key}) : super(key: key);
+
   @override
-  NavigationPageState createState() => NavigationPageState();
+  NavigationBarState createState() => NavigationBarState();
 }
 
-class NavigationPageState extends State<NavigationPage> {
+class NavigationBarState extends State<NavigationBar> {
   final BottomNavigationController _controller =
       Get.put(BottomNavigationController());
   final List _pages = [
-    // Text('home'),
-    // Text('search'),
-    // Text('add'),
-    // Text('notice'),
-    // Text('profile'),
     HomePage(),
     SearchPage(),
-    NoticePage(),
+    WherePage(),
     AddPage(),
     ProfilePage(),
   ];
@@ -48,7 +39,7 @@ class NavigationPageState extends State<NavigationPage> {
             unselectedItemColor: Colors.grey,
             type: BottomNavigationBarType.fixed,
             onTap: _controller.changeTabIndex,
-            items: <BottomNavigationBarItem>[
+            items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
                 icon: Icon(Icons.home),
                 label: 'Home',
