@@ -49,7 +49,6 @@ class _HomePageState extends State<HomePage> {
     print(posts.length);
     return posts.map((post) {
       String creator = post.creatorName!;
-
       return GestureDetector(
         onTap: () {
           Get.toNamed("detail", arguments: post);
@@ -98,11 +97,13 @@ class _HomePageState extends State<HomePage> {
                           width: 7,
                         ),
                         Container(
-                          color: Colors.white,
                           child: Image.asset(
                             'assets/icons/${post.wheather}.jpg',
                             height: 30,
                             width: 30,
+                          ),
+                          decoration:  BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
                           ),
                         )
                       ],

@@ -19,8 +19,12 @@ class _SearchPageState extends State<SearchPage> {
   var refreshKey = GlobalKey<RefreshIndicatorState>();
   PostController pc = Get.put(PostController());
 
+  // 상단 dropdown 변수
+  final List<int> _dropdownList = [0,1,2,3,4,5];
+  int? _selectedValue = 0;
+
   Future<void> _onRefresh() async {
-    await pc.getPosts();
+    await pc.getWheatherPosts(_selectedValue!);
     await Future.delayed(const Duration(milliseconds: 1000), () {
       setState(() {});
       print("search page reloading is finished");
@@ -30,7 +34,7 @@ class _SearchPageState extends State<SearchPage> {
   List<GestureDetector> _buildGridCards(BuildContext context) {
     // final firebaseauth = Provider.of<ApplicationState>(context);
     PostController pc = Get.put(PostController());
-    List<PostModel> products = pc.searchposts;
+    List<PostModel> products = pc.wheatherposts;
     final ThemeData theme = Theme.of(context);
 
     return products.map((post) {
@@ -56,9 +60,12 @@ class _SearchPageState extends State<SearchPage> {
                   child: Container(
                     width: 30,
                     height: 30,
-                    child: Icon(
-                      Icons.cloud,
-                      color: Colors.blue,
+                    child: ClipOval(
+                      child: Image.asset(
+                        'assets/icons/${post.wheather}.jpg',
+                        height: 30,
+                        width: 30,
+                      ),
                     ),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
@@ -80,43 +87,38 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        title: Container(
-          width: Get.width,
-          child: Row(
-            children: [
-              Flexible(
-                child: Container(
-                  height: 40,
-                  child: TextField(
-                    controller: searchText,
-                    // cursorHeight: 30,
-                    textAlignVertical: TextAlignVertical.top,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                        borderSide: BorderSide.none,
-                      ),
-                      prefixIcon: Icon(
-                        Icons.search,
-                        color: Colors.grey,
-                      ),
-                      fillColor: Colors.grey[300],
-                      filled: true,
+        title: Text('게시글 검색', style: TextStyle(color: Colors.black),),
+        actions: [
+          DropdownButton(
+            value: _selectedValue,
+              items: _dropdownList.map((value) {
+                return DropdownMenuItem(
+                  value: value,
+                  child: Container(
+                    child: Image.asset(
+                      'assets/icons/${value}.jpg',
+                      height: 30,
+                      width: 30,
+                    ),
+                    decoration:  BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                ),
-              ),
-              const SizedBox(width: 10),
-              const Icon(
-                Icons.cloud,
-                color: Colors.blue,
-              ),
-            ],
-          ),
-        ),
+                );
+              }).toList(),
+              onChanged: (value) {
+              setState(() {
+                _selectedValue = value as int;
+                pc.getWheatherPosts(_selectedValue!);
+                _onRefresh();
+              });
+              }
+          )
+        ],
       ),
       body: RefreshIndicator(
         onRefresh: _onRefresh,
