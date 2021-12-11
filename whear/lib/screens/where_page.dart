@@ -35,9 +35,11 @@ class _WherePageState extends State<WherePage> {
           children: [
             InkWell(
               onTap: () async {
+
                 await pre.pickImage();
                 str1 = await pre.classifyImageLook(pre.imagePicked!);
                 // str2 = pre.classifyImageSeason(pre.imagePicked!);
+
                 setState(() {});
               },
               child: SizedBox(

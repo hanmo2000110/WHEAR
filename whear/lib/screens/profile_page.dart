@@ -81,8 +81,8 @@ class _ProfilePageState extends State<ProfilePage> {
     // }
     PostController pc = Get.put(PostController());
     List<PostModel> posts = pc.savedposts;
-    print("testing saved posts page");
-    print(posts.length);
+    // print("testing saved posts page");
+    // print(posts.length);
 
     return posts.map((post) {
       return GestureDetector(
