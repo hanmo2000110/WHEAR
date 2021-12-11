@@ -52,9 +52,10 @@ class _HomePageState extends State<HomePage> {
     return posts.map((post) {
       // String creator = post.creatorName!;
       int likes;
-      bool iLiked;
+      bool iLiked, iSaved;
       likes = post.likes!;
       iLiked = !post.iLiked!;
+      iSaved = !post.iSaved!;
       print(iLiked);
       return Card(
         elevation: 0,
@@ -173,7 +174,6 @@ class _HomePageState extends State<HomePage> {
                             ),
                       onPressed: () async {
                         await pc.like(post.post_id);
-
                         iLiked = await pc.iLiked(post.post_id);
                         likes = await pc.countLike(post.post_id);
                         post.iLiked = !iLiked;
@@ -192,8 +192,19 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
                 IconButton(
-                  icon: const Icon(Icons.work_outline_outlined),
-                  onPressed: () {},
+                  icon: iSaved
+                      ? Icon(Icons.work_outline_outlined)
+                      : Icon(
+                          Icons.work,
+                          color: Colors.blue,
+                        ),
+                  onPressed: () async {
+                    await pc.savePost(post.post_id);
+                    iSaved = await pc.iSaved(post.post_id);
+                    post.iSaved = !iSaved;
+
+                    setState(() {});
+                  },
                 )
               ],
             ),

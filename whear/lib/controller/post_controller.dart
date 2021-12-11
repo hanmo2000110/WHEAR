@@ -87,6 +87,7 @@ class PostController extends GetxController {
       post.setCreatorProfilePhotoURL = creator['profile_image_url'];
       post.likes = await countLike(post.post_id);
       post.iLiked = await iLiked(post.post_id);
+      post.iSaved = await iSaved(post.post_id);
       _searchPosts.add(post);
       // print(element.data()['image_links'].cast<String>()[0]);
     });
@@ -143,6 +144,46 @@ class PostController extends GetxController {
         .doc(docid)
         .collection("like")
         .doc(uid)
+        .get();
+    // print("ck");
+
+    return usersRef.exists;
+  }
+
+  Future<bool> savePost(String docid) async {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+    final usersRef = firestore
+        .collection('user')
+        .doc(uid)
+        .collection("savedPost")
+        .doc(docid);
+
+    print(docid);
+
+    usersRef.get().then((docSnapshot) async {
+      if (docSnapshot.exists) {
+        usersRef.delete();
+        print("save deleted");
+        return false;
+      } else {
+        usersRef.set({"savedTime": Timestamp.now()});
+        print("save added");
+        return true;
+      }
+    });
+    return false;
+  }
+
+  Future<bool> iSaved(String docid) async {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+    // print(docid);
+    final usersRef = await firestore
+        .collection('user')
+        .doc(uid)
+        .collection("savedPost")
+        .doc(docid)
         .get();
     // print("ck");
 
