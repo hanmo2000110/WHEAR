@@ -163,11 +163,13 @@ class _HomePageState extends State<HomePage> {
                 Row(
                   children: [
                     IconButton(
+                      splashColor: Colors.transparent,
                       icon: iLiked
-                          ? Icon(Icons.wb_cloudy_outlined)
+                          ? Icon(Icons.wb_cloudy_outlined,
+                              color: Colors.grey.shade600)
                           : Icon(
                               Icons.wb_cloudy,
-                              color: Colors.blue,
+                              color: Colors.lightBlueAccent.shade100,
                             ),
                       onPressed: () async {
                         await pc.like(post.post_id);
@@ -182,18 +184,20 @@ class _HomePageState extends State<HomePage> {
                         setState(() {});
                       },
                     ),
-                    IconButton(
-                      icon: const Icon(Icons.weekend_outlined),
-                      onPressed: () {},
-                    )
+                    // IconButton(
+                    //   icon: const Icon(Icons.weekend_outlined),
+                    //   onPressed: () {},
+                    // )
                   ],
                 ),
                 IconButton(
+                  splashColor: Colors.transparent,
                   icon: iSaved
-                      ? Icon(Icons.work_outline_outlined)
+                      ? Icon(Icons.work_outline_outlined,
+                          color: Colors.grey.shade600)
                       : Icon(
                           Icons.work,
-                          color: Colors.blue,
+                          color: Colors.brown.shade400,
                         ),
                   onPressed: () async {
                     await pc.savePost(post.post_id);
@@ -223,13 +227,13 @@ class _HomePageState extends State<HomePage> {
                     '좋아요 ${likes}개',
                     style: TextStyle(fontSize: 10),
                   ),
-                  InkWell(
-                    child: Text(
-                      '댓글 n개 모두보기',
-                      style: TextStyle(fontSize: 10),
-                    ),
-                    onTap: () {},
-                  ),
+                  // InkWell(
+                  //   child: Text(
+                  //     '댓글 n개 모두보기',
+                  //     style: TextStyle(fontSize: 10),
+                  //   ),
+                  //   onTap: () {},
+                  // ),
                   const SizedBox(
                     height: 5,
                   ),
