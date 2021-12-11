@@ -75,6 +75,57 @@ class _ProfilePageState extends State<ProfilePage> {
     }).toList();
   }
 
+  List<GestureDetector> _buildSavedCards(BuildContext context) {
+    // if (products.isEmpty) {
+    //   return const <Card>[];
+    // }
+    PostController pc = Get.put(PostController());
+    List<PostModel> posts = pc.savedposts;
+    print("testing saved posts page");
+    print(posts.length);
+
+    return posts.map((post) {
+      return GestureDetector(
+          onTap: () {
+            Get.toNamed("detail", arguments: post);
+          },
+          child: Card(
+              clipBehavior: Clip.antiAlias,
+              child: Stack(
+                  alignment: Alignment.center,
+                  fit: StackFit.expand,
+                  children: [
+                    Image.network(
+                      post.image_links[0],
+                      fit: BoxFit.cover,
+                      alignment: Alignment.topCenter,
+                    ),
+                    Positioned(
+                      right: 0,
+                      bottom: 0,
+                      child: Container(
+                        width: 30,
+                        height: 30,
+                        child: ClipOval(
+                          child: Container(
+                            padding: EdgeInsets.all(3),
+                            child: Image.asset(
+                              'assets/icons/${post.wheather}.jpg',
+                              // height: 30,
+                              // width: 30,
+                            ),
+                          ),
+                        ),
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ])));
+    }).toList();
+  }
+
   Future<void> updateUserName(String? uid) async {
     return await FirebaseFirestore.instance
         .collection('user')
@@ -283,7 +334,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         crossAxisCount: 3,
                         padding: const EdgeInsets.all(16.0),
                         childAspectRatio: 1.0 / 1.0,
-                        children: _buildGridCards(context),
+                        children: _buildSavedCards(context),
                       )
                     ],
                   ),

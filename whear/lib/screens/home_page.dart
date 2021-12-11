@@ -53,7 +53,7 @@ class _HomePageState extends State<HomePage> {
       // String creator = post.creatorName!;
       int likes;
       bool iLiked, iSaved;
-      likes = post.likes!;
+      likes = post.likes!.value;
       iLiked = !post.iLiked!;
       iSaved = !post.iSaved!;
       print(iLiked);
@@ -174,7 +174,7 @@ class _HomePageState extends State<HomePage> {
                         iLiked = await pc.iLiked(post.post_id);
                         likes = await pc.countLike(post.post_id);
                         post.iLiked = !iLiked;
-                        post.likes = likes;
+                        post.likes!.value = likes;
 
                         print(iLiked);
                         print(likes);

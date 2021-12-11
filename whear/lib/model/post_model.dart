@@ -17,7 +17,7 @@ class PostModel {
   String lookType;
   String? content;
   List<String> image_links;
-  int? likes;
+  RxInt? likes = 0.obs;
   bool? iLiked;
   bool? iSaved;
   //TODO: 이거 커멘트 타입 정해야함 !!!!!!
