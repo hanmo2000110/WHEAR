@@ -108,7 +108,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         height: 30,
                         child: ClipOval(
                           child: Container(
-                            padding: EdgeInsets.all(3),
+                            padding: const EdgeInsets.all(3),
                             child: Image.asset(
                               'assets/icons/${post.wheather}.jpg',
                               // height: 30,

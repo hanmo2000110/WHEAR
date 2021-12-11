@@ -201,16 +201,24 @@ class PostController extends GetxController {
         .orderBy('createdTime', descending: true)
         .get();
 
-    result.docs.forEach((element) {
-      _wheatherPosts.add(PostModel(
+    result.docs.forEach((element) async {
+      String creatorName = await getCreatorInfo(element.data()['creator']);
+      PostModel post = PostModel(
         createdTime: element.data()['createdTime'],
         creator: element.data()['creator'],
+        creatorName: creatorName,
         post_id: element.data()['post_id'],
         lookType: element.data()['lookType'],
         wheather: element.data()['weather'],
         content: element.data()['content'],
         image_links: element.data()['image_links'].cast<String>(),
-      ));
+      );
+      var creator = await firestore.collection('user').doc(post.creator).get();
+      post.setCreatorProfilePhotoURL = creator['profile_image_url'];
+      post.likes!.value = await countLike(post.post_id);
+      post.iLiked = await iLiked(post.post_id);
+      post.iSaved = await iSaved(post.post_id);
+      _wheatherPosts.add(post);
     });
   }
 
