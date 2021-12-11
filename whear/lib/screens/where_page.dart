@@ -14,7 +14,7 @@ class _WherePageState extends State<WherePage> {
   bool isTodayEx = true;
   bool isThisWeekEx = false;
   bool isEtcEx = false;
-  var result;
+  var str1, str2;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,8 +35,11 @@ class _WherePageState extends State<WherePage> {
           children: [
             InkWell(
               onTap: () async {
-                result = await pre.pickImage();
-                // print(result);
+
+                await pre.pickImage();
+                str1 = await pre.classifyImageLook(pre.imagePicked!);
+                // str2 = pre.classifyImageSeason(pre.imagePicked!);
+
                 setState(() {});
               },
               child: SizedBox(
@@ -57,7 +60,10 @@ class _WherePageState extends State<WherePage> {
               height: 40,
             ),
             pre.imagePicked != null
-                ? Text("이 옷은 ${result}(이)며 현재 날씨와 어울립니다.")
+                ? Container(
+                    width: Get.width - 100,
+                    child: Text(str1),
+                  )
                 : Container(),
           ],
         ),
