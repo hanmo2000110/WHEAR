@@ -86,11 +86,13 @@ class _HomePageState extends State<HomePage> {
                   profile_image_url: result.data()!['profile_image_url'],
                   status_message: result.data()!['status_message'],
                 );
+
                 curuser.follower = await uc.countFollowers(curuser.uid!);
                 curuser.following = await uc.countFollowings(curuser.uid!);
                 curuser.isFollowed = await uc.iFollowed(curuser.uid!);
                 await Get.toNamed("profileuid", arguments: curuser)!
                     .then((value) => setState(() {}));
+
               },
               child: Container(
                 margin: const EdgeInsets.symmetric(horizontal: 5),
@@ -272,7 +274,9 @@ class _HomePageState extends State<HomePage> {
     WeatherController wc = Get.put(WeatherController());
     // PostController pc = Get.put(PostController());
     // pc.getPosts();
-
+    Future.delayed(const Duration(milliseconds: 100), () {
+      setState(() {});
+    });
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(

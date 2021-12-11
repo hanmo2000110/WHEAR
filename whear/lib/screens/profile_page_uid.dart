@@ -77,9 +77,11 @@ class _ProfilePageUidState extends State<ProfilePageUid> {
 
   @override
   Widget build(BuildContext context) {
-    // bool isFollowed = false;
-    setState(() {});
-    print(isFollowed);
+
+    Future.delayed(const Duration(milliseconds: 100), () {
+      setState(() {});
+    });
+
     final pc = Get.find<PostController>();
     // AuthController ac = Get.find();
     return DefaultTabController(
