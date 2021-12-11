@@ -62,16 +62,19 @@ class UserController extends GetxController {
       }
     });
 
+    final refUser =
+        firestore.collection('user').doc(uid).collection("follower").doc(myuid);
+
     print(uid);
 
     usersRef.get().then((docSnapshot) async {
       if (docSnapshot.exists) {
-        usersRef.delete();
+        refUser.delete();
         print("follow deleted");
       } else {
-        usersRef.set({
+        refUser.set({
           "savedTime": Timestamp.now(),
-          "uid": uid,
+          "uid": myuid,
         });
         print("follow added");
       }
