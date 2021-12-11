@@ -88,8 +88,7 @@ class _HomePageState extends State<HomePage> {
                   following: result.data()!['following'],
                 );
 
-                await Get.toNamed("profileuid", arguments: curuser)!
-                    .then((value) => setState(() {}));
+                await Get.toNamed("profileuid", arguments: curuser);
               },
               child: Container(
                 margin: const EdgeInsets.symmetric(horizontal: 5),
@@ -271,7 +270,9 @@ class _HomePageState extends State<HomePage> {
     WeatherController wc = Get.put(WeatherController());
     // PostController pc = Get.put(PostController());
     // pc.getPosts();
-
+    Future.delayed(const Duration(milliseconds: 100), () {
+      setState(() {});
+    });
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
