@@ -63,8 +63,8 @@ class _HomePageState extends State<HomePage> {
         clipBehavior: Clip.antiAlias,
         child: Column(
           children: [
-            SizedBox(
-              width: Get.width - 40,
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 5),
               height: 60,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -78,12 +78,25 @@ class _HomePageState extends State<HomePage> {
                             NetworkImage(post.creatorProfilePhotoURL!),
                       ),
                       const SizedBox(
-                        width: 25,
+                        width: 16,
                       ),
                       Text('${post.creatorName}'),
                     ],
                   ),
                   Row(children: [
+                    Container(
+                      child: Image.asset(
+                        'assets/icons/${post.wheather}.jpg',
+                        height: 30,
+                        width: 30,
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 15,
+                    ),
                     Container(
                       padding: const EdgeInsets.fromLTRB(5, 3, 5, 3),
                       decoration: BoxDecoration(
@@ -97,16 +110,6 @@ class _HomePageState extends State<HomePage> {
                         style: const TextStyle(fontSize: 12),
                       ),
                     ),
-                    Container(
-                      child: Image.asset(
-                        'assets/icons/${post.wheather}.jpg',
-                        height: 30,
-                        width: 30,
-                      ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    )
                   ]),
                 ],
               ),
@@ -160,35 +163,27 @@ class _HomePageState extends State<HomePage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  children: [
-                    IconButton(
-                      splashColor: Colors.transparent,
-                      icon: iLiked
-                          ? Icon(Icons.wb_cloudy_outlined,
-                              color: Colors.grey.shade600)
-                          : Icon(
-                              Icons.wb_cloudy,
-                              color: Colors.lightBlueAccent.shade100,
-                            ),
-                      onPressed: () async {
-                        await pc.like(post.post_id);
-                        iLiked = await pc.iLiked(post.post_id);
-                        likes = await pc.countLike(post.post_id);
-                        post.iLiked = !iLiked;
-                        post.likes!.value = likes;
+                IconButton(
+                  splashColor: Colors.transparent,
+                  icon: iLiked
+                      ? Icon(Icons.wb_cloudy_outlined,
+                          color: Colors.grey.shade600)
+                      : Icon(
+                          Icons.wb_cloudy,
+                          color: Colors.lightBlueAccent.shade100,
+                        ),
+                  onPressed: () async {
+                    await pc.like(post.post_id);
+                    iLiked = await pc.iLiked(post.post_id);
+                    likes = await pc.countLike(post.post_id);
+                    post.iLiked = !iLiked;
+                    post.likes!.value = likes;
 
-                        print(iLiked);
-                        print(likes);
+                    // print(iLiked);
+                    // print(likes);
 
-                        setState(() {});
-                      },
-                    ),
-                    // IconButton(
-                    //   icon: const Icon(Icons.weekend_outlined),
-                    //   onPressed: () {},
-                    // )
-                  ],
+                    setState(() {});
+                  },
                 ),
                 IconButton(
                   splashColor: Colors.transparent,
@@ -209,35 +204,29 @@ class _HomePageState extends State<HomePage> {
                 )
               ],
             ),
-            SizedBox(
-              width: Get.width - 40,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    child: Text(
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
                       '${post.content}',
-                      style: TextStyle(fontSize: 12),
+                      style: const TextStyle(fontSize: 12),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  Text(
-                    '좋아요 ${likes}개',
-                    style: TextStyle(fontSize: 10),
-                  ),
-                  // InkWell(
-                  //   child: Text(
-                  //     '댓글 n개 모두보기',
-                  //     style: TextStyle(fontSize: 10),
-                  //   ),
-                  //   onTap: () {},
-                  // ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                ],
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      '좋아요 $likes개',
+                      style: const TextStyle(fontSize: 10),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                  ],
+                ),
               ),
             )
           ],
