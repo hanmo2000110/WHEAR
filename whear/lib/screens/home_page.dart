@@ -83,36 +83,32 @@ class _HomePageState extends State<HomePage> {
                       Text('${post.creatorName}'),
                     ],
                   ),
-                  Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.fromLTRB(5, 3, 5, 3),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            width: 1,
-                            color: Colors.black,
-
-                          ),
+                  Row(children: [
+                    Container(
+                      padding: const EdgeInsets.fromLTRB(5, 3, 5, 3),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          width: 1,
+                          color: Colors.black,
                         ),
-                        child: Text(
-                          post.lookType,
-                          style: const TextStyle(fontSize: 12),
-                        ),
-                        Container(
-                          child: Image.asset(
-                            'assets/icons/${post.wheather}.jpg',
-                            height: 30,
-                            width: 30,
-                          ),
-                          decoration:  BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        )
-                      ],
+                      ),
+                      child: Text(
+                        post.lookType,
+                        style: const TextStyle(fontSize: 12),
+                      ),
                     ),
-                  ],
-                ),
-
+                    Container(
+                      child: Image.asset(
+                        'assets/icons/${post.wheather}.jpg',
+                        height: 30,
+                        width: 30,
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    )
+                  ]),
+                ],
               ),
             ),
             GestureDetector(
