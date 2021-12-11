@@ -63,55 +63,77 @@ class _HomePageState extends State<HomePage> {
         clipBehavior: Clip.antiAlias,
         child: Column(
           children: [
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 5),
-              height: 60,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 20.0,
-                        backgroundColor: Colors.lightBlueAccent,
-                        backgroundImage:
-                            NetworkImage(post.creatorProfilePhotoURL!),
-                      ),
-                      const SizedBox(
-                        width: 16,
-                      ),
-                      Text('${post.creatorName}'),
-                    ],
-                  ),
-                  Row(children: [
-                    Container(
-                      child: Image.asset(
-                        'assets/icons/${post.wheather}.jpg',
-                        height: 30,
-                        width: 30,
-                      ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
+            GestureDetector(
+              onTap: () async {
+                pc.cleanUidPost();
+                await pc.getPostsUid(post.creator);
+                var result = await FirebaseFirestore.instance
+                    .collection('user')
+                    .doc(post.creator)
+                    .get();
+                UserModel curuser = UserModel(
+                  email: result.data()!['email'],
+                  uid: post.creator,
+                  name: result.data()!['name'],
+                  profile_image_url: result.data()!['profile_image_url'],
+                  status_message: result.data()!['status_message'],
+                  follower: result.data()!['follower'],
+                  following: result.data()!['following'],
+                );
+
+                await Get.toNamed("profileuid", arguments: curuser)!
+                    .then((value) => setState(() {}));
+              },
+              child: Container(
+                margin: const EdgeInsets.symmetric(horizontal: 5),
+                height: 60,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 20.0,
+                          backgroundColor: Colors.lightBlueAccent,
+                          backgroundImage:
+                              NetworkImage(post.creatorProfilePhotoURL!),
+                        ),
+                        const SizedBox(
+                          width: 16,
+                        ),
+                        Text('${post.creatorName}'),
+                      ],
                     ),
-                    const SizedBox(
-                      width: 15,
-                    ),
-                    Container(
-                      padding: const EdgeInsets.fromLTRB(5, 3, 5, 3),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          width: 1,
-                          color: Colors.black,
+                    Row(children: [
+                      Container(
+                        child: Image.asset(
+                          'assets/icons/${post.wheather}.jpg',
+                          height: 30,
+                          width: 30,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
                         ),
                       ),
-                      child: Text(
-                        post.lookType,
-                        style: const TextStyle(fontSize: 12),
+                      const SizedBox(
+                        width: 15,
                       ),
-                    ),
-                  ]),
-                ],
+                      Container(
+                        padding: const EdgeInsets.fromLTRB(5, 3, 5, 3),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            width: 1,
+                            color: Colors.black,
+                          ),
+                        ),
+                        child: Text(
+                          post.lookType,
+                          style: const TextStyle(fontSize: 12),
+                        ),
+                      ),
+                    ]),
+                  ],
+                ),
               ),
             ),
             GestureDetector(
@@ -125,6 +147,7 @@ class _HomePageState extends State<HomePage> {
                 child: post.image_links.length != 1
                     ? CarouselSlider(
                         options: CarouselOptions(
+                          enableInfiniteScroll: false,
                           height: 400.0,
                           aspectRatio: 10 / 10,
                           viewportFraction: 1.0,
@@ -344,7 +367,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                             child: Text(
                               "${wc.text}",
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 14,
                                 // fontWeight: FontWeight.bold,
                               ),

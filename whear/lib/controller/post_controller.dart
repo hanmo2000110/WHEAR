@@ -28,6 +28,7 @@ class PostController extends GetxController {
 
   List<PostModel> _uidPosts = [];
   List<PostModel> get uidposts => _uidPosts;
+  void cleanUidPost() => _uidPosts = [];
 
   List<PostModel> _searchPosts = [];
   List<PostModel> get searchposts => _searchPosts;
@@ -105,7 +106,7 @@ class PostController extends GetxController {
       post.likes!.value = await countLike(post.post_id);
       post.iLiked = await iLiked(post.post_id);
       post.iSaved = await iSaved(post.post_id);
-      _myPosts.add(post);
+      _uidPosts.add(post);
       // print(element.data()['image_links'].cast<String>()[0]);
     });
     // print(_myPosts.length);
