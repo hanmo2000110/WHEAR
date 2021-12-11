@@ -19,6 +19,7 @@ class PostModel {
   List<String> image_links;
   int? likes;
   bool? iLiked;
+  bool? iSaved;
   //TODO: 이거 커멘트 타입 정해야함 !!!!!!
   List<CommentModel>? comment;
 

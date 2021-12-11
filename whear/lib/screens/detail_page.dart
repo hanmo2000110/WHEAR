@@ -22,9 +22,10 @@ class _DetailPageState extends State<DetailPage> {
     PostModel detailpost = Get.arguments;
     List<dynamic> imgList = detailpost.image_links;
     int likes;
-    bool iLiked;
+    bool iLiked, iSaved;
     likes = detailpost.likes!;
     iLiked = !detailpost.iLiked!;
+    iSaved = !detailpost.iSaved!;
     print(iLiked);
     return Scaffold(
         backgroundColor: Colors.white,
@@ -178,8 +179,19 @@ class _DetailPageState extends State<DetailPage> {
                       ],
                     ),
                     IconButton(
-                      icon: const Icon(Icons.work_outline_outlined),
-                      onPressed: () {},
+                      icon: iSaved
+                          ? Icon(Icons.work_outline_outlined)
+                          : Icon(
+                              Icons.work,
+                              color: Colors.blue,
+                            ),
+                      onPressed: () async {
+                        await pc.savePost(detailpost.post_id);
+                        iSaved = await pc.iSaved(detailpost.post_id);
+                        detailpost.iSaved = !iSaved;
+
+                        setState(() {});
+                      },
                     )
                   ],
                 ),
