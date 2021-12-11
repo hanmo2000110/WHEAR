@@ -12,7 +12,8 @@ class SignInPage extends StatelessWidget {
         body: ConstrainedBox(
       constraints: const BoxConstraints.expand(),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        // crossAxisAlignment: CrossAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           // Image.asset("assets/2.0x/diamond.png",
           //     width: 100, height: 100, color: Colors.black),
@@ -23,7 +24,7 @@ class SignInPage extends StatelessWidget {
                 height: 50,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.red.shade300,
+                    primary: Colors.red.shade200,
                   ),
                   child: const Text(
                     'Sign in with Google',
@@ -33,7 +34,7 @@ class SignInPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(
-                height: 20,
+                height: 150,
               ),
               // SizedBox(
               //   width: 280,

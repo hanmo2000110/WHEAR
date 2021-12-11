@@ -62,12 +62,6 @@ class UserController extends GetxController {
       }
     });
 
-    final usersRef = firestore
-        .collection('user')
-        .doc(myuid)
-        .collection("following")
-        .doc(uid);
-
     print(uid);
 
     usersRef.get().then((docSnapshot) async {
